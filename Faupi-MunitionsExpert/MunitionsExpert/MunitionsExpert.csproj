@@ -52,27 +52,26 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />
-    <None Include="package.json" />
     <None Include="res\translations.json" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>..\..\Shared\BepInEx\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Aki.Common">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Aki.Common.dll</HintPath>
+      <HintPath>..\..\Shared\AKI\Aki.Common.dll</HintPath>
     </Reference>
     <Reference Include="Aki.Reflection">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Aki.Reflection.dll</HintPath>
+      <HintPath>..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>..\..\Shared\BepInEx\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Comfort">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Comfort.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\Comfort.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -81,19 +80,19 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -101,13 +100,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set BuildDir=$(ProjectDir)_Build\Faupi-MunitionsExpert
-
-powershell -Command "Remove-Item '%25BuildDir%25\*' -Recurse -Force"
-
-copy "$(TargetPath)" "%25BuildDir%25\module.dll"
-xcopy "$(ProjectDir)src\server" "%25BuildDir%25\src" /K /D /H /Y /I
-xcopy "$(ProjectDir)res" "%25BuildDir%25\res" /K /D /H /Y /I
-copy "$(ProjectDir)package.json" "%25BuildDir%25\package.json"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>

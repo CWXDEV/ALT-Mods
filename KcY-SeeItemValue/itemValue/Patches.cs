@@ -7,7 +7,7 @@ using EFT.InventoryLogic;
 using Ammo = BulletClass;
 using Grenade = GClass2079;
 using GrenadeTemplate = GClass1975;
-using ItemAttribute = GClass2090;
+using ItemAttribute = GClass2098;
 using SecureContainer = GClass2038;
 using SecureContainerTemplate = GClass1937;
 

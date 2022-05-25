@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using BepInEx;
 using Comfort.Common;
 
-using ItemAttribute = GClass2090;
+using ItemAttribute = GClass2098;
 using ItemAttributeCharacteristic = BulletClass; // left in as commented code uses this class
 using static MunitionsExpert.Attributes;
-using ServerSettings = GClass1103;
+using ServerSettings = GClass1085;
 
 
 namespace MunitionsExpert
@@ -118,7 +118,7 @@ namespace MunitionsExpert
                     int ratedClass = 0;
 
                     if (!Singleton<ServerSettings>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
-                    ServerSettings.GClass1148.GClass1149[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
+                    ServerSettings.GClass1132.GClass1133[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
                     for (int i = 0; i < classes.Length; i++)
                     {
                         if (classes[i].Resistance > template.PenetrationPower) continue;

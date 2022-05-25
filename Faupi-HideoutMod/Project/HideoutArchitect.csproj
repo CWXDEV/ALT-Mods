@@ -56,74 +56,56 @@
     <Content Include="src\server\hideoutarchitect.js" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Aki.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Aki.Common.dll</HintPath>
+    <Reference Include="Aki.Common">
+      <HintPath>..\..\Shared\AKI\Aki.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Aki.Reflection, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Aki.Reflection.dll</HintPath>
+    <Reference Include="Aki.Reflection">
+      <HintPath>..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>..\..\Shared\BepInEx\BepInEx.dll</HintPath>
     </Reference>
-    <Reference Include="Comfort, Version=1.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Comfort.dll</HintPath>
+    <Reference Include="Comfort">
+      <HintPath>..\..\Shared\EFT\Comfort.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Sirenix.Serialization, Version=3.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Sirenix.Serialization.dll</HintPath>
+    <Reference Include="Sirenix.Serialization">
+      <HintPath>..\..\Shared\EFT\Sirenix.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\Shared\EFT\Unity.TextMeshPro.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Shared\EFT\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\Shared\EFT\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\Shared\EFT\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestTextureModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\AKI PROJECT\AKI 2.3.0 17107 Bepin\EscapeFromTarkov_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>..\..\Shared\EFT\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set BuildDir=$(ProjectDir)_Build\Faupi-HideoutArchitect
-
-powershell -Command "Remove-Item '%25BuildDir%25\*' -Recurse -Force"
-
-copy "$(TargetPath)" "%25BuildDir%25\module.dll"
-xcopy "$(ProjectDir)src\server" "%25BuildDir%25\src" /K /D /H /Y /I
-xcopy "$(ProjectDir)res" "%25BuildDir%25\res" /K /D /H /Y /I
-copy "$(ProjectDir)package.json" "%25BuildDir%25\package.json"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PlatformTarget>x64</PlatformTarget>

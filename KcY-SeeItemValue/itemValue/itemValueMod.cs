@@ -13,7 +13,7 @@ using Aki.Common.Utils;
 using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
-using ItemAttribute = GClass2090;
+using ItemAttribute = GClass2098;
 
 namespace itemValueMod
 {
