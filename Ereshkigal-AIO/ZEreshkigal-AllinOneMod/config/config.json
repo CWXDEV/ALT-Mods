@@ -1,0 +1,151 @@
+{
+  "items": {
+    "allExaminedItems": false,
+    "weightChanges": false,
+    "moreStack": false,
+    "equipRigsWithArmors": false,
+    "forceMoneyStack": false,
+    "removeSecureContainerFilters": false,
+    "removeBackpacksRestrictions": false,
+    "removeContainersRestrictions": false,
+    "inRaidModdable": false,
+    "increaseLootExp": false,
+    "increaseExamineExp": false,
+    "removeKeyUsageNumber": false,
+    "stackableBarters": {
+      "activated": false,
+      "battery": 1,
+      "buildingMaterials": 1,
+      "electronics": 1,
+      "householdGoods": 1,
+      "jewelry": 1,
+      "medicalSupplies": 1,
+      "flammable": 1,
+      "tools": 1,
+      "other": 1
+    },
+    "weaponMalfunctions": {
+      "overheat": false,
+      "jam": false,
+      "slide": false,
+      "misfire": false,
+      "feed": false
+    },
+    "weaponDurabilities": {
+      "minimumSpawnDurability": false,
+      "maximumSpawnDurability": false
+    },
+    "removeAllGearPenalties": false,
+    "removeItemDurabilityBurn": false,
+    "removeBulletWeaponDurabilityDamage": false,
+    "removeWeaponPresetRestriction": false,
+    "changeIndividualItemProperty": {
+      "activated": false,
+      "itemList": {
+        "__REPLACEMEBYITEMID__": {
+          "spawnChance": 0
+        }
+      }
+    }
+  },
+  "hideout": {
+    "changeFuelConsumptionRate": false,
+    "fastHideoutConstruction": false,
+    "fastHideoutProduction": false,
+    "fastScavCase": false,
+    "scavCasePriceReducer": false,
+    "removeConstructionRequirements": false
+  },
+  "player": {
+    "removeScavTimer": false,
+    "changeSkillProgressionMultiplier": false,
+    "changeWeaponSkillMultiplier": false,
+    "disableSkillFatigue": false,
+    "skillMinEffectiveness": 0.2,
+    "skillFatiguePerPoint": 0.2,
+    "skillFreshEffectiveness": 1.3,
+    "skillFreshPoints": 1,
+    "skillPointsBeforeFatigue": 1,
+    "skillFatigueReset": 300,
+    "changeMaxStamina": false,
+    "unlimitedStamina": false,
+    "removeInRaidRestrictions": false,
+    "disableFallDamage": false,
+    "allSkillsMaster": false,
+    "enableSkillBotReload": false,
+    "enableSkillBotSound": false,
+    "removeScavKarma": false,
+    "energyDrainRate": false,
+    "energyDrainTime": false,
+    "hydratationDrainRate": false,
+    "hydratationDrainTime": false,
+    "regenerationLoopTime": false,
+    "energyRestoration": false,
+    "hydrationRestoration": false
+  },
+  "traders": {
+    "allQuestsAvailable": false,
+    "allClothesFree": false,
+    "allClothesForEverySide": false,
+    "changeFleaMarketLvl": false,
+    "insuranceTime": {
+      "activated": false,
+      "therapist": {
+        "activated": false,
+        "min": 0,
+        "max": 0
+      },
+      "prapor": {
+        "activated": false,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "traderChanges": {
+      "allTraders4Stars": false,
+      "unlockAllItemsAtLL1": false,
+      "removeItemsFromQuestLocks": false
+    },
+    "maxInsuranceStorageTime": false,
+    "preventFenceMastering": false,
+    "removeFIRConditionOnQuests": false
+  },
+  "raids": {
+    "noExtractRestrictions": false,
+    "allExtractionsAvailable": false,
+    "increasedBossChance": false,
+    "extendedRaid": false,
+    "removeLabsKeycard": false,
+    "extractionsExtended": false,
+    "insuranceOnAllMaps": false
+  },
+  "fixes": {
+    "finsChokeMeHarder": true,
+    "chompsRaiderSpawnFix": true,
+    "justNUsEvenMoreOpenZones": true
+  },
+  "other": {
+    "compatibilityMods": {
+      "terragroupSpecialist": false,
+      "coDMWMilSimCTSFOI": false,
+      "additionnalGearTan": false,
+      "additionnalGearBlack": false,
+      "additionnalGearUntar": false,
+      "additionnalClothing": false,
+      "andrudisQuestManiac": false
+    },
+    "preWipeEvents": {
+      "raidersOnAllMaps": false,
+      "killaOnFactory": false,
+      "allBossesOnReserve": false,
+      "allTradersSellCheapItems": false,
+      "makeObdolbosPowerful": false,
+      "gluhkarOnLabs": false
+    },
+    "inGameEvents": {
+      "heatWave": false
+    },
+    "hideWarningMessage": false,
+    "showModLogs": true
+  }
+}
