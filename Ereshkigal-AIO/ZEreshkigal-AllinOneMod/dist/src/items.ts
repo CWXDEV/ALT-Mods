@@ -1,9 +1,9 @@
-import type { ILogger } from "../types/models/spt/utils/ILogger";
-import type { DatabaseServer } from "../types/servers/DatabaseServer";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { Other } from "./other";
 import { inject, injectable } from "tsyringe";
 import { AIOConfigHandler } from "./AIOConfigHandler";
-import { BaseClasses } from "../types/models/enums/BaseClasses";
+import { BaseClasses } from "@spt-aki/models/enums/BaseClasses";
 
 @injectable()
 export class Items
@@ -27,7 +27,7 @@ export class Items
             if (!this.other.isThisIDaMod([id]))
             {
                 //Examine all items
-                if (!this.configHandler.getConfig().items.allExaminedItems)
+                if (this.configHandler.getConfig().items.allExaminedItems)
                 {
                     this.editSimpleItemData(id, "ExaminedByDefault", true);
                 }

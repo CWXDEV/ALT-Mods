@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
-import type { DatabaseServer } from "../types/servers/DatabaseServer";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 import { Other } from "./other";
-import { Money } from "../types/models/enums/Money"
-import { Traders as eftTraders} from "../types/models/spt/helpers/Traders"
+import { Money } from "@spt-aki/models/enums/Money"
+import { Traders as eftTraders} from "@spt-aki/models/spt/helpers/Traders"
 
 @injectable()
 export class Traders

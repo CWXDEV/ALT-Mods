@@ -1,7 +1,7 @@
-import type { HttpResponseUtil } from "../types/utils/HttpResponseUtil"
-import type { BotController } from "../types/controllers/BotController"
-import type { IBotBase } from "../types/models/eft/common/tables/IBotBase";
-import type { IGetBodyResponseData } from "../types/models/eft/httpResponse/IGetBodyResponseData";
+import type { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
+import type { BotController } from "@spt-aki/controllers/BotController"
+import type { IBotBase } from "@spt-aki/models/eft/common/tables/IBotBase";
+import type { IGetBodyResponseData } from "@spt-aki/models/eft/httpResponse/IGetBodyResponseData";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 import { inject, injectable } from "tsyringe";
 

@@ -1,7 +1,7 @@
 import { DependencyContainer, Lifecycle } from "tsyringe";
-import type { StaticRouterModService } from "../types/services/mod/staticRouter/StaticRouterModService";
-import type { IMod } from "../types/models/external/mod";
-import type { ILogger } from "../types/models/spt/utils/ILogger";
+import type { StaticRouterModService } from "@spt-aki/services/mod/staticRouter/StaticRouterModService";
+import type { IMod } from "@spt-aki/models/external/mod";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { Other } from "./other";
 import { Items } from "./items";
 import { Raids } from "./raids";
@@ -27,7 +27,7 @@ class AIOMod implements IMod
         container.register<Player>("AIOPlayer", Player);
         container.register<Notifications>("AIONotifications", Notifications);
         const staticRoute = container.resolve<StaticRouterModService>("StaticRouterModService");
-        container.resolve<ILogger>("WinstonLogger");
+        this.logger = container.resolve<ILogger>("WinstonLogger");
         
         if (container.resolve<AIOConfigHandler>("AIOConfigHandler").getConfig().player.allSkillsMaster) 
         {
@@ -36,13 +36,14 @@ class AIOMod implements IMod
                 [
                     {
                         url: "/client/game/version/validate",
-                        action: (sessionID: string): any => 
-                        {
+                        action: (url: string, info: any, sessionID: string, output: string): any => 
+                        {       
+                            this.logger.info(sessionID);
                             return container.resolve<Player>("AIOPlayer").maxSkills(sessionID);
                         }
                     }
                 ],
-                "AIOMod"
+                "aki"
             )
         }
 
@@ -53,13 +54,13 @@ class AIOMod implements IMod
                 [
                     {
                         url: "/client/game/bot/generate",
-                        action: (info: any): any => 
+                        action: (url: string, info: any, sessionID: string, output: string): any => 
                         {
                             return container.resolve<Other>("AIOOther").spawnRaidersEverywhere(info);
                         }
                     }
                 ],
-                "AIOMod"
+                "aki"
             ) 
         }
 
@@ -73,7 +74,7 @@ class AIOMod implements IMod
         container.resolve<Fixes>("AIOFixes").applyChanges();
         container.resolve<Raids>("AIORaids").applyChanges();
         container.resolve<Items>("AIOItems").applyChanges();
-        container.resolve<Traders>("AIOTrader").applyChanges();
+        container.resolve<Traders>("AIOTraders").applyChanges();
         container.resolve<Player>("AIOPlayer").applyChanges();
 
         if (container.resolve<AIOConfigHandler>("AIOConfigHandler").getConfig().other.showModLogs)

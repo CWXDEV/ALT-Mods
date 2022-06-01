@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-import type { BossLocationSpawn } from "../types/models/eft/common/ILocationBase";
-import type { DatabaseServer } from "../types/servers/DatabaseServer";
+import type { BossLocationSpawn } from "@spt-aki/models/eft/common/ILocationBase";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 import { Other } from "./other";
 

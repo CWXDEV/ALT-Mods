@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import type { ILogger } from "../types/models/spt/utils/ILogger";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 
 @injectable()

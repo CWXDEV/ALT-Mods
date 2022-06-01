@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import type { DatabaseServer } from "../types/servers/DatabaseServer";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 
 @injectable()

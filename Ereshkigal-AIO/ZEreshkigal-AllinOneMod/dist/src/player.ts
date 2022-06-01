@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
-import type { ProfileHelper } from "../types/helpers/ProfileHelper";
-import type { IPmcData } from "../types/models/eft/common/IPmcData";
-import type { ILogger } from "../types/models/spt/utils/ILogger";
-import type { DatabaseServer } from "../types/servers/DatabaseServer";
-import type { HttpResponseUtil } from "../types/utils/HttpResponseUtil";
+import type { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
+import type { IPmcData } from "@spt-aki//models/eft/common/IPmcData";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import type { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 
 @injectable()
