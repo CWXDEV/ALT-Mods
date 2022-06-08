@@ -3,7 +3,7 @@ import { IItemEventRouterResponse } from "../../models/eft/itemEvent/IItemEventR
 import { QuestCallbacks } from "../../callbacks/QuestCallbacks";
 import { HandledRoute, ItemEventRouterDefinition } from "../../di/Router";
 export declare class QuestItemEventRouter extends ItemEventRouterDefinition {
-    private questCallbacks;
+    protected questCallbacks: QuestCallbacks;
     constructor(questCallbacks: QuestCallbacks);
     getHandledRoutes(): HandledRoute[];
     handleItemEvent(url: string, pmcData: IPmcData, body: any, sessionID: string): IItemEventRouterResponse;

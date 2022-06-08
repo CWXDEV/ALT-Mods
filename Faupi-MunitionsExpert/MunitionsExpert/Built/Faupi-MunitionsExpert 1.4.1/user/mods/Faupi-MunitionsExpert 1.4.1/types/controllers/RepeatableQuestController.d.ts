@@ -8,7 +8,8 @@ import { IPmcData, TraderInfo } from "../models/eft/common/IPmcData";
 import { ICompletion, ICompletionAvailableFor, IElimination, IEliminationCondition, IExploration, IExplorationCondition, IPmcDataRepeatableQuest, IRepeatableQuest, IReward, IRewards } from "../models/eft/common/tables/IRepeatableQuests";
 import { IItemEventRouterResponse } from "../models/eft/itemEvent/IItemEventRouterResponse";
 import { IRepeatableQuestChangeRequest } from "../models/eft/quests/IRepeatableQuestChangeRequest";
-import { ELocationName, IRepeatableQuestConfig } from "../models/spt/config/IQuestConfig";
+import { ELocationName } from "../models/enums/ELocationName";
+import { IQuestConfig, IRepeatableQuestConfig } from "../models/spt/config/IQuestConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ItemEventRouter } from "../routers/ItemEventRouter";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -47,21 +48,21 @@ export interface ITargetLocation {
     locations: string[];
 }
 export declare class RepeatableQuestController {
-    private timeUtil;
-    private logger;
-    private randomUtil;
-    private mathUtil;
-    private jsonUtil;
-    private databaseServer;
-    private itemHelper;
-    private presetHelper;
-    private profileHelper;
-    private ragfairServerHelper;
-    private itemEventRouter;
-    private paymentService;
-    private objectId;
-    private configServer;
-    private questConfig;
+    protected timeUtil: TimeUtil;
+    protected logger: ILogger;
+    protected randomUtil: RandomUtil;
+    protected mathUtil: MathUtil;
+    protected jsonUtil: JsonUtil;
+    protected databaseServer: DatabaseServer;
+    protected itemHelper: ItemHelper;
+    protected presetHelper: PresetHelper;
+    protected profileHelper: ProfileHelper;
+    protected ragfairServerHelper: RagfairServerHelper;
+    protected itemEventRouter: ItemEventRouter;
+    protected paymentService: PaymentService;
+    protected objectId: ObjectId;
+    protected configServer: ConfigServer;
+    protected questConfig: IQuestConfig;
     constructor(timeUtil: TimeUtil, logger: ILogger, randomUtil: RandomUtil, mathUtil: MathUtil, jsonUtil: JsonUtil, databaseServer: DatabaseServer, itemHelper: ItemHelper, presetHelper: PresetHelper, profileHelper: ProfileHelper, ragfairServerHelper: RagfairServerHelper, itemEventRouter: ItemEventRouter, paymentService: PaymentService, objectId: ObjectId, configServer: ConfigServer);
     /**
      * This is the method reached by the /client/repeatalbeQuests/activityPeriods endpoint
@@ -88,7 +89,7 @@ export declare class RepeatableQuestController {
      * @param   {string}    sessionId       Player's session id
      * @returns  {array}                    array of "repeatableQuestObjects" as descibed above
      */
-    getClientRepeatableQuests(info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[];
+    getClientRepeatableQuests(_info: IEmptyRequestData, sessionID: string): IPmcDataRepeatableQuest[];
     /**
      * This method is called by GetClientRepeatableQuests and creates one element of quest type format (see assets/database/templates/repeatableQuests.json).
      * It randomly draws a quest type (currently Elimination, Completion or Exploration) as well as a trader who is providing the quest

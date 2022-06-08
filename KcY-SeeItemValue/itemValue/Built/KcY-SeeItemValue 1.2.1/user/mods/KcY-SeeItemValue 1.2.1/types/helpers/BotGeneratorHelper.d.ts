@@ -1,8 +1,9 @@
 import { DurabilityLimitsHelper } from "../helpers/DurabilityLimitsHelper";
 import { Inventory as PmcInventory } from "../models/eft/common/IPmcData";
 import { Mods, ModsChances } from "../models/eft/common/tables/IBotType";
-import { Item, Upd } from "../models/eft/common/tables/IItem";
-import { ITemplateItem } from "../models/eft/common/tables/ITemplateItem";
+import { Item, Repairable, Upd } from "../models/eft/common/tables/IItem";
+import { Grid, ITemplateItem, Slot } from "../models/eft/common/tables/ITemplateItem";
+import { IBotConfig } from "../models/spt/config/IBotConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 import { DatabaseServer } from "../servers/DatabaseServer";
@@ -12,18 +13,18 @@ import { RandomUtil } from "../utils/RandomUtil";
 import { ContainerHelper } from "./ContainerHelper";
 import { InventoryHelper } from "./InventoryHelper";
 import { ItemHelper } from "./ItemHelper";
-declare class BotGeneratorHelper {
-    private logger;
-    private jsonUtil;
-    private hashUtil;
-    private randomUtil;
-    private databaseServer;
-    private durabilityLimitsHelper;
-    private itemHelper;
-    private inventoryHelper;
-    private containerHelper;
-    private configServer;
-    private botConfig;
+export declare class BotGeneratorHelper {
+    protected logger: ILogger;
+    protected jsonUtil: JsonUtil;
+    protected hashUtil: HashUtil;
+    protected randomUtil: RandomUtil;
+    protected databaseServer: DatabaseServer;
+    protected durabilityLimitsHelper: DurabilityLimitsHelper;
+    protected itemHelper: ItemHelper;
+    protected inventoryHelper: InventoryHelper;
+    protected containerHelper: ContainerHelper;
+    protected configServer: ConfigServer;
+    protected botConfig: IBotConfig;
     constructor(logger: ILogger, jsonUtil: JsonUtil, hashUtil: HashUtil, randomUtil: RandomUtil, databaseServer: DatabaseServer, durabilityLimitsHelper: DurabilityLimitsHelper, itemHelper: ItemHelper, inventoryHelper: InventoryHelper, containerHelper: ContainerHelper, configServer: ConfigServer);
     generateModsForItem(items: Item[], modPool: Mods, parentId: string, parentTemplate: ITemplateItem, modSpawnChances: ModsChances, isPmc?: boolean): Item[];
     /**
@@ -37,16 +38,50 @@ declare class BotGeneratorHelper {
      * @param {string}      parentId            The CylinderMagazine's UID
      * @param {object}      parentTemplate      The CylinderMagazine's template
      */
-    private fillCamora;
+    protected fillCamora(items: Item[], modPool: Mods, parentId: string, parentTemplate: ITemplateItem): void;
     generateExtraPropertiesForItem(itemTemplate: ITemplateItem, botRole?: any): {
-        "upd"?: Upd;
+        upd?: Upd;
     };
-    private getModTplFromItemDb;
+    /**
+     * Create a repairable object for a weapon that containers durability + max durability properties
+     * @param itemTemplate weapon object being generated for
+     * @param botRole type of bot being generated for
+     * @returns Repairable object
+     */
+    protected generateWeaponRepairableProperties(itemTemplate: ITemplateItem, botRole: string): Repairable;
+    /**
+     * Create a repairable object for an armor that containers durability + max durability properties
+     * @param itemTemplate weapon object being generated for
+     * @param botRole type of bot being generated for
+     * @returns Repairable object
+     */
+    protected generateArmorRepairableProperties(itemTemplate: ITemplateItem, botRole: string): Repairable;
+    protected getModTplFromItemDb(modTpl: string, parentSlot: Slot, modSlot: string, items: Item[]): string;
+    /**
+     * Sort by spawn chance, highest to lowest, higher is more common
+     * @param unsortedModArray String array to sort
+     * @returns Sorted string array
+     */
+    protected sortModArray(unsortedModArray: string[]): string[];
+    /**
+     * Can an item be added to an item without issue
+     * @param items
+     * @param tplToCheck
+     * @param equipmentSlot
+     * @returns true if possible
+     */
     isItemIncompatibleWithCurrentItems(items: Item[], tplToCheck: string, equipmentSlot: string): boolean;
-    /** Adds an item with all its childern into specified equipmentSlots, wherever it fits.
-     * Returns a `boolean` indicating success. */
+    /**
+     * Adds an item with all its childern into specified equipmentSlots, wherever it fits.
+     * @param equipmentSlots
+     * @param parentId
+     * @param parentTpl
+     * @param itemWithChildren
+     * @param inventory
+     * @returns a `boolean` indicating item was added
+     */
     addItemWithChildrenToEquipmentSlot(equipmentSlots: string[], parentId: string, parentTpl: string, itemWithChildren: Item[], inventory: PmcInventory): boolean;
-    private itemAllowedInContainer;
+    protected itemAllowedInContainer(slot: Grid, itemTpl: string): boolean;
 }
 export declare class ExhaustableArray<T> {
     private itemPool;
@@ -58,22 +93,3 @@ export declare class ExhaustableArray<T> {
     getFirstValue(): T;
     hasValues(): boolean;
 }
-declare namespace BotGeneratorHelper {
-    enum EquipmentSlots {
-        HEADWEAR = "Headwear",
-        EARPIECE = "Earpiece",
-        FACE_COVER = "FaceCover",
-        ARMOR_VEST = "ArmorVest",
-        EYEWEAR = "Eyewear",
-        ARM_BAND = "ArmBand",
-        TACTICAL_VEST = "TacticalVest",
-        POCKETS = "Pockets",
-        BACKPACK = "Backpack",
-        SECURED_CONTAINER = "SecuredContainer",
-        FIRST_PRIMARY_WEAPON = "FirstPrimaryWeapon",
-        SECOND_PRIMARY_WEAPON = "SecondPrimaryWeapon",
-        HOLSTER = "Holster",
-        SCABBARD = "Scabbard"
-    }
-}
-export { BotGeneratorHelper };
