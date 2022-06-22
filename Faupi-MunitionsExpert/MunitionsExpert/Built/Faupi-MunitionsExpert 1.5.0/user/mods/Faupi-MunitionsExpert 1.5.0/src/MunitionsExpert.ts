@@ -16,7 +16,7 @@ class MunitionsExpert implements IMod
     private modLoader: InitialModLoader;
     private table: IDatabaseTables;
     private globalLocale: { [x: string]: { interface: { [x: string]: any; }; }; };
-    private mod: { name: string; version: any; };
+    private mod: { name: string; version: any; author: any;};
     private translations: { [x: string]: any; };
     private items: { [x: string]: any; };
     private path: { resolve: (arg0: string) => any; };
@@ -29,7 +29,7 @@ class MunitionsExpert implements IMod
         this.json = container.resolve<JsonUtil>("JsonUtil");
         this.mod = require("../package.json");
         this.translations = require("../res/translations.json");
-        this.logger.info(`Loading: ${this.mod.name} ${this.mod.version}`);
+        this.logger.info(`Loading: ${this.mod.author}: ${this.mod.name} - ${this.mod.version}`);
         this.path = require("path");
         this.cfg = require("./config.json");
         this.hookRoutes();
@@ -86,7 +86,7 @@ class MunitionsExpert implements IMod
     {
         const modOutput = {
             status: 1,
-            data: null
+            data: {}
         };
 
         modOutput.data = {...this.mod, ...{path: this.path.resolve(this.modLoader.getModPath(this.mod.name))}};

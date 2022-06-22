@@ -1,7 +1,7 @@
 {
     "name": "MunitionsExpert",
     "author": "Faupi",
-    "version": "1.4.1",
+    "version": "1.5.0",
     "license": "NCSA Open Source",
     "main": "./src/MunitionsExpert.js",
     "akiVersion": "3.0.0",

@@ -27,7 +27,7 @@ class HideoutArchitect implements IMod
         this.json = container.resolve<JsonUtil>("JsonUtil");
         this.mod = require("../package.json");
         this.translations = require("../res/translations.json");
-        this.logger.info(`Loading: ${this.mod.name} ${this.mod.version}`);
+        this.logger.info(`Loading: ${this.mod.author}: ${this.mod.name} - ${this.mod.version}`);
         this.hookRoutes();
 
     }

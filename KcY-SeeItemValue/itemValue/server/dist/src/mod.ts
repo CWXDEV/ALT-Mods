@@ -7,8 +7,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 
 class SeeItemValue implements IMod
 {
-    private name = "KcY-SeeItemValue";
-    private version = "1.3.0";
+    private pkg;
     private logger: ILogger;
     private database: DatabaseServer;
     private router: DynamicRouterModService;
@@ -29,10 +28,11 @@ class SeeItemValue implements IMod
 
     public load(container: DependencyContainer)
     {
+        this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
-        this.logger.info(`loading: ${this.name} ${this.version}`);
+        this.logger.info(`loading: ${this.pkg.author}: ${this.pkg.name} ${this.pkg.version}`);
         this.cfg = require("./config.json");
         this.addRoute()
     }
