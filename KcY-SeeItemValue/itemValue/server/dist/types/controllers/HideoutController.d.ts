@@ -3,10 +3,12 @@ import { InventoryHelper } from "../helpers/InventoryHelper";
 import { PaymentHelper } from "../helpers/PaymentHelper";
 import { PresetHelper } from "../helpers/PresetHelper";
 import { ProfileHelper } from "../helpers/ProfileHelper";
-import { IPmcData } from "../models/eft/common/IPmcData";
+import { HideoutArea, IPmcData, Product } from "../models/eft/common/IPmcData";
 import { HideoutUpgradeCompleteRequestData } from "../models/eft/hideout/HideoutUpgradeCompleteRequestData";
 import { IHideoutContinousProductionStartRequestData } from "../models/eft/hideout/IHideoutContinousProductionStartRequestData";
+import { IHideoutProduction } from "../models/eft/hideout/IHideoutProduction";
 import { IHideoutPutItemInRequestData } from "../models/eft/hideout/IHideoutPutItemInRequestData";
+import { IHideoutScavCase } from "../models/eft/hideout/IHideoutScavCase";
 import { IHideoutScavCaseStartRequestData } from "../models/eft/hideout/IHideoutScavCaseStartRequestData";
 import { IHideoutSingleProductionStartRequestData } from "../models/eft/hideout/IHideoutSingleProductionStartRequestData";
 import { IHideoutTakeItemOutRequestData } from "../models/eft/hideout/IHideoutTakeItemOutRequestData";
@@ -47,11 +49,20 @@ export declare class HideoutController {
     upgradeComplete(pmcData: IPmcData, body: HideoutUpgradeCompleteRequestData, sessionID: string): IItemEventRouterResponse;
     putItemsInAreaSlots(pmcData: IPmcData, body: IHideoutPutItemInRequestData, sessionID: string): IItemEventRouterResponse;
     takeItemsFromAreaSlots(pmcData: IPmcData, body: IHideoutTakeItemOutRequestData, sessionID: string): IItemEventRouterResponse;
+    protected removeItemFromGenerator(sessionID: string, pmcData: IPmcData, body: IHideoutTakeItemOutRequestData, output: IItemEventRouterResponse, hideoutArea: HideoutArea): IItemEventRouterResponse;
     toggleArea(pmcData: IPmcData, body: IHideoutToggleAreaRequestData, sessionID: string): IItemEventRouterResponse;
     singleProductionStart(pmcData: IPmcData, body: IHideoutSingleProductionStartRequestData, sessionID: string): IItemEventRouterResponse;
     scavCaseProductionStart(pmcData: IPmcData, body: IHideoutScavCaseStartRequestData, sessionID: string): IItemEventRouterResponse;
+    protected getRandomisedItemRarityCounter(recipe: IHideoutScavCase): {
+        [x: string]: number;
+    };
+    protected getRandomisedScavRewards(rarityItemCounter: {
+        [x: string]: number;
+    }): Product[];
     continuousProductionStart(pmcData: IPmcData, body: IHideoutContinousProductionStartRequestData, sessionID: string): IItemEventRouterResponse;
     takeProduction(pmcData: IPmcData, body: IHideoutTakeProductionRequestData, sessionID: string): IItemEventRouterResponse;
+    protected handleRecipie(sessionID: string, recipe: IHideoutProduction, pmcData: IPmcData, body: IHideoutTakeProductionRequestData, output: IItemEventRouterResponse): IItemEventRouterResponse;
+    protected handleScavCase(sessionID: string, pmcData: IPmcData, body: IHideoutTakeProductionRequestData, output: IItemEventRouterResponse): IItemEventRouterResponse;
     registerProduction(pmcData: IPmcData, body: IHideoutSingleProductionStartRequestData | IHideoutContinousProductionStartRequestData, sessionID: string): IItemEventRouterResponse;
     update(): void;
 }

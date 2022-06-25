@@ -17,7 +17,7 @@
       <HintPath>..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\AKI PROJECT\SPT 18349\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\..\Shared\BepInEx\BepInEx.dll</HintPath>
@@ -28,6 +28,7 @@
     <Reference Include="ItemComponent.Types">
       <HintPath>..\..\Shared\EFT\ItemComponent.Types.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.JScript" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Shared\EFT\Newtonsoft.Json.dll</HintPath>
     </Reference>

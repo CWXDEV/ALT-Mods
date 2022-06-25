@@ -34,7 +34,7 @@ export declare class BotHelper {
      * @param difficultySettings bot settings to alter
      * @param typesToAdd bot type to add to enemy list
      */
-    addBotToEnemyList(difficultySettings: Difficulty, typesToAdd: string[]): void;
+    addBotToEnemyList(difficultySettings: Difficulty, typesToAdd: string[], typeBeingEdited: string): void;
     /**
      * Add a bot to the REVENGE_BOT_TYPES array
      * @param difficultySettings bot settings to alter

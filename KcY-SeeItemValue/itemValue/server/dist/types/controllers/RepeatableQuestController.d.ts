@@ -1,3 +1,4 @@
+import { GameHelper } from "../helpers/GameHelper";
 import { ItemHelper } from "../helpers/ItemHelper";
 import { PresetHelper } from "../helpers/PresetHelper";
 import { ProfileHelper } from "../helpers/ProfileHelper";
@@ -57,13 +58,14 @@ export declare class RepeatableQuestController {
     protected itemHelper: ItemHelper;
     protected presetHelper: PresetHelper;
     protected profileHelper: ProfileHelper;
+    protected gameHelper: GameHelper;
     protected ragfairServerHelper: RagfairServerHelper;
     protected itemEventRouter: ItemEventRouter;
     protected paymentService: PaymentService;
     protected objectId: ObjectId;
     protected configServer: ConfigServer;
     protected questConfig: IQuestConfig;
-    constructor(timeUtil: TimeUtil, logger: ILogger, randomUtil: RandomUtil, mathUtil: MathUtil, jsonUtil: JsonUtil, databaseServer: DatabaseServer, itemHelper: ItemHelper, presetHelper: PresetHelper, profileHelper: ProfileHelper, ragfairServerHelper: RagfairServerHelper, itemEventRouter: ItemEventRouter, paymentService: PaymentService, objectId: ObjectId, configServer: ConfigServer);
+    constructor(timeUtil: TimeUtil, logger: ILogger, randomUtil: RandomUtil, mathUtil: MathUtil, jsonUtil: JsonUtil, databaseServer: DatabaseServer, itemHelper: ItemHelper, presetHelper: PresetHelper, profileHelper: ProfileHelper, gameHelper: GameHelper, ragfairServerHelper: RagfairServerHelper, itemEventRouter: ItemEventRouter, paymentService: PaymentService, objectId: ObjectId, configServer: ConfigServer);
     /**
      * This is the method reached by the /client/repeatalbeQuests/activityPeriods endpoint
      * Returns an array of objects in the format of repeatable quests to the client.

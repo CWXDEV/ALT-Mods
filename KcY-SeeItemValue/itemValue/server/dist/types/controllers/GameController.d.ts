@@ -1,3 +1,4 @@
+import { GameHelper } from "../helpers/GameHelper";
 import { HttpServerHelper } from "../helpers/HttpServerHelper";
 import { ProfileHelper } from "../helpers/ProfileHelper";
 import { IEmptyRequestData } from "../models/eft/common/IEmptyRequestData";
@@ -14,9 +15,10 @@ export declare class GameController {
     protected watermark: Watermark;
     protected httpServerHelper: HttpServerHelper;
     protected profileHelper: ProfileHelper;
+    protected gameHelper: GameHelper;
     protected configServer: ConfigServer;
     protected httpConfig: IHttpConfig;
-    constructor(logger: ILogger, watermark: Watermark, httpServerHelper: HttpServerHelper, profileHelper: ProfileHelper, configServer: ConfigServer);
+    constructor(logger: ILogger, watermark: Watermark, httpServerHelper: HttpServerHelper, profileHelper: ProfileHelper, gameHelper: GameHelper, configServer: ConfigServer);
     gameStart(_url: string, _info: IEmptyRequestData, sessionID: string): void;
     protected addMissingBonusesProperty(pmcProfile: IPmcData): void;
     protected addMissingRepeatableQuestsProperty(pmcProfile: IPmcData): void;
@@ -24,7 +26,6 @@ export declare class GameController {
     protected addMissingAkiVersionTagToProfile(fullProfile: IAkiProfile): void;
     protected addMissingArmorRepairSkill(pmcProfile: IPmcData): void;
     protected fixNullTraderSalesSums(pmcProfile: IPmcData): void;
-    protected removeDanglingConditionCounters(pmcProfile: IPmcData): void;
     protected removeDanglingBackendCounters(pmcProfile: IPmcData): void;
     getGameConfig(sessionID: string): IGameConfigResponse;
     getServer(): any[];

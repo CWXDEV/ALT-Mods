@@ -13,11 +13,13 @@ import { RandomUtil } from "../utils/RandomUtil";
 import { ContainerHelper } from "./ContainerHelper";
 import { InventoryHelper } from "./InventoryHelper";
 import { ItemHelper } from "./ItemHelper";
+import { ProbabilityHelper } from "./ProbabilityHelper";
 export declare class BotGeneratorHelper {
     protected logger: ILogger;
     protected jsonUtil: JsonUtil;
     protected hashUtil: HashUtil;
     protected randomUtil: RandomUtil;
+    protected probabilityHelper: ProbabilityHelper;
     protected databaseServer: DatabaseServer;
     protected durabilityLimitsHelper: DurabilityLimitsHelper;
     protected itemHelper: ItemHelper;
@@ -25,8 +27,36 @@ export declare class BotGeneratorHelper {
     protected containerHelper: ContainerHelper;
     protected configServer: ConfigServer;
     protected botConfig: IBotConfig;
-    constructor(logger: ILogger, jsonUtil: JsonUtil, hashUtil: HashUtil, randomUtil: RandomUtil, databaseServer: DatabaseServer, durabilityLimitsHelper: DurabilityLimitsHelper, itemHelper: ItemHelper, inventoryHelper: InventoryHelper, containerHelper: ContainerHelper, configServer: ConfigServer);
+    constructor(logger: ILogger, jsonUtil: JsonUtil, hashUtil: HashUtil, randomUtil: RandomUtil, probabilityHelper: ProbabilityHelper, databaseServer: DatabaseServer, durabilityLimitsHelper: DurabilityLimitsHelper, itemHelper: ItemHelper, inventoryHelper: InventoryHelper, containerHelper: ContainerHelper, configServer: ConfigServer);
     generateModsForItem(items: Item[], modPool: Mods, parentId: string, parentTemplate: ITemplateItem, modSpawnChances: ModsChances, isPmc?: boolean): Item[];
+    /**
+     * Get a list of non black-listed cartridges from the PMC bot config
+     * @param modSlot mod item slot
+     * @param itemModPool
+     * @returns string array of cartridges PMCs can use
+     */
+    protected getNonBlacklistedCartridges(modSlot: string, itemModPool: Record<string, string[]>): string[];
+    /**
+     * randomly choose if a mod should be spawned, 100% for required mods OR mod is ammo slot
+     * never return true for an item that has 0% spawn chance
+     * @param itemSlot slot the item sits in
+     * @param modSlot slot the mod sits in
+     * @param modSpawnChances Chances for various mod spawns
+     * @returns boolean true if it should spawn
+     */
+    protected shouldModBeSpawned(itemSlot: Slot, modSlot: string, modSpawnChances: ModsChances): boolean;
+    /**
+     * Get a list of containers that hold ammo
+     * @returns string array
+     */
+    protected getAmmoContainers(): string[];
+    /**
+     * Get the slot details for an item (chamber/cartridge/slot)
+     * @param modSlot e.g patron_in_weapon
+     * @param parentTemplate item template
+     * @returns
+     */
+    protected getModItemSlot(modSlot: string, parentTemplate: ITemplateItem): Slot;
     /**
      * With the shotgun revolver (60db29ce99594040e04c4a27) 12.12 introduced CylinderMagazines.
      * Those magazines (e.g. 60dc519adf4c47305f6d410d) have a "Cartridges" entry with a _max_count=0.

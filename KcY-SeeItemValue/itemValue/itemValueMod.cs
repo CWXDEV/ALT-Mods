@@ -13,6 +13,7 @@ using Aki.Common.Utils;
 using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using ItemAttribute = GClass2100;
 
 namespace itemValueMod
@@ -40,39 +41,55 @@ namespace itemValueMod
 
     public static class ValueExtension
     {
+        static public Dictionary<string, int> dict = new Dictionary<string, int>();
+        static object lockObject = new object();
+
         public static double Value(this Item item)
         {
             var template = item.Template;
             string itemId = template._id;
-            double _price;
-            var json = RequestHandler.GetJson($"/cwx/seeitemvalue/{itemId}"); // CWX - sends ID to server
-            _price = Json.Deserialize<int>(json);
+            JsonClass jsonClass;
+            int _price;
+            double editedPrice;
+            double editedMulti;
 
-            var medKit = item.GetItemComponent<MedKitComponent>();
-            if (medKit != null)
+            lock (lockObject)
             {
-                _price *= medKit.HpResource / medKit.MaxHpResource;
-            }
+                if (!dict.TryGetValue(template._id, out _price))
+                {
+                    var json = RequestHandler.GetJson($"/cwx/seeitemvalue/{itemId}");
+                    jsonClass = Json.Deserialize<JsonClass>(json);
+                    editedPrice = jsonClass.price;
+                    editedMulti = jsonClass.multiplier;
 
-            var repair = item.GetItemComponent<RepairableComponent>();
-            if (repair != null)
-            {
-                _price *= repair.Durability / repair.MaxDurability;
-            }
+                    var medKit = item.GetItemComponent<MedKitComponent>();
+                    if (medKit != null)
+                    {
+                        editedPrice *= medKit.HpResource / medKit.MaxHpResource;
+                    }
 
-            var dogtag = item.GetItemComponent<DogtagComponent>();
-            if (dogtag != null)
-            {
-                _price *= dogtag.Level;
-            }
+                    var repair = item.GetItemComponent<RepairableComponent>();
+                    if (repair != null)
+                    {
+                        editedPrice *= repair.Durability / repair.MaxDurability;
+                    }
 
-            //_price *= item.StackObjectsCount;
+                    var dogtag = item.GetItemComponent<DogtagComponent>();
+                    if (dogtag != null)
+                    {
+                        editedPrice *= dogtag.Level;
+                    }
+
+                    _price = Convert.ToInt32(editedPrice * editedMulti);
+                    dict.Add(template._id, _price);
+                }
+            }
 
             return _price;
         }
         public static string ValueStr(this Item item)
         {
-            return Math.Round(item.Value()).ToString();
+            return item.Value().ToString();
         }
     }
 }

@@ -21,6 +21,7 @@ export declare class RepairController {
     protected repairHelper: RepairHelper;
     protected configServer: ConfigServer;
     protected repairConfig: IRepairConfig;
+    protected readonly WEAPON_SKILL_REPAIR_GAIN: number;
     constructor(logger: ILogger, itemEventRouter: ItemEventRouter, databaseServer: DatabaseServer, questHelper: QuestHelper, traderHelper: TraderHelper, paymentService: PaymentService, repairHelper: RepairHelper, configServer: ConfigServer);
     /**
      * Repair with trader
@@ -37,5 +38,5 @@ export declare class RepairController {
      * @param sessionID session id
      * @returns item event router action
      */
-    repair(pmcData: IPmcData, body: IRepairActionDataRequest, sessionID: string): IItemEventRouterResponse;
+    repairWithKit(pmcData: IPmcData, body: IRepairActionDataRequest, sessionID: string): IItemEventRouterResponse;
 }

@@ -1,6 +1,5 @@
-import { IPmcData } from "../models/eft/common/IPmcData";
 import { Item } from "../models/eft/common/tables/IItem";
-import { Props } from "../models/eft/common/tables/ITemplateItem";
+import { ITemplateItem, Props } from "../models/eft/common/tables/ITemplateItem";
 import { IRepairConfig } from "../models/spt/config/IRepairConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
@@ -15,7 +14,7 @@ export declare class RepairHelper {
     protected configServer: ConfigServer;
     protected repairConfig: IRepairConfig;
     constructor(logger: ILogger, jsonUtil: JsonUtil, randomUtil: RandomUtil, databaseServer: DatabaseServer, configServer: ConfigServer);
-    updateItemDurability(itemToRepairId: string, amountToRepair: number, pmcData: IPmcData, useRepairKit?: boolean): Item;
+    updateItemDurability(itemToRepair: Item, itemToRepairDetails: ITemplateItem, isArmor: boolean, amountToRepair: number, useRepairKit?: boolean): Item;
     protected getRandomisedArmorRepairDegredationValue(armorMaterial: string, isRepairKit: boolean, armorMax: number): number;
     protected getRandomisedWeaponRepairDegredationValue(itemProps: Props, isRepairKit: boolean, armorMax: number): number;
     isWeaponTemplate(tpl: string): boolean;

@@ -40,5 +40,4 @@ export declare class RagfairHelper {
      */
     mergeStackable(items: Item[]): Item[];
     getCurrencySymbol(currencyTpl: string): string;
-    formatCurrency(moneyAmount: number): string;
 }

@@ -57,13 +57,30 @@ export declare class QuestHelper {
     changeItemStack(pmcData: IPmcData, id: string, value: number, sessionID: string, output: any): void;
     /**
      * Get List of All Quests as an array
+     * @returns Array of IQuest objects
      */
     questValues(): IQuest[];
+    /**
+     * Reest AvailableForStart conditions for quests
+     * @param quests queststo clean
+     * @returns quest array without conditions
+     */
     protected cleanQuestList(quests: IQuest[]): IQuest[];
+    /**
+     * Reset AvailableForStart conditions on a quest
+     * @param quest quest to clean
+     * @returns reset IQuest object
+     */
     cleanQuestConditions(quest: IQuest): IQuest;
     failQuest(pmcData: IPmcData, body: any, sessionID: string): any;
     getQuestFromDb(questId: string, pmcData: IPmcData): IQuest;
     getQuestLocaleIdFromDb(messageId: string, localisation?: string): string;
-    applyQuestReward(pmcData: IPmcData, body: ICompleteQuestRequestData, state: string, sessionID: string): any[];
+    applyQuestReward(pmcData: IPmcData, body: ICompleteQuestRequestData, state: string, sessionID: string): Reward[];
+    /**
+     * Get the intel center bonus a player has
+     * @param pmcData player profile
+     * @returns bonus in percent
+     */
+    protected getIntelCenterRewardBonus(pmcData: IPmcData): number;
     getFindItemIdForQuestItem(itemTpl: string): string;
 }

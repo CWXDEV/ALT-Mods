@@ -7,8 +7,7 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 
 class SeeItemValue implements IMod
 {
-    private name = "KcY-SeeItemValue";
-    private version = "1.3.0";
+    private pkg;
     private logger: ILogger;
     private database: DatabaseServer;
     private router: DynamicRouterModService;
@@ -29,10 +28,11 @@ class SeeItemValue implements IMod
 
     public load(container: DependencyContainer)
     {
+        this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
-        this.logger.info(`loading: ${this.name} ${this.version}`);
+        this.logger.info(`loading: ${this.pkg.author}: ${this.pkg.name} ${this.pkg.version}`);
         this.cfg = require("./config.json");
         this.addRoute()
     }
@@ -50,8 +50,7 @@ class SeeItemValue implements IMod
         this.prapor = this.table.traders["54cb50c76803fa8b248b4571"].base;
         this.peacekeeper = this.table.traders["5935c25fb3acc3127c3d8cd9"].base;
         this.skier = this.table.traders["58330581ace78e27b8b10cee"].base;
-        this.fence = this.table.traders["579dc571d53a0658a154fbec"].base;
-        this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.peacekeeper, this.skier, this.fence];
+        this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.peacekeeper, this.skier];
     }
 
     private addRoute()
@@ -84,7 +83,11 @@ class SeeItemValue implements IMod
         let sMutli = 1;
         let parentId = "";
 
-        // if TraderPrice in cfg is False get price from flea AVG
+        if (id === "5449016a4bdc2d6f028b456f")
+        {
+            return 1;
+        }
+
         if (this.cfg.TraderPrice === false)
         {
             const result = this.livePrice[id];
@@ -92,11 +95,8 @@ class SeeItemValue implements IMod
             {
                 return result;
             }
-            // will still default to Handbook if no price is found for flea AVG
         }
-        // if TraderPrice in cfg is True get price from handbook
-        // as traders have a modifier, avg is 0.54, closest we can get without checking against each trader
-        // thanks to TEOA for this info
+
         for (const i in this.handbookTable.Items)
         {
             if (this.handbookTable.Items[i].Id === id)
@@ -104,8 +104,10 @@ class SeeItemValue implements IMod
                 parentId = this.handbookTable.Items[i].ParentId;
                 sMutli = this.getBestTraderMulti(parentId);
                 sPrice = this.handbookTable.Items[i].Price;
-                const result = (sPrice*sMutli);
-
+                const result = {
+                    multiplier: sMutli,
+                    price: sPrice
+                }
                 return result;
             } 
         }
@@ -116,8 +118,9 @@ class SeeItemValue implements IMod
     {
         let traderSellCat = "";
         let traderMulti = 0.54;
-        let traderName = ""; // could be used later to be passed back to module to show trader and price
+        let traderName = "";
         let altTraderSellCat = "";
+        let altAltTraderSellCat = "";
         
         for (const i in this.handbookTable.Categories)
         {
@@ -125,11 +128,20 @@ class SeeItemValue implements IMod
             {
                 traderSellCat = this.handbookTable.Categories[i].Id;
                 altTraderSellCat = this.handbookTable.Categories[i].ParentId;
+
+                for (const a in this.handbookTable.Categories)
+                {
+                    if (this.handbookTable.Categories[a].Id === altTraderSellCat)
+                    {
+                        altAltTraderSellCat = this.handbookTable.Categories[a].ParentId;
+                        break;
+                    }
+                }
                 break;
             }
         }
 
-        for (let iter = 0; iter < 8; iter++)
+        for (let iter = 0; iter < this.tradersArr.length; iter++)
         {
             if (this.tradersArr[iter].sell_category.includes(traderSellCat))
             {
@@ -139,7 +151,7 @@ class SeeItemValue implements IMod
             }
         }
 
-        for (let iter = 0; iter < 8; iter++)
+        for (let iter = 0; iter < this.tradersArr.length; iter++)
         {
             if (this.tradersArr[iter].sell_category.includes(altTraderSellCat))
             {
@@ -148,8 +160,32 @@ class SeeItemValue implements IMod
                 return traderMulti;
             }
         }
-        return this.cfg.TraderMultiplier;
+
+        for (let iter = 0; iter < this.tradersArr.length; iter++)
+        {
+            if (this.tradersArr[iter].sell_category.includes(altAltTraderSellCat))
+            {
+                traderMulti = (100 - this.tradersArr[iter].loyaltyLevels[0].buy_price_coef) / 100;
+                traderName = this.tradersArr[iter].nickname;
+                return traderMulti;
+            }
+        }
+        return 1;
     }
 }
 
 module.exports = { mod: new SeeItemValue() }
+
+/*
+[Client Request] /cwx/seeitemvalue/599860ac86f77436b225ed1a
+ID from pulgin: 599860ac86f77436b225ed1a
+parent id from server mod: 5b5f754a86f774094242f19b
+categories ID: 5b5f754a86f774094242f19b
+alt categories ID: 5b5f750686f774093e6cb503
+alt alt categories ID: 5b5f71a686f77447ed5636ab
+Alt Multi for iteration 3: 0.56
+Alt trader name for iteration 3: Mechanic
+multi from server 0.56
+price from server 2422
+price after multi 1356.3200000000002
+*/
