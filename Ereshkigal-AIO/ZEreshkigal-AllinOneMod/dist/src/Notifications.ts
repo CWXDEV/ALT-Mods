@@ -21,7 +21,7 @@ export class Notifications
         {
             this.logger.log("[AIO Mod INFORMATION]", "yellow");
             this.logger.info("Please read the README.PDF carefully as this has all the information you need.");
-            this.logger.info("[AIO Mod INFORMATION]");
+            this.logger.log("[AIO Mod INFORMATION]", "yellow");
         }
 
         //Items:
@@ -280,7 +280,7 @@ export class Notifications
         if (config.hideout.changeFuelConsumptionRate !== false)
         {
             this.logger.info("AllInOne Mod: changeFuelConsumptionRate activated.");
-            if (typeof config.items.weaponDurabilities.maximumSpawnDurability !== "number")
+            if (typeof config.hideout.changeFuelConsumptionRate !== "number")
             {
                 this.logger.warning(locale.hideout.changeFuelConsumptionRate);
             }
@@ -561,7 +561,7 @@ export class Notifications
         // All Quests Available
         if (config.traders.allQuestsAvailable)
         {
-            this.logger.info("AllInOne Mod: removeScavKarma activated.");
+            this.logger.info("AllInOne Mod: allQuestsAvailable activated.");
             if (typeof config.traders.allQuestsAvailable !== "boolean")
             {
                 this.logger.warning(locale.traders.allQuestsAvailable);
@@ -670,7 +670,7 @@ export class Notifications
             }
         }
 
-        // Max Insurance Storage Time
+        // Prevent Fence Mastering
         if (config.traders.preventFenceMastering)
         {
             this.logger.info("AllInOne Mod: preventFenceMastering activated.")
@@ -724,7 +724,7 @@ export class Notifications
         // Extended Raid
         if (config.raids.extendedRaid !== false)
         {
-            this.logger.info("AllInOne Mod: changeFleaMarketLvl activated.");
+            this.logger.info("AllInOne Mod: extendedRaid activated.");
             if (typeof config.raids.extendedRaid !== "number")
             {
                 this.logger.warning(locale.raids.extendedRaid);
