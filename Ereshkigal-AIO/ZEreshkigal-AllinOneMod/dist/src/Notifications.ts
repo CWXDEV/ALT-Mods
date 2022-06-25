@@ -19,7 +19,7 @@ export class Notifications
         
         if (!config.other.hideWarningMessage)
         {
-            this.logger.info("[AIO Mod INFORMATION]");
+            this.logger.log("[AIO Mod INFORMATION]", "yellow");
             this.logger.info("Please read the README.PDF carefully as this has all the information you need.");
             this.logger.info("[AIO Mod INFORMATION]");
         }
@@ -664,7 +664,7 @@ export class Notifications
         if (config.traders.maxInsuranceStorageTime)
         {
             this.logger.info("AllInOne Mod: maxInsuranceStorageTime activated.")
-            if (typeof config.traders.maxInsuranceStorageTime !== "boolean")
+            if (typeof config.traders.maxInsuranceStorageTime !== "boolean" && config.traders.maxInsuranceStorageTime <= 0)
             {
                 this.logger.warning(locale.traders.maxInsuranceStorageTime);
             }
