@@ -2,7 +2,7 @@
     "items": {
         "default": "{OPTION NAME} option is incorrect, {option to enable} or {option to disable}, check the readme.pdf for more info.",
         "allExaminedItems": "AllExaminedItems option is incorrect, it must be true to true to activate or false to disable, check the readme.pdf for more info.",
-        "weightChanges": "WeightChanger option is incorrect, it must be a number to be correct and will only work as a multiplier above 0, if you selected a number below 0, Defaulting to 0. check the readme.pdf for more info.",
+        "weightChanges": "WeightChanges option is incorrect, it must be a number to be correct and will only work as a multiplier above 0, if you selected a number below 0, Defaulting to 0. check the readme.pdf for more info.",
         "moreStack": "MoreStack option is incorrect, it must be a number to activate or false to disable. check the readme.pdf for more info.",
         "equipRigsWithArmors": "EquipRigsWithArmors option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "forceMoneyStack": "ForceMoneyStack option is incorrect, it must be a number to activate or false to disable. check the readme.pdf for more info.",
@@ -88,7 +88,7 @@
             "removeItemsFromQuestLocks": "RemoveItemsFromQuestLocks option is incorrect, it must be true to activate or false to disable. Check the readme.pdf for more info.",
             "all4StarAndLL1": "AllTraders4Stars & UnlockAllItemsAtLL1 are active, disable one of them!"
         },
-        "maxInsuranceStorageTime": "WeightChanger option is incorrect, it must be a number to activate or false to disable. check the readme.pdf for more info.",
+        "maxInsuranceStorageTime": "MaxInsuranceStorageTime option is incorrect, it must be a number to activate or false to disable. check the readme.pdf for more info.",
         "PreventFenceMastering": "PreventFenceMastering option is incorrect, it must be true to activate or false to disable. Check the readme.pdf for more info.",
         "removeFIRConditionOnQuests": "Remove FIR condition on quests option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info."
     },

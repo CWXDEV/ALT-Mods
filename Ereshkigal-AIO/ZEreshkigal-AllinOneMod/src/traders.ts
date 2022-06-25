@@ -3,7 +3,7 @@ import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
 import { AIOConfigHandler } from "./AIOConfigHandler";
 import { Other } from "./other";
 import { Money } from "@spt-aki/models/enums/Money"
-import { Traders as eftTraders} from "@spt-aki/models/spt/helpers/Traders"
+import { Traders as eftTraders} from "@spt-aki/models/enums/Traders"
 
 @injectable()
 export class Traders

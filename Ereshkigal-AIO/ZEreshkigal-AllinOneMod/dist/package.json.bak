@@ -1,9 +1,0 @@
-{
-    "name": "AllinOneMod",
-    "author": "Ereshkigal",
-    "version": "3.0.0",
-    "akiVersion": "3.0.0",
-    "license": "CC-BY-NC-ND 4.0",
-    "main": "./src/mod.js",
-    "updated by": "CWX, Valens"
-}
