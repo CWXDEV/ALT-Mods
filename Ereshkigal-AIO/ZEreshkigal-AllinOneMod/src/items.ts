@@ -33,9 +33,13 @@ export class Items
                 }
 
                 // Weight Change, only Multiple possible
-                if (typeof this.configHandler.getConfig().items.weightChanges !== "boolean" && typeof this.configHandler.getConfig().items.weightChanges === "number" && this.configHandler.getConfig().items.weightChanges <= 0)
+                if (typeof this.configHandler.getConfig().items.weightChanges !== "boolean" && typeof this.configHandler.getConfig().items.weightChanges === "number" && this.configHandler.getConfig().items.weightChanges >= 0)
                 {
-                    this.editSimpleItemData(id, "Weight", (base._props.Weight * <number> this.configHandler.getConfig().items.weightChanges));
+                    //Exclude nodes, inventory and pockets from the weight changer
+                    if (base._type !== "Node" && base._parent !== BaseClasses.POCKETS && base._parent !== BaseClasses.INVENTORY) 
+                    {
+                        this.editSimpleItemData(id, "Weight", (base._props.Weight * <number> this.configHandler.getConfig().items.weightChanges));
+                    }
                 }
 
                 if (this.configHandler.getConfig().items.removeAllGearPenalties)
