@@ -56,7 +56,7 @@
         "unlimitedStamina": "UnlimitedStamina option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "removeInRaidsRestrictions": "RemoveInRaidsRestrictions option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "allSkillsMaster": "AllSkillsMaster option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
-        "removeScavKarma": "AllSkillsMaster option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
+        "removeScavKarma": "RemoveScavKarma option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "enableSkillBotReload": "EnableSkillBotReload option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "enableSkillBotSound": "EnableSkillBotSound option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
         "disableFallDamage": "DisableFallDamage option is incorrect, it must be true to activate or false to disable. check the readme.pdf for more info.",
