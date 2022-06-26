@@ -1,6 +1,6 @@
 {
     "name": "AllinOneMod",
-    "version": "3.0.2",
+    "version": "3.0.3",
     "main": "src/mod.js",
     "license": "CC-BY-NC-ND 4.0",
     "author": "Ereshkigal",
