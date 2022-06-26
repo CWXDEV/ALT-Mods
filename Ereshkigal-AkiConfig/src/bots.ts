@@ -1,18 +1,25 @@
-/*
-エレシュキガル
-*/
+import { inject, injectable } from "tsyringe";
+import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
+import { AkiConfigHandler } from "./AkiConfigHandler";
 
-"use strict";
-
-class bots
+@injectable()
+export class bots
 {
-    static applyValues()
+    constructor(
+        @inject("AkiConfigHandler") private configHandler: AkiConfigHandler,
+        @inject("DatabaseServer") private database: DatabaseServer
+    )
+    {}
+    
+    public applyChanges(): void
     {
-        const bots = BotConfig;
-        const config = require('../../config/pmcConfig.json');
+        const configServer = container.resolve<ConfigServer>("ConfigServer");
+        const BotConfig = configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
 
-        const pmcsConfig = config.pmc.types
-        for (const bot in pmcsConfig) {
+        const pmcsConfig = this.configHandler.getPmcConfig().pmc.types
+        for (const bot in pmcsConfig) 
+        {
             switch (bot) {
                 default:
                     bots.pmc.types[bot] = pmcsConfig[bot]

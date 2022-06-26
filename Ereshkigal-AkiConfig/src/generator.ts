@@ -1,20 +1,37 @@
-/*
-エレシュキガル
-*/
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { inject, injectable } from "tsyringe";
+import { VFS } from "@spt-aki/utils/VFS";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
+import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
+import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
+import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
+import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
+import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
 
-"use strict";
+@injectable()
+export class AkiGenerator 
+{
+    private mod;
+    private firstRun;
 
-class generator {
-    static createConfig(file) {
-        const mod = require("../../package.json");
+    constructor(
+        @inject("WinstonLogger") private logger: ILogger
+    )
+    {}
+
+    private createConfig(file: string): void 
+    {
+        this.mod = require("../package.json");
         this.firstRun = true;
         let config = null;
         let dailyConfig = null;
         let pmcConfig = null;
         /*
-                Generate the whole configuration on first run
-                This way the default values are always up to date to AKI.
-            */
+            Generate the whole configuration on first run
+            This way the default values are always up to date to AKI.
+        */
 
         //The default file type must be an object
         config = {
@@ -41,7 +58,7 @@ class generator {
         pmcConfig = {};
 
         //We will have to gather every config that exists atm and throw them together into the object
-        const bots = BotConfig;
+        const bots = ConfigServer.getConfig<IBotConfig>(ConfigTypes.BOT);
         const health = HealthConfig;
         const hideout = HideoutConfig;
         const http = HttpConfig;
@@ -128,7 +145,7 @@ class generator {
         }
         else
         {
-            Logger.warning(`[AKI-CONFIG] - Generating ${file} file`)
+            this.logger.warning(`[AKI-CONFIG] - Generating ${file} file`)
             let toWrite = null
             if(file === "config"){toWrite = config}else if(file === 'dailyConfig'){toWrite = dailyConfig}else if(file === 'pmcConfig'){toWrite = pmcConfig}
             VFS.writeFile(
@@ -136,10 +153,11 @@ class generator {
                 JsonUtil.serialize(toWrite, true)
             );
         }
-        Logger.error("[AKI-Config]: New configuration file created, please restart your server to use it.");
+        this.logger.error("[AKI-Config]: New configuration file created, please restart your server to use it.");
     }
 
-    static checkConfigExisting() {
+    public checkConfigExisting(): void 
+    {
         const mod = require("../../package.json");
         const modPath = ModLoader.getModPath(mod.name);
         const validation = [];
@@ -162,12 +180,12 @@ class generator {
             }
             //All configurations files existing
             if ((validation.length === 3)) {
-                Logger.success(
+                this.logger.success(
                     `[AKI-CONFIG] - All configurations files already created, all green.`
                 );
             } else {
                 //One of the 3 file is missing, we only want to regenerate the missing one
-                Logger.error(
+                this.logger.error(
                     `[AKI-CONFIG] - A config file is missing. Generating the missing file`
                 );
                 
@@ -182,12 +200,10 @@ class generator {
                 }
             }
         } else {
-            Logger.warning(
+            this.logger.warning(
                 "First time AKI-Configurator is run, generating the config file..."
             );
             this.createConfig(null);
         }
     }
 }
-
-module.exports = generator;

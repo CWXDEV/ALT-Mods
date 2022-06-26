@@ -215,7 +215,6 @@ export interface ServerValues
     http: HTTP;
     health: Health;
     hideout: Hideout;
-    enableChristmasGifts: boolean;
 }
 
 export interface RaidsValues 

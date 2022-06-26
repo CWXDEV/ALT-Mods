@@ -1,6 +1,7 @@
 import { DependencyContainer, Lifecycle } from "tsyringe";
 import type { IMod } from "@spt-aki/models/external/mod";
 import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { Bots } from "./bots";
 
 class AkiConfig implements IMod
 {
