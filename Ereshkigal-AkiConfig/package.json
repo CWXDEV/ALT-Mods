@@ -5,7 +5,7 @@
     "license": "CC-BY-NC-ND 4.0",
     "author": "Ereshkigal",
     "akiVersion": "3.0.0",
-    "updated by": "CWX, Valens",
+    "updated by": "CWX, Valens, GGaulin",
     "scripts": {
         "setup:environment": "npm i",
         "build:unzipped": "copyfiles -e \"./node_modules/**/*.*\" -e \"./dist/**/*.*\" -e \"./package-lock.json\" -e \"./tsconfig.json\" -e \"./README.txt\" -e \"./mod.code-workspace\" ./**/*.* ./dist",
