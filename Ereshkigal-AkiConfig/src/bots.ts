@@ -1,46 +1,50 @@
 import { inject, injectable } from "tsyringe";
-import type { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
 import { AkiConfigHandler } from "./AkiConfigHandler";
 
 @injectable()
-export class bots
+export class Bots
 {
     constructor(
-        @inject("AkiConfigHandler") private configHandler: AkiConfigHandler,
-        @inject("DatabaseServer") private database: DatabaseServer
+        @inject("AkiConfigHandler") protected configHandler: AkiConfigHandler,
+        @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("WinstonLogger") private logger: ILogger
     )
     {}
     
     public applyChanges(): void
     {
-        const configServer = container.resolve<ConfigServer>("ConfigServer");
-        const BotConfig = configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
+        const pmcConfig = this.configHandler.getPmcConfig();
+        const bots = this.configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
 
-        const pmcsConfig = this.configHandler.getPmcConfig().pmc.types
-        for (const bot in pmcsConfig) 
+        for (const bot in pmcConfig.pmc.types) 
         {
-            switch (bot) {
+            switch (bot) 
+            {
                 default:
-                    bots.pmc.types[bot] = pmcsConfig[bot]
+                    bots.pmc.types[bot] = pmcConfig.pmc.types[bot];
                     break;
             }
         }
 
-        for(const options in config.pmc){
-            switch(options){
+        for (const options in pmcConfig.pmc)
+        {
+            switch (options)
+            {
                 case "types":
                     break;
                 default:
-                    bots.pmc[options] = config.pmc[options]
+                    bots.pmc[options] = pmcConfig.pmc[options];
                     break;
             }
         }
 
-        for (const bot in config.presetBatch) {
-            bots.presetBatch[bot] = config.presetBatch[bot]
+        for (const bot in pmcConfig.presetBatch) 
+        {
+            bots.presetBatch[bot] = pmcConfig.presetBatch[bot];
         }
     }
 }
-
-module.exports = bots;

@@ -1,38 +1,49 @@
-/*
-エレシュキガル
-*/
+import { inject, injectable } from "tsyringe";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
+import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
+import { IRepairConfig } from "@spt-aki/models/spt/config/IRepairConfig";
+import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { AkiConfigHandler } from "./AkiConfigHandler";
 
-"use strict";
+@injectable()
+export class Traders 
+{
+    constructor(
+        @inject("AkiConfigHandler") protected configHandler: AkiConfigHandler,
+        @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("WinstonLogger") private logger: ILogger
+    )
+    {}
 
-class traders {
-    static applyValues() {
-        const insurance = InsuranceConfig;
-        const inventory = InventoryConfig;
-        const repair = RepairConfig;
-        const trader = TraderConfig;
+    public applyChanges(): void
+    {
+        const config = this.configHandler.getConfig();
+        const insurance = this.configServer.getConfig<IInsuranceConfig>(ConfigTypes.INSURANCE);
+        const inventory = this.configServer.getConfig<IInventoryConfig>(ConfigTypes.INVENTORY);
+        const repair = this.configServer.getConfig<IRepairConfig>(ConfigTypes.REPAIR);
+        const trader = this.configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
         
-        const config = require('../../config/config.json')
-
-        for(const options in insurance)
+        for (const options in insurance)
         {
-            insurance[options] = config["Traders values"].Insurances[options]
+            insurance[options] = config["Traders values"].Insurances[options];
         }
 
-        for(const options in inventory)
+        for (const options in inventory)
         {
-            inventory[options] = config["Traders values"].Trading[options]
+            inventory[options] = config["Traders values"].Trading[options];
         }
 
-        for(const options in repair)
+        for (const options in repair)
         {
-            repair[options] = config["Traders values"].Repair[options]
+            repair[options] = config["Traders values"].Repair[options];
         }
 
-        for(const options in trader)
+        for (const options in trader)
         {
-            trader[options] = config["Traders values"].Traders[options]
+            trader[options] = config["Traders values"].Traders[options];
         }
     }
 }
-
-module.exports = traders;

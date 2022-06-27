@@ -44,7 +44,6 @@
 	},
 	"Raids values": {
 		"Loot values": {
-			"allowLootOverlay": "",
 			"looseLootMultiplier": {
 				"bigmap": "",
 				"develop": "",
@@ -80,27 +79,25 @@
 				"tarkovstreets": "",
 				"terminal": "",
 				"town": ""
-			},
-			"limits": {
-				"bigmap": "",
-				"develop": "",
-				"factory4day": "",
-				"factory4night": "",
-				"interchange": "",
-				"laboratory": "",
-				"rezervbase": "",
-				"shoreline": "",
-				"woods": "",
-				"hideout": "",
-				"lighthouse": "",
-				"privatearea": "",
-				"suburbs": "",
-				"tarkovstreets": "",
-				"terminal": "",
-				"town": ""
 			}
 		},
-		"Airdrop values": {},
+		"Airdrop values": {
+			"airdropChancePercent": {
+				"bigmap": "",
+				"woods": "",
+				"lighthouse": "",
+				"shoreline": "",
+				"interchange": "",
+				"reserve": ""
+			},
+			"airdropMinStartTimeSeconds": "",
+			"airdropMaxStartTimeSeconds": "",
+			"airdropMinOpenHeight": "",
+			"airdropMaxOpenHeight": "",
+			"planeMinFlyHeight": "",
+			"planeMaxFlyHeight": "",
+			"planeVolume": ""
+		},
 		"MIAOnRaidEnd": "",
 		"raidMenuSettings": {
 			"aiAmount": "",
@@ -249,5 +246,9 @@
 				"max": ""
 			}
 		}
-	}
+	},
+	"other": {
+	  "hideWarningMessage": "",
+	  "showModLogs": ""
+	}	
 }

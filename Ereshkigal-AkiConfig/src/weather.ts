@@ -1,15 +1,24 @@
-/*
-エレシュキガル
-*/
+import { inject, injectable } from "tsyringe";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { IWeatherConfig } from "@spt-aki/models/spt/config/IWeatherConfig";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { AkiConfigHandler } from "./AkiConfigHandler";
 
-"use strict";
-
-class weather
+@injectable()
+export class Weather
 {
-    static applyValues()
+    constructor(
+        @inject("AkiConfigHandler") protected configHandler: AkiConfigHandler,
+        @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("WinstonLogger") private logger: ILogger
+    )
+    {}
+
+    public applyChanges(): void
     {
-        const weatherValues = WeatherConfig;
-        const config = require('../../config/config.json');
+        const config = this.configHandler.getConfig();
+        const weatherValues = this.configServer.getConfig<IWeatherConfig>(ConfigTypes.WEATHER);
 
         weatherValues.acceleration = config["Weather values"].acceleration;
         weatherValues.weather.clouds.min = config["Weather values"].weather.clouds.min;
@@ -30,8 +39,5 @@ class weather
         weatherValues.weather.temp.max = config["Weather values"].weather.temp.max;
         weatherValues.weather.pressure.min = config["Weather values"].weather.pressure.min;
         weatherValues.weather.pressure.max = config["Weather values"].weather.pressure.max;
-
     }
 }
-
-module.exports = weather;

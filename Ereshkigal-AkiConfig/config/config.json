@@ -41,12 +41,12 @@
 						"max": 2000
 					}
 				}
-			}
+			},
+			"fuelDrainRateMultipler": 1
 		}
 	},
 	"Raids values": {
 		"Loot values": {
-			"allowLootOverlay": false,
 			"looseLootMultiplier": {
 				"bigmap": 1,
 				"develop": 1,
@@ -82,27 +82,25 @@
 				"tarkovstreets": 1,
 				"terminal": 1,
 				"town": 1
-			},
-			"limits": {
-				"bigmap": 1000,
-				"develop": 30,
-				"factory4_day": 100,
-				"factory4_night": 100,
-				"interchange": 2000,
-				"laboratory": 1000,
-				"rezervbase": 3000,
-				"shoreline": 1000,
-				"woods": 200,
-				"hideout": 0,
-				"lighthouse": 1500,
-				"privatearea": 0,
-				"suburbs": 0,
-				"tarkovstreets": 0,
-				"terminal": 0,
-				"town": 0
 			}
 		},
-		"Airdrop values": {},
+		"Airdrop values": {
+			"airdropChancePercent": {
+				"bigmap": 25,
+				"woods": 25,
+				"lighthouse": 25,
+				"shoreline": 25,
+				"interchange": 25,
+				"reserve": 25
+			},
+			"airdropMinStartTimeSeconds": 60,
+			"airdropMaxStartTimeSeconds": 300,
+			"airdropMinOpenHeight": 350,
+			"airdropMaxOpenHeight": 400,
+			"planeMinFlyHeight": 400,
+			"planeMaxFlyHeight": 500,
+			"planeVolume": 1
+		},
 		"MIAOnRaidEnd": false,
 		"raidMenuSettings": {
 			"aiAmount": "AsOnline",
@@ -329,5 +327,9 @@
 				"max": 764
 			}
 		}
-	}
+	},
+	"other": {
+	  "hideWarningMessage": true,
+	  "showModLogs": true
+	}	
 }

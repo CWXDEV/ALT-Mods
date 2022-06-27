@@ -54,6 +54,7 @@ export interface Hideout
 {
     runIntervalSeconds: string;
     scavCase: ScavCase;
+    fuelDrainRateMultipler: number;
 }
 
 export interface LootMultiplier
@@ -78,10 +79,30 @@ export interface LootMultiplier
 
 export interface LootValues
 {
-    allowLootOverlay: boolean;
     looseLootMultiplier: LootMultiplier;
     staticLootMultiplier: LootMultiplier;
-    limits: LootMultiplier;
+}
+
+export interface AirdropChancePercent 
+{
+    bigmap: number;
+    woods: number;
+    lighthouse: number;
+    shoreline: number;
+    interchange: number;
+    reserve: number;
+}
+
+export interface AirdropValues 
+{
+    airdropChancePercent: AirdropChancePercent;
+    airdropMinOpenHeight: number;
+    airdropMaxOpenHeight: number;
+    planeMinFlyHeight: number;
+    planeMaxFlyHeight: number;
+    planeVolume: number;
+    airdropMinStartTimeSeconds: number;
+    airdropMaxStartTimeSeconds: number;
 }
 
 export interface RaidMenuSettings
@@ -210,6 +231,12 @@ export interface Weather
     pressure: MinMax;
 }
 
+export interface Other 
+{
+    hideWarningMessage: boolean;
+    showModLogs: boolean;
+}
+
 export interface ServerValues 
 {
     http: HTTP;
@@ -220,7 +247,7 @@ export interface ServerValues
 export interface RaidsValues 
 {
     lootValues: LootValues;
-    airdropValues: string;
+    airdropValues: AirdropValues;
     miaOnRaidEnd: boolean;
     raidMenuSettings: RaidMenuSettings;
     save: RaidsValuesSave;
@@ -258,4 +285,5 @@ export interface ILocale
     tradersValues: TradersValues;
     fleaMarketConfiguration: FleaMarketConfiguration;
     weatherValues: WeatherValues;
+    other: Other;
 }

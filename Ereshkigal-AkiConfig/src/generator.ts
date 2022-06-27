@@ -1,30 +1,39 @@
-import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { inject, injectable } from "tsyringe";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
+import { IHealthConfig } from "@spt-aki/models/spt/config/IHealthConfig";
+import { IHideoutConfig } from "@spt-aki/models/spt/config/IHideoutConfig";
+import { IHttpConfig } from "@spt-aki/models/spt/config/IHttpConfig";
+import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
+import { IInsuranceConfig } from "@spt-aki/models/spt/config/IInsuranceConfig";
+import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
+import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
+import { IQuestConfig } from "@spt-aki/models/spt/config/IQuestConfig";
+import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { IRepairConfig } from "@spt-aki/models/spt/config/IRepairConfig";
+import { ITraderConfig } from "@spt-aki/models/spt/config/ITraderConfig";
+import { IWeatherConfig } from "@spt-aki/models/spt/config/IWeatherConfig";
+import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
 import { VFS } from "@spt-aki/utils/VFS";
 import { ConfigServer } from "@spt-aki/servers/ConfigServer";
 import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
-import { IBotConfig } from "@spt-aki/models/spt/config/IBotConfig";
-import { IAirdropConfig } from "@spt-aki/models/spt/config/IAirdropConfig";
-import { IInRaidConfig } from "@spt-aki/models/spt/config/IInRaidConfig";
-import { IInventoryConfig } from "@spt-aki/models/spt/config/IInventoryConfig";
-import { ILocationConfig } from "@spt-aki/models/spt/config/ILocationConfig";
-import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { JsonUtil } from "@spt-aki/utils/JsonUtil";
 
 @injectable()
-export class AkiGenerator 
+export class Generator 
 {
-    private mod;
-    private firstRun;
-
+    private pkg = require("../package.json");
+ 
     constructor(
+        @inject("VFS") protected vfs: VFS,
+        @inject("JsonUtil") protected jsonUtil: JsonUtil,
+        @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("WinstonLogger") private logger: ILogger
     )
     {}
 
-    private createConfig(file: string): void 
+    private createConfig(modPath: string, file: string): void 
     {
-        this.mod = require("../package.json");
-        this.firstRun = true;
         let config = null;
         let dailyConfig = null;
         let pmcConfig = null;
@@ -39,42 +48,42 @@ export class AkiGenerator
                 //"Enable Christmas Gifts": false,
                 "HTTP": {},
                 "Health": {},
-                "Hideout": {},
+                "Hideout": {}
             },
             "Raids values": {
                 "Loot values": {},
-                "Airdrop values": {},
+                "Airdrop values": {}
             },
             "Traders values": {
                 "Traders": {},
                 "Repair": {},
                 "Insurances": {},
-                "Trading": {},
+                "Trading": {}
             },
             "FleaMarket configuration": {},
-            "Weather values": {},
+            "Weather values": {}
         };
         dailyConfig = {};
         pmcConfig = {};
 
         //We will have to gather every config that exists atm and throw them together into the object
-        const bots = ConfigServer.getConfig<IBotConfig>(ConfigTypes.BOT);
-        const health = HealthConfig;
-        const hideout = HideoutConfig;
-        const http = HttpConfig;
-        const inraid = InraidConfig;
-        const insurance = InsuranceConfig;
-        const inventory = InventoryConfig;
-        const location = LocationConfig;
-        const quest = QuestConfig;
-        const ragfair = RagfairConfig;
-        const repair = RepairConfig;
-        const trader = TraderConfig;
-        const weather = WeatherConfig;
-        //const airdrops = AirdropConfig
+        const bots = this.configServer.getConfig<IBotConfig>(ConfigTypes.BOT);
+        const health = this.configServer.getConfig<IHealthConfig>(ConfigTypes.HEALTH);
+        const hideout = this.configServer.getConfig<IHideoutConfig>(ConfigTypes.HIDEOUT);
+        const http = this.configServer.getConfig<IHttpConfig>(ConfigTypes.HTTP);
+        const inraid = this.configServer.getConfig<IInRaidConfig>(ConfigTypes.IN_RAID);
+        const insurance = this.configServer.getConfig<IInsuranceConfig>(ConfigTypes.INSURANCE);
+        const inventory = this.configServer.getConfig<IInventoryConfig>(ConfigTypes.INVENTORY);
+        const location = this.configServer.getConfig<ILocationConfig>(ConfigTypes.LOCATION);
+        const quest = this.configServer.getConfig<IQuestConfig>(ConfigTypes.QUEST);
+        const ragfair = this.configServer.getConfig<IRagfairConfig>(ConfigTypes.RAGFAIR);
+        const repair = this.configServer.getConfig<IRepairConfig>(ConfigTypes.REPAIR);
+        const trader = this.configServer.getConfig<ITraderConfig>(ConfigTypes.TRADER);
+        const weather = this.configServer.getConfig<IWeatherConfig>(ConfigTypes.WEATHER);
+        const airdrops = this.configServer.getConfig<IAirdropConfig>(ConfigTypes.AIRDROP);
 
-        //Sorting the bots config now
-        Object.assign(pmcConfig, bots);
+        //Sorting the http values
+        Object.assign(config["Server values"]["HTTP"], http);
 
         //Sorting the health config
         Object.assign(config["Server values"]["Health"], health);
@@ -82,11 +91,20 @@ export class AkiGenerator
         //Sorting the hideout values
         Object.assign(config["Server values"]["Hideout"], hideout);
 
-        //Sorting the http values
-        Object.assign(config["Server values"]["HTTP"], http);
-
         //Sorting the inraid values
         Object.assign(config["Raids values"], inraid);
+        
+        //Sorting location values
+        Object.assign(config["Raids values"]["Loot values"], location);
+
+        //Sorting airdrop values
+        //Object.assign(config["Raids values"]["Airdrop values"], airdrops)
+
+        //Sorting trader values
+        Object.assign(config["Traders values"]["Traders"], trader);
+
+        //Sorting repair values
+        Object.assign(config["Traders values"]["Repair"], repair);
 
         //Sorting insurance values
         Object.assign(config["Traders values"]["Insurances"], insurance);
@@ -94,23 +112,14 @@ export class AkiGenerator
         //Sorting inventory values
         Object.assign(config["Traders values"]["Trading"], inventory);
 
-        //Sorting location values
-        Object.assign(config["Raids values"]["Loot values"], location);
-
-        //Sorting airdrop values
-        //Object.assign(config["Raids values"]["Airdrop values"], airdrops)
-
         //Sorting quest values
         Object.assign(dailyConfig, quest);
 
+        //Sorting the bots config now
+        Object.assign(pmcConfig, bots);
+
         //Sorting ragfair values
         Object.assign(config["FleaMarket configuration"], ragfair);
-
-        //Sorting repair values
-        Object.assign(config["Traders values"]["Repair"], repair);
-
-        //Sorting trader values
-        Object.assign(config["Traders values"]["Traders"], trader);
 
         //Weather values
         Object.assign(config["Weather values"], weather);
@@ -130,80 +139,102 @@ export class AkiGenerator
 
         if (file === null) {
             //Write the config in the folder
-            VFS.writeFile(
-                `${ModLoader.getModPath(mod.name)}config/config.json`,
-                JsonUtil.serialize(config, true)
+            this.vfs.writeFile(
+                `${modPath}config/config.json`,
+                this.jsonUtil.serialize(config, true)
             );
-            VFS.writeFile(
-                `${ModLoader.getModPath(mod.name)}config/dailyConfig.json`,
-                JsonUtil.serialize(dailyConfig, true)
+            this.vfs.writeFile(
+                `${modPath}config/dailyConfig.json`,
+                this.jsonUtil.serialize(dailyConfig, true)
             );
-            VFS.writeFile(
-                `${ModLoader.getModPath(mod.name)}config/pmcConfig.json`,
-                JsonUtil.serialize(pmcConfig, true)
+            this.vfs.writeFile(
+                `${modPath}config/pmcConfig.json`,
+                this.jsonUtil.serialize(pmcConfig, true)
             );
         }
         else
         {
             this.logger.warning(`[AKI-CONFIG] - Generating ${file} file`)
             let toWrite = null
-            if(file === "config"){toWrite = config}else if(file === 'dailyConfig'){toWrite = dailyConfig}else if(file === 'pmcConfig'){toWrite = pmcConfig}
-            VFS.writeFile(
-                `${ModLoader.getModPath(mod.name)}config/${file}.json`,
-                JsonUtil.serialize(toWrite, true)
+            if (file === "config")
+            {
+                toWrite = config
+            }
+            else if (file === 'dailyConfig')
+            {
+                toWrite = dailyConfig
+            }
+            else if (file === 'pmcConfig')
+            {
+                toWrite = pmcConfig
+            }
+            this.vfs.writeFile(
+                `${modPath}config/${file}.json`,
+                this.jsonUtil.serialize(toWrite, true)
             );
         }
         this.logger.error("[AKI-Config]: New configuration file created, please restart your server to use it.");
     }
 
-    public checkConfigExisting(): void 
+    public checkConfigExisting(modPath: string): void 
     {
-        const mod = require("../../package.json");
-        const modPath = ModLoader.getModPath(mod.name);
         const validation = [];
 
         //Check if config folder exists
-        if (VFS.exists(`${modPath}config`)) {
+        if (this.vfs.exists(`${modPath}config`)) 
+        {
             //Check if all the config folder exists
-            const fileList = VFS.getFiles(`${modPath}config/`);
-            for (const file in fileList) {
-                let fileName = fileList[file];
-                if (fileName === "config.json") {
-                    validation.push('config');
+            const fileList = this.vfs.getFiles(`${modPath}config/`);
+            for (const file in fileList) 
+            {
+                const fileName = fileList[file];
+                if (fileName === "config.json") 
+                {
+                    validation.push("config");
                 }
-                if (fileName === "dailyConfig.json") {
+                if (fileName === "dailyConfig.json") 
+                {
                     validation.push("dailyConfig");
                 }
-                if (fileName === "pmcConfig.json") {
+                if (fileName === "pmcConfig.json") 
+                {
                     validation.push("pmcConfig");
                 }
             }
             //All configurations files existing
-            if ((validation.length === 3)) {
+            if ((validation.length === 3)) 
+            {
                 this.logger.success(
-                    `[AKI-CONFIG] - All configurations files already created, all green.`
+                    "[AKI-CONFIG] - All configurations files already created, all green."
                 );
-            } else {
+            } 
+            else 
+            {
                 //One of the 3 file is missing, we only want to regenerate the missing one
                 this.logger.error(
-                    `[AKI-CONFIG] - A config file is missing. Generating the missing file`
+                    "[AKI-CONFIG] - A config file is missing. Generating the missing file"
                 );
                 
-                if (validation.includes("config")) {} else {
-                    this.createConfig("config");
+                if (!validation.includes("config")) 
+                {
+                    this.createConfig(modPath, "config");
                 }
-                if (validation.includes("dailyConfig")) {} else {
-                    this.createConfig("dailyConfig");
+                if (!validation.includes("dailyConfig"))
+                {
+                    this.createConfig(modPath, "dailyConfig");
                 }
-                if (validation.includes("pmcConfig")) {} else {
-                    this.createConfig("pmcConfig");
+                if (!validation.includes("pmcConfig"))
+                {
+                    this.createConfig(modPath, "pmcConfig");
                 }
             }
-        } else {
+        } 
+        else 
+        {
             this.logger.warning(
                 "First time AKI-Configurator is run, generating the config file..."
             );
-            this.createConfig(null);
+            this.createConfig(modPath, null);
         }
     }
 }

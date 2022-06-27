@@ -1,60 +1,72 @@
-/*
-エレシュキガル
-*/
+import { inject, injectable } from "tsyringe";
+import type { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { IRagfairConfig } from "@spt-aki/models/spt/config/IRagfairConfig";
+import { ConfigServer } from "@spt-aki/servers/ConfigServer";
+import { ConfigTypes } from "@spt-aki/models/enums/ConfigTypes";
+import { Traders } from "@spt-aki/models/enums/Traders";
+import { AkiConfigHandler } from "./AkiConfigHandler";
 
-"use strict";
-
-class ragfair
+@injectable()
+export class Ragfair
 {
-    static applyValues()
+    constructor(
+        @inject("AkiConfigHandler") protected configHandler: AkiConfigHandler,
+        @inject("ConfigServer") protected configServer: ConfigServer,
+        @inject("WinstonLogger") private logger: ILogger
+    )
+    {}
+
+    public applyChanges(): void
     {
-        const ragfair = RagfairConfig
-        const config = require('../../config/config.json')
+        const config = this.configHandler.getConfig();
+        const ragfair = this.configServer.getConfig<IRagfairConfig>(ConfigTypes.RAGFAIR);
 
-        for(const options in ragfair.sell){
-            ragfair.sell[options] = config["FleaMarket configuration"].sell[options]
+        for (const options in ragfair.sell)
+        {
+            ragfair.sell[options] = config["FleaMarket configuration"].sell[options];
         }
 
-        for(const options in ragfair.dynamic){
-            ragfair.dynamic[options] = config["FleaMarket configuration"].dynamic[options]
+        for (const options in ragfair.dynamic)
+        {
+            ragfair.dynamic[options] = config["FleaMarket configuration"].dynamic[options];
         }
 
-        const traderList = config["FleaMarket configuration"].traders
-        for (const trader in config["FleaMarket configuration"].traders) {
-            switch (trader) {
+        const traderList = config["FleaMarket configuration"].traders;
+        for (const trader in config["FleaMarket configuration"].traders) 
+        {
+            switch (trader) 
+            {
                 case "EnablePraporOffers":
-                    ragfair.traders["54cb50c76803fa8b248b4571"] = traderList.EnablePraporOffers
+                    ragfair.traders[Traders.PRAPOR] = traderList.EnablePraporOffers;
                     break;
                 case "EnableTheRapistOffers":
-                    ragfair.traders["54cb57776803fa99248b456e"] = traderList.EnableTheRapistOffers;
+                    ragfair.traders[Traders.THERAPIST] = traderList.EnableTheRapistOffers;
                     break;
                 case "EnableFenceOffers":
-                    ragfair.traders["579dc571d53a0658a154fbec"] = traderList.EnableFenceOffers;
+                    ragfair.traders[Traders.FENCE] = traderList.EnableFenceOffers;
                     break;
                 case "EnableSkierOffers":
-                    ragfair.traders["58330581ace78e27b8b10cee"] = traderList.EnableSkierOffers;
+                    ragfair.traders[Traders.SKIER] = traderList.EnableSkierOffers;
                     break;
                 case "EnablePeacekeeperOffers":
-                    ragfair.traders["5935c25fb3acc3127c3d8cd9"] = traderList.EnablePeacekeeperOffers;
+                    ragfair.traders[Traders.PEACEKEEPER] = traderList.EnablePeacekeeperOffers;
                     break;
                 case "EnableMechanicOffers":
-                    ragfair.traders["5a7c2eca46aef81a7ca2145d"] = traderList.EnableMechanicOffers;
+                    ragfair.traders[Traders.MECHANIC] = traderList.EnableMechanicOffers;
                     break;
                 case "EnableRagmanOffers":
-                    ragfair.traders["5ac3b934156ae10c4430e83c"] = traderList.EnableRagmanOffers;
+                    ragfair.traders[Traders.RAGMAN] = traderList.EnableRagmanOffers;
                     break;
                 case "EnableJaegerOffers":
-                    ragfair.traders["54cb50c76803fa8b248b4571"] = traderList.EnableJaegerOffers;
+                    ragfair.traders[Traders.JAEGER] = traderList.EnableJaegerOffers;
                     break;
                 case "EnableAllAvailableOffers":
                     ragfair.traders["ragfair"] = traderList.EnableAllAvailableOffers;
                     break;
                 default:
-                    ragfair.traders[trader] = traderList[trader]
+                    ragfair.traders[trader] = traderList[trader];
                     break;
             }
         }
     }
 }
-
-module.exports = ragfair;
