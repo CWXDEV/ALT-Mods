@@ -98,7 +98,7 @@ export class Generator
         Object.assign(config["Raids values"]["Loot values"], location);
 
         //Sorting airdrop values
-        //Object.assign(config["Raids values"]["Airdrop values"], airdrops)
+        Object.assign(config["Raids values"]["Airdrop values"], airdrops)
 
         //Sorting trader values
         Object.assign(config["Traders values"]["Traders"], trader);
