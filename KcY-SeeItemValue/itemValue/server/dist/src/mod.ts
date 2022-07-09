@@ -4,6 +4,9 @@ import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
+import { Item } from "@spt-aki/models/eft/common/tables/IItem";
+import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
+import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 
 class SeeItemValue implements IMod
 {
@@ -12,17 +15,18 @@ class SeeItemValue implements IMod
     private database: DatabaseServer;
     private router: DynamicRouterModService;
     private http: HttpResponseUtil;
-    private table;
+    private items: Record<string, ITemplateItem>;
+    private table: IDatabaseTables;
     private livePrice;
     private handbookTable;
-    private therapist;
-    private ragman;
-    private jaeger;
-    private mechanic;
-    private prapor;
-    private peacekeeper;
-    private skier;
-    private fence;
+    private therapist; // ALL LL IS 37
+    private ragman; // ALL LL IS 38
+    private jaeger; // ALL LL IS 40
+    private mechanic; // ALL LL IS 44
+    private prapor; // ALL LL IS 50
+    private peacekeeper; // ALL LL IS 55
+    private skier; // ALL LL IS 51
+    private fence; // ALL LL IS 60
     private tradersArr;
     private cfg;
 
@@ -41,6 +45,7 @@ class SeeItemValue implements IMod
     {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();
+        this.items = this.table.templates.items;
         this.livePrice = this.table.templates.prices;
         this.handbookTable = this.table.templates.handbook;
         this.therapist = this.table.traders["54cb57776803fa99248b456e"].base;
@@ -51,7 +56,7 @@ class SeeItemValue implements IMod
         this.peacekeeper = this.table.traders["5935c25fb3acc3127c3d8cd9"].base;
         this.skier = this.table.traders["58330581ace78e27b8b10cee"].base;
         this.fence = this.table.traders["579dc571d53a0658a154fbec"].base;
-        this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.peacekeeper, this.skier, this.fence];
+        this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.skier, this.peacekeeper, this.fence];
     }
 
     private addRoute()
@@ -83,79 +88,157 @@ class SeeItemValue implements IMod
         let sPrice = 1;
         let sMutli = 1;
         let parentId = "";
+        let origiMax = "";
 
-        // if roubles return 1 and dont check traders.
         if (id === "5449016a4bdc2d6f028b456f")
         {
+            this.debugMode("Item was Roubles - returning 1 as price", "yellow");
             return 1;
         }
 
-        // if TraderPrice in cfg is False get price from flea AVG
         if (this.cfg.TraderPrice === false)
         {
             const result = this.livePrice[id];
             if (typeof result != "undefined")
             {
+                this.debugMode("Config setting false for traders - returning livePrice AVG", "yellow");
                 return result;
             }
-            // will still default to Handbook if no price is found for flea AVG
         }
-        // if TraderPrice in cfg is True get price from handbook
-        // as traders have a modifier, avg is 0.54, closest we can get without checking against each trader
-        // thanks to TEOA for this info
+
         for (const i in this.handbookTable.Items)
         {
             if (this.handbookTable.Items[i].Id === id)
             {
                 parentId = this.handbookTable.Items[i].ParentId;
+                this.debugMode(`ID was found in handbook - parentID = ${parentId}`, "yellow");
                 sMutli = this.getBestTraderMulti(parentId);
+                this.debugMode(`Multi returned from getBestTraderMulti method was = ${sMutli}`, "yellow");
                 sPrice = this.handbookTable.Items[i].Price;
-                const result = (sPrice*sMutli);
-
+                this.debugMode(`Price taken from handbook.items =  ${sPrice}`, "yellow");
+                origiMax = this.getOrigiDura(id);
+                this.debugMode(`Original max is: ${origiMax}`, "yellow");
+                const result = {
+                    multiplier: sMutli,
+                    price: sPrice,
+                    originalMax: origiMax
+                }
+                this.debugMode(`Object built to return to client =  ${result.multiplier} and ${result.price}`, "yellow");
                 return result;
             } 
         }
+        this.debugMode(`No item found in handbook, returning default ${sPrice}`, "yellow");
         return sPrice;
     }
 
     private getBestTraderMulti(parentId)
     {
         let traderSellCat = "";
-        let traderMulti = 0.54;
-        let traderName = ""; // could be used later to be passed back to module to show trader and price
         let altTraderSellCat = "";
+        let altAltTraderSellCat = "";
         
         for (const i in this.handbookTable.Categories)
         {
             if (this.handbookTable.Categories[i].Id === parentId)
             {
+                this.debugMode(`Found category from item parent ID`, "yellow");
                 traderSellCat = this.handbookTable.Categories[i].Id;
+                this.debugMode(`Storing trader sell category = ${traderSellCat}`, "yellow");
                 altTraderSellCat = this.handbookTable.Categories[i].ParentId;
+                this.debugMode(`Storing trader Alt sell category = ${altTraderSellCat}`, "yellow");
+
+                for (const a in this.handbookTable.Categories)
+                {
+                    if (this.handbookTable.Categories[a].Id === altTraderSellCat)
+                    {
+                        altAltTraderSellCat = this.handbookTable.Categories[a].ParentId;
+                        this.debugMode(`Alt sell category has parent, storing that = ${altAltTraderSellCat}`, "yellow");
+                        break;
+                    }
+                }
                 break;
             }
         }
 
-        for (let iter = 0; iter < 8; iter++)
+        for (let iter = 0; iter < this.tradersArr.length; iter++)
         {
             if (this.tradersArr[iter].sell_category.includes(traderSellCat))
             {
-                traderMulti = (100 - this.tradersArr[iter].loyaltyLevels[0].buy_price_coef) / 100;
-                traderName = this.tradersArr[iter].nickname;
-                return traderMulti;
+                this.debugMode(`base sell category found for trader number ${iter} - category is = ${traderSellCat}`, "yellow");
+                return this.getBestTraderInfo(iter);
             }
-        }
 
-        for (let iter = 0; iter < 8; iter++)
-        {
             if (this.tradersArr[iter].sell_category.includes(altTraderSellCat))
             {
-                traderMulti = (100 - this.tradersArr[iter].loyaltyLevels[0].buy_price_coef) / 100;
-                traderName = this.tradersArr[iter].nickname;
-                return traderMulti;
+                this.debugMode(`alt sell category found for trader number ${iter} - category is = ${altTraderSellCat}`, "yellow");
+                return this.getBestTraderInfo(iter);
+
+            }
+
+            if (this.tradersArr[iter].sell_category.includes(altAltTraderSellCat))
+            {
+                this.debugMode(`alt alt sell category found for trader number ${iter} - category is = ${altAltTraderSellCat}`, "yellow");
+                return this.getBestTraderInfo(iter);
             }
         }
-        return this.cfg.TraderMultiplier;
+        return 1;
+    }
+
+    private getBestTraderInfo(trader) 
+    {
+        let traderMulti = 0.54;
+        let traderName = "";
+
+        traderMulti = (100 - this.tradersArr[trader].loyaltyLevels[0].buy_price_coef) / 100;
+        this.debugMode(`Trader mutli for above is = ${traderMulti}`, "yellow");
+        traderName = this.tradersArr[trader].nickname;
+        this.debugMode(`Trader name is =  ${traderName}`, "yellow");
+
+        return traderMulti;
+    }
+
+    private debugMode(text, color)
+    {
+        if (this.cfg.DebugMode)
+        {
+            this.logger.log(text, color);
+        }
+    }
+
+    private getOrigiDura(item:string)
+    {
+        if (this.items[item]?._props?.MaxHpResource)
+        {
+            return this.items[item]._props.MaxHpResource;
+        }
+
+        if (this.items[item]?._props?.MaxDurability)
+        {
+            return this.items[item]._props.MaxDurability;
+        }
+
+        if (this.items[item]?._props?.MaxResource)
+        {
+            return this.items[item]._props.MaxResource;
+        }
+
+        if (this.items[item]?._props?.Durability)
+        {
+            return this.items[item]._props.Durability;
+        }
+
+        if (this.items[item]?._props?.MaxRepairResource)
+        {
+            return this.items[item]._props.MaxRepairResource;
+        }
+        return "YE FORKED UP MATE";
     }
 }
 
 module.exports = { mod: new SeeItemValue() }
+
+//      "MaxHpResource": 0,
+//      "MaxDurability": 50,
+//      "MaxResource": 50,
+//      "Durability": 100,
+//      "MaxRepairResource": 1000,

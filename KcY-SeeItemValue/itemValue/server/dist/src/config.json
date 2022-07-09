@@ -1,4 +1,4 @@
 {
-    "TraderPrice": false,
-    "TraderMultiplier": 0.54
+    "TraderPrice": true,
+    "DebugMode": false
 }
