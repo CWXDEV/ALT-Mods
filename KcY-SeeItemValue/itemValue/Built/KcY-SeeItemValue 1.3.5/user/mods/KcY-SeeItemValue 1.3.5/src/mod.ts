@@ -91,6 +91,18 @@ class SeeItemValue implements IMod
         let parentId = "";
         let origiMax = 1;
 
+        if (!this.items[id])
+        {
+            const result = {
+                multiplier: 1,
+                price: 1,
+                originalMax: 1
+            }
+
+            this.debugMode("Item was not in Item's Json - returning 1 as price", "yellow");
+            return result;
+        }
+
         if (id === "5449016a4bdc2d6f028b456f")
         {
             const result = {

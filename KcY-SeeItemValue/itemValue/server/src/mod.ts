@@ -6,6 +6,7 @@ import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
 import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
+import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 
 class SeeItemValue implements IMod
 {
@@ -17,15 +18,15 @@ class SeeItemValue implements IMod
     private items: Record<string, ITemplateItem>;
     private table: IDatabaseTables;
     private livePrice;
-    private handbookTable;
-    private therapist; // ALL LL IS 37
-    private ragman; // ALL LL IS 38
-    private jaeger; // ALL LL IS 40
-    private mechanic; // ALL LL IS 44
-    private prapor; // ALL LL IS 50
-    private peacekeeper; // ALL LL IS 55
-    private skier; // ALL LL IS 51
-    private fence; // ALL LL IS 60
+    private handbookTable: IHandbookBase;
+    private therapist;
+    private ragman;
+    private jaeger;
+    private mechanic;
+    private prapor;
+    private peacekeeper;
+    private skier; 
+    private fence;
     private tradersArr;
     private cfg;
 
@@ -58,7 +59,7 @@ class SeeItemValue implements IMod
         this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.skier, this.peacekeeper, this.fence];
     }
 
-    private addRoute()
+    private addRoute() : void
     {
         this.router.registerDynamicRouter(
             "seeitemvalue",
@@ -75,7 +76,8 @@ class SeeItemValue implements IMod
         )
     }
 
-    private onRequestConfig(url: string, info: any, sessionId: string, output: string): any
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    private onRequestConfig(url: string, _info: any, _sessionId: string, _output: string): any
     {
         const splittedUrl = url.split("/");
         const id = splittedUrl[splittedUrl.length - 1].toLowerCase();
@@ -149,7 +151,7 @@ class SeeItemValue implements IMod
         {
             if (this.handbookTable.Categories[i].Id === parentId)
             {
-                this.debugMode(`Found category from item parent ID`, "yellow");
+                this.debugMode("Found category from item parent ID", "yellow");
                 traderSellCat = this.handbookTable.Categories[i].Id;
                 this.debugMode(`Storing trader sell category = ${traderSellCat}`, "yellow");
                 altTraderSellCat = this.handbookTable.Categories[i].ParentId;

@@ -55,15 +55,15 @@ namespace itemValueMod
             editedPrice = jsonClass.price;
             editedMulti = jsonClass.multiplier;
             originalMax = jsonClass.originalMax;
-            //Debug.LogError($" editedPrice: {editedPrice}");
-            //Debug.LogError($" editedMulti: {editedMulti}");
-            //Debug.LogError($" originalMax: {originalMax}");
+            Debug.LogError($" editedPrice: {editedPrice}");
+            Debug.LogError($" editedMulti: {editedMulti}");
+            Debug.LogError($" originalMax: {originalMax}");
 
             var medKit = item.GetItemComponent<MedKitComponent>();
             if (medKit != null && medKit.HpResource != 0 && medKit.MaxHpResource != 0)
             {
                 editedPrice *= medKit.HpResource / medKit.MaxHpResource;
-                //Debug.LogError($" MedKitComponent: {editedPrice}");
+                Debug.LogError($" MedKitComponent: {editedPrice}");
             }
 
             var repair = item.GetItemComponent<RepairableComponent>();
@@ -72,7 +72,7 @@ namespace itemValueMod
                 if (repair.Durability > 0)
                 {
                     editedPrice *= repair.Durability / originalMax;
-                    //Debug.LogError($" RepairableComponent: {editedPrice}");
+                    Debug.LogError($" RepairableComponent: {editedPrice}");
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace itemValueMod
             if (dogtag != null && dogtag.Level != 0)
             {
                 editedPrice *= dogtag.Level;
-                //Debug.LogError($" DogtagComponent: {editedPrice}");
+                Debug.LogError($" DogtagComponent: {editedPrice}");
             }
 
             var repairKit = item.GetItemComponent<RepairKitComponent>();
@@ -93,7 +93,7 @@ namespace itemValueMod
                 if (repairKit.Resource > 0)
                 {
                     editedPrice *= repairKit.Resource / originalMax;
-                    //Debug.LogError($" RepairKitComponent: {editedPrice}");
+                    Debug.LogError($" RepairKitComponent: {editedPrice}");
                 }
                 else
                 {
@@ -104,11 +104,11 @@ namespace itemValueMod
             var resource = item.GetItemComponent<ResourceComponent>();
             if (resource != null && resource.Value != 0 && resource.MaxResource != 0)
             {
-                //Debug.LogError($" ResourceComponent.value: {resource.Value}");
-                //Debug.LogError($" ResourceComponent.MaxResource: {resource.MaxResource}");
+                Debug.LogError($" ResourceComponent.value: {resource.Value}");
+                Debug.LogError($" ResourceComponent.MaxResource: {resource.MaxResource}");
 
                 editedPrice *= resource.Value / resource.MaxResource;
-                //Debug.LogError($" ResourceComponent: {editedPrice}");
+                Debug.LogError($" ResourceComponent: {editedPrice}");
             }
 
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
@@ -117,7 +117,7 @@ namespace itemValueMod
                 GInterface202 ginterface202_0 = (GInterface202)foodDrink.GetType().GetField("ginterface202_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
                 editedPrice *= foodDrink.HpPercent / ginterface202_0.MaxResource;
-                //Debug.LogError($" FoodDrinkComponent: {editedPrice}");
+                Debug.LogError($" FoodDrinkComponent: {editedPrice}");
             }
 
             var keys = item.GetItemComponent<KeyComponent>();
@@ -131,7 +131,7 @@ namespace itemValueMod
                     double multi = totalMinusUsed / ginterface206_0.MaximumNumberOfUsage;
 
                     editedPrice *= multi;
-                    //Debug.LogError($" KeyComponent: {editedPrice}");
+                    Debug.LogError($" KeyComponent: {editedPrice}");
                 }
             }
 
@@ -139,7 +139,7 @@ namespace itemValueMod
             if (sideEffect != null && sideEffect.Value != 0)
             {
                 editedPrice *= sideEffect.Value / sideEffect.MaxResource;
-                //Debug.LogError($" SideEffectComponent: {editedPrice}");
+                Debug.LogError($" SideEffectComponent: {editedPrice}");
             }
 
             _price = editedPrice * editedMulti;
@@ -150,7 +150,7 @@ namespace itemValueMod
         public static string ValueStr(this Item item)
         {
             var result = Math.Round(item.Value()).ToString();
-            //Debug.LogError($"price, rounded to string: {result}");
+            Debug.LogError($"price, rounded to string: {result}");
 
             return result;
         }
