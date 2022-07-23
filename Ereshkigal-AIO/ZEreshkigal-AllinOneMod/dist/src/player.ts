@@ -89,7 +89,7 @@ export class Player
         }
 
         //Change in raids restrictions
-        if (this.configHandler.getConfig().player.removeInRaidsRestrictions)
+        if (this.configHandler.getConfig().player.removeInRaidRestrictions)
         {
             globals.RestrictionsInRaid = []
         }

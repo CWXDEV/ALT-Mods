@@ -75,7 +75,7 @@ export interface Player
     skillFatigueReset: number;
     changeMaxStamina: boolean | number;
     unlimitedStamina: boolean;
-    removeInRaidsRestrictions: boolean;
+    removeInRaidRestrictions: boolean;
     disableFallDamage: boolean;
     allSkillsMaster: boolean;
     enableSkillBotReload: boolean;
