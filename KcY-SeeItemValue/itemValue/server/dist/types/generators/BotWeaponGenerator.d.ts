@@ -9,7 +9,9 @@ import { ILogger } from "../models/spt/utils/ILogger";
 import { DatabaseServer } from "../servers/DatabaseServer";
 import { HashUtil } from "../utils/HashUtil";
 import { RandomUtil } from "../utils/RandomUtil";
+import { JsonUtil } from "../utils/JsonUtil";
 export declare class BotWeaponGenerator {
+    protected jsonUtil: JsonUtil;
     protected logger: ILogger;
     protected hashUtil: HashUtil;
     protected databaseServer: DatabaseServer;
@@ -18,7 +20,7 @@ export declare class BotWeaponGenerator {
     protected botGeneratorHelper: BotGeneratorHelper;
     protected randomUtil: RandomUtil;
     private readonly modMagazineSlotId;
-    constructor(logger: ILogger, hashUtil: HashUtil, databaseServer: DatabaseServer, itemHelper: ItemHelper, weightedRandomHelper: WeightedRandomHelper, botGeneratorHelper: BotGeneratorHelper, randomUtil: RandomUtil);
+    constructor(jsonUtil: JsonUtil, logger: ILogger, hashUtil: HashUtil, databaseServer: DatabaseServer, itemHelper: ItemHelper, weightedRandomHelper: WeightedRandomHelper, botGeneratorHelper: BotGeneratorHelper, randomUtil: RandomUtil);
     generateWeapon(equipmentSlot: string, templateInventory: Inventory, modChances: ModsChances, magCounts: MinMax, botRole: string, isPmc: boolean, inventory: PmcInventory): void;
     /**
      * Get the mods necessary to kit out a weapon to its preset level
@@ -41,6 +43,13 @@ export declare class BotWeaponGenerator {
      * @returns
      */
     protected generateExtraMagazines(weaponMods: Item[], weaponTemplate: ITemplateItem, magCounts: MinMax, ammoTpl: string, inventory: PmcInventory): void;
+    /**
+     * Get a randomised number of bullets for a specific magazine
+     * @param magCounts min and max count of magazines
+     * @param magTemplate magazine to generate bullet count for
+     * @returns bullet count number
+     */
+    protected getRandomisedBulletCount(magCounts: MinMax, magTemplate: ITemplateItem): number;
     /**
      * Get a randomised count of magazines
      * @param magCounts min and max value returned value can be between

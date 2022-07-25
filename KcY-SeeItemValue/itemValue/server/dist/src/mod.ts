@@ -30,7 +30,7 @@ class SeeItemValue implements IMod
     private tradersArr;
     private cfg;
 
-    public load(container: DependencyContainer)
+    public preAkiLoad(container: DependencyContainer)
     {
         this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
@@ -41,7 +41,7 @@ class SeeItemValue implements IMod
         this.addRoute()
     }
 
-    public delayedLoad(container: DependencyContainer)
+    public postAkiLoad(container: DependencyContainer)
     {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();
@@ -107,12 +107,12 @@ class SeeItemValue implements IMod
             const result = {
                 multiplier: 1,
                 price: this.livePrice[id],
-                originalMax: this.getOrigiDura(id)
+                originalMax: 1
             };
             if (typeof result != "undefined")
             {
                 this.debugMode("Config setting false for traders - returning livePrice AVG", "yellow");
-                return result;
+                return result 
             }
         }
 
