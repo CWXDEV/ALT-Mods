@@ -1,5 +1,7 @@
 import type { DependencyContainer } from "tsyringe";
-import { IMod } from "@spt-aki/models/external/mod";
+import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
+import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
+import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
@@ -8,8 +10,9 @@ import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 
-class SeeItemValue implements IMod
+class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
 {
+    
     private pkg;
     private logger: ILogger;
     private database: DatabaseServer;
@@ -30,8 +33,7 @@ class SeeItemValue implements IMod
     private tradersArr;
     private cfg;
 
-    public preAkiLoad(container: DependencyContainer)
-    {
+    preAkiLoad(container: DependencyContainer): void {
         this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
@@ -40,9 +42,7 @@ class SeeItemValue implements IMod
         this.cfg = require("./config.json");
         this.addRoute()
     }
-
-    public postAkiLoad(container: DependencyContainer)
-    {
+    postAkiLoad(container: DependencyContainer): void {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();
         this.items = this.table.templates.items;
@@ -57,6 +57,9 @@ class SeeItemValue implements IMod
         this.skier = this.table.traders["58330581ace78e27b8b10cee"].base;
         this.fence = this.table.traders["579dc571d53a0658a154fbec"].base;
         this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.skier, this.peacekeeper, this.fence];
+    }
+    postDBLoad(container: DependencyContainer): void {
+        return;
     }
 
     private addRoute() : void

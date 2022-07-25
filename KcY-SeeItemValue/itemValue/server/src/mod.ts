@@ -1,5 +1,6 @@
 import type { DependencyContainer } from "tsyringe";
-import { IMod } from "@spt-aki/models/external/mod";
+import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
+import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
@@ -8,8 +9,9 @@ import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
 
-class SeeItemValue implements IMod
+class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 {
+    
     private pkg;
     private logger: ILogger;
     private database: DatabaseServer;
@@ -30,8 +32,7 @@ class SeeItemValue implements IMod
     private tradersArr;
     private cfg;
 
-    public preAkiLoad(container: DependencyContainer)
-    {
+    public preAkiLoad(container: DependencyContainer): void {
         this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
@@ -40,9 +41,7 @@ class SeeItemValue implements IMod
         this.cfg = require("./config.json");
         this.addRoute()
     }
-
-    public postAkiLoad(container: DependencyContainer)
-    {
+    public postAkiLoad(container: DependencyContainer): void {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();
         this.items = this.table.templates.items;
