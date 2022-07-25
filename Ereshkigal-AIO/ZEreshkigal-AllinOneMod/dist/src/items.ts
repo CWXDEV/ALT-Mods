@@ -33,9 +33,13 @@ export class Items
                 }
 
                 // Weight Change, only Multiple possible
-                if (typeof this.configHandler.getConfig().items.weightChanges !== "boolean" && typeof this.configHandler.getConfig().items.weightChanges === "number" && this.configHandler.getConfig().items.weightChanges <= 0)
+                if (typeof this.configHandler.getConfig().items.weightChanges !== "boolean" && typeof this.configHandler.getConfig().items.weightChanges === "number" && this.configHandler.getConfig().items.weightChanges >= 0)
                 {
-                    this.editSimpleItemData(id, "Weight", (base._props.Weight * <number> this.configHandler.getConfig().items.weightChanges));
+                    //Exclude nodes, inventory and pockets from the weight changer
+                    if (base._type !== "Node" && base._parent !== BaseClasses.POCKETS && base._parent !== BaseClasses.INVENTORY) 
+                    {
+                        this.editSimpleItemData(id, "Weight", (base._props.Weight * <number> this.configHandler.getConfig().items.weightChanges));
+                    }
                 }
 
                 if (this.configHandler.getConfig().items.removeAllGearPenalties)
@@ -66,7 +70,7 @@ export class Items
                     this.editSimpleItemData(id, "Deterioration", 0);
                 }
 
-                if (this.configHandler.getConfig().items.removeWeaponPresetRestriction && !base._props.CanRequireOnRagfair && items[items[base._parent]._parent]._id === "5422acb9af1c889c16000029")
+                if (this.configHandler.getConfig().items.removeWeaponPresetRestriction && !base._props.CanRequireOnRagfair && items[base._parent]._id !== BaseClasses.ITEM && items[items[base._parent]._parent]._id === BaseClasses.WEAPON)
                 {
                     this.editSimpleItemData(id, "CanRequireOnRagfair", "true");
                 }
@@ -388,9 +392,9 @@ export class Items
         if (this.configHandler.getConfig().items.changeIndividualItemProperty.activated) 
         {
             //Edit item properties
-            if (this.configHandler.getConfig().items.changeIndividualItemProperty.ItemList !== {}) 
+            if (this.configHandler.getConfig().items.changeIndividualItemProperty.itemList !== {}) 
             {
-                for (const k in this.configHandler.getConfig().items.changeIndividualItemProperty.ItemList) 
+                for (const k in this.configHandler.getConfig().items.changeIndividualItemProperty.itemList) 
                 {
                     if (k === "__REPLACEMEBYITEMID__") 
                     {
@@ -398,9 +402,9 @@ export class Items
                     } 
                     else 
                     {
-                        for (const property in this.configHandler.getConfig().items.changeIndividualItemProperty.ItemList[k]) 
+                        for (const property in this.configHandler.getConfig().items.changeIndividualItemProperty.itemList[k]) 
                         {
-                            const value = this.configHandler.getConfig().items.changeIndividualItemProperty.ItemList[k][property];
+                            const value = this.configHandler.getConfig().items.changeIndividualItemProperty.itemList[k][property];
                             this.editSimpleItemData(k, property, value);
                         }
                     }

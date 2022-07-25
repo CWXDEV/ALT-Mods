@@ -1,0 +1,254 @@
+{
+	"Server values": {
+		"HTTP": {
+			"ip": "",
+			"port": ""
+		},
+		"Health": {
+			"healthMultipliers": {
+				"death": "",
+				"blacked": ""
+			},
+			"save": {
+				"health": "",
+				"effects": ""
+			}
+		},
+		"Hideout": {
+			"runIntervalSeconds": "",
+			"scavCase": {
+				"rewardParentBlacklist": "",
+				"rewardItemBlacklist": "",
+				"ammoRewards": {
+					"giveMultipleOfTen": "",
+					"minAmount": ""
+				},
+				"moneyRewards": {
+					"enabled": "",
+					"rub": {
+						"min": "",
+						"max": ""
+					},
+					"usd": {
+						"min": "",
+						"max": ""
+					},
+					"eur": {
+						"min": "",
+						"max": ""
+					}
+				}
+			}
+		},
+		"enableChristmasGifts": ""
+	},
+	"Raids values": {
+		"Loot values": {
+			"looseLootMultiplier": {
+				"bigmap": "",
+				"develop": "",
+				"factory4day": "",
+				"factory4night": "",
+				"interchange": "",
+				"laboratory": "",
+				"rezervbase": "",
+				"shoreline": "",
+				"woods": "",
+				"hideout": "",
+				"lighthouse": "",
+				"privatearea": "",
+				"suburbs": "",
+				"tarkovstreets": "",
+				"terminal": "",
+				"town": ""
+			},
+			"staticLootMultiplier": {
+				"bigmap": "",
+				"develop": "",
+				"factory4day": "",
+				"factory4night": "",
+				"interchange": "",
+				"laboratory": "",
+				"rezervbase": "",
+				"shoreline": "",
+				"woods": "",
+				"hideout": "",
+				"lighthouse": "",
+				"privatearea": "",
+				"suburbs": "",
+				"tarkovstreets": "",
+				"terminal": "",
+				"town": ""
+			}
+		},
+		"Airdrop values": {
+			"airdropChancePercent": {
+				"bigmap": "",
+				"woods": "",
+				"lighthouse": "",
+				"shoreline": "",
+				"interchange": "",
+				"reserve": ""
+			},
+			"airdropMinStartTimeSeconds": "",
+			"airdropMaxStartTimeSeconds": "",
+			"airdropMinOpenHeight": "",
+			"airdropMaxOpenHeight": "",
+			"planeMinFlyHeight": "",
+			"planeMaxFlyHeight": "",
+			"planeVolume": ""
+		},
+		"MIAOnRaidEnd": "",
+		"raidMenuSettings": {
+			"aiAmount": "",
+			"aiDifficulty": "",
+			"bossEnabled": "",
+			"scavWars": "",
+			"taggedAndCursed": ""
+		},
+		"save": {
+			"loot": "",
+			"durability": ""
+		},
+		"carExtracts": "",
+		"carExtractBaseStandingGain": "",
+		"scavExtractGain": ""
+	},
+	"Traders values": {
+		"Traders": {
+			"updateTime": "",
+			"updateTimeDefault": "",
+			"fenceAssortSize": "",
+			"fenceMaxPresetsCount": "",
+			"fencePresetPriceMult": "",
+			"minDurabilityForSale": "",
+			"fenceItemIgnoreList": ""
+		},
+		"Repair": {
+			"priceMultiplier": ""
+		},
+		"Insurances": {
+			"insuranceMultiplier": "",
+			"returnChancePercent": "",
+			"runIntervalSeconds": ""
+		},
+		"Trading": {
+			"newItemsMarkedFound": ""
+		}
+	},
+	"FleaMarket configuration": {
+		"runIntervalSeconds": "",
+		"sell": {
+			"fees": "",
+			"chance": {
+				"base": "",
+				"overprices": "",
+				"underpriced": ""
+			},
+			"time": {
+				"base": "",
+				"min": "",
+				"max": ""
+			},
+			"reputation": {
+				"gain": "",
+				"loss": ""
+			}
+		},
+		"traders": {
+			"EnablePraporOffers": "",
+			"EnableTheRapistOffers": "",
+			"EnableFenceOffers": "",
+			"EnableSkierOffers": "",
+			"EnablePeacekeeperOffers": "",
+			"EnableMechanicOffers": "",
+			"EnableRagmanOffers": "",
+			"EnableJaegerOffers": "",
+			"EnableAllAvailableOffers": ""
+		},
+		"dynamic": {
+			"expiredOfferThreshold": "",
+			"offerItemCount": {
+				"min": "",
+				"max": ""
+			},
+			"price": {
+				"min": "",
+				"max": ""
+			},
+			"endTimeSeconds": {
+				"min": "",
+				"max": ""
+			},
+			"condition": {
+				"conditionChance": "",
+				"min": "",
+				"max": ""
+			},
+			"stackablePercent": {
+				"min": "",
+				"max": ""
+			},
+			"nonStackableCount": {
+				"min": "",
+				"max": ""
+			},
+			"rating": {
+				"min": "",
+				"max": ""
+			},
+			"currencies": "",
+			"showAsSingleStack": "",
+			"blacklist": {
+				"custom": "",
+				"enableBsgList": "",
+				"enableQuestList": ""
+			}
+		}
+	},
+	"Weather values": {
+		"acceleration": "",
+		"weather": {
+			"clouds": {
+				"min": "",
+				"max": ""
+			},
+			"windSpeed": {
+				"min": "",
+				"max": ""
+			},
+			"windDirection": {
+				"min": "",
+				"max": ""
+			},
+			"windGustiness": {
+				"min": "",
+				"max": ""
+			},
+			"rain": {
+				"min": "",
+				"max": ""
+			},
+			"rainIntensity": {
+				"min": "",
+				"max": ""
+			},
+			"fog": {
+				"min": "",
+				"max": ""
+			},
+			"temp": {
+				"min": "",
+				"max": ""
+			},
+			"pressure": {
+				"min": "",
+				"max": ""
+			}
+		}
+	},
+	"other": {
+	  "hideWarningMessage": "",
+	  "showModLogs": ""
+	}	
+}

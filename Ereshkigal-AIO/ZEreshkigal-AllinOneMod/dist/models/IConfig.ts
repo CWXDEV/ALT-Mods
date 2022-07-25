@@ -27,6 +27,11 @@ export interface WeaponDurabilities
     maximumSpawnDurability: boolean | number;
 }
 
+export interface ChangeIndividualItemProperty
+{
+    activated: boolean;
+    itemList: any;
+}
 export interface Items 
 {
     allExaminedItems: boolean;
@@ -48,7 +53,7 @@ export interface Items
     removeItemDurabilityBurn: boolean;
     removeBulletWeaponDurabilityDamage: boolean;
     removeWeaponPresetRestriction: boolean;
-    changeIndividualItemProperty: any;
+    changeIndividualItemProperty: ChangeIndividualItemProperty;
 }
 
 export interface Hideout 

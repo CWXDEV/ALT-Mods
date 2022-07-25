@@ -13,14 +13,13 @@ export class Notifications
 
     public sendNotifications(): void
     {
-
         const config = this.configHandler.getConfig();
         const locale = this.configHandler.getLocales();
         
         if (!config.other.hideWarningMessage)
         {
             this.logger.log("[AIO Mod INFORMATION]", "yellow");
-            this.logger.info("Please read the README.PDF carefully as this has all the information you need.");
+            this.logger.info("Please read the AIO README.pdf carefully as this has all the information you need.");
             this.logger.log("[AIO Mod INFORMATION]", "yellow");
         }
 

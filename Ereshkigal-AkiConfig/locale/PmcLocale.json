@@ -1,0 +1,195 @@
+{
+	"presetBatch": {
+		"assault": "",
+		"bossBully": "",
+		"bossGluhar": "",
+		"bossKilla": "",
+		"bossKojaniy": "",
+		"bossSanitar": "",
+		"bossTagilla": "",
+		"bossTest": "",
+		"cursedAssault": "",
+		"followerBully": "",
+		"followerGluharAssault": "",
+		"followerGluharScout": "",
+		"followerGluharSecurity": "",
+		"followerGluharSnipe": "",
+		"followerKojaniy": "",
+		"followerSanitar": "",
+		"followerTagilla": "",
+		"followerTest": "",
+		"marksman": "",
+		"pmcBot": "",
+		"sectantPriest": "",
+		"sectantWarrior": "",
+		"gifter": "",
+		"test": "",
+		"exUsec": ""
+	},
+	"bosses": "",
+	"durability": {
+		"default": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"pmc": {
+			"armor": {
+				"lowestMaxPercent": "",
+				"highestMaxPercent": "",
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"boss": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"follower": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"assault": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"cursedassault": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"marksman": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"pmcbot": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"exusec": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"sectantpriest": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		},
+		"sectantwarrior": {
+			"armor": {
+				"maxDelta": "",
+				"minDelta": ""
+			},
+			"weapon": {
+				"lowestMax": "",
+				"highestMax": "",
+				"maxDelta": "",
+				"minDelta": ""
+			}
+		}
+	},
+	"lootNValue": {
+		"scav": "",
+		"pmc": ""
+	},
+	"pmc": {
+		"dynamicLoot": {
+			"whitelist": "",
+			"blacklist": "",
+			"spawnLimits": "",
+			"moneyStackLimits": ""
+		},
+		"cartridgeBlacklist": "",
+		"difficulty": "",
+		"isUsec": "",
+		"chanceSameSideIsHostilePercent": "",
+		"usecType": "",
+		"bearType": "",
+		"maxBackpackLootTotalRub": "",
+		"maxPocketLootTotalRub": "",
+		"maxVestLootTotalRub": "",
+		"types": {
+			"assault": "",
+			"cursedAssault": "",
+			"pmcBot": "",
+			"exUsec": ""
+		}
+	},
+	"showTypeInNickname": "",
+	"maxBotCap": ""
+}

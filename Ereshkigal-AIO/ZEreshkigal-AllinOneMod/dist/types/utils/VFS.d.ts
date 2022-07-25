@@ -1,11 +1,12 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import "reflect-metadata";
 import fs from "fs";
 import { IAsyncQueue } from "../models/spt/utils/IAsyncQueue";
 import { IUUidGenerator } from "../models/spt/utils/IUuidGenerator";
 export declare class VFS {
-    private asyncQueue;
-    private uuidGenerator;
+    protected asyncQueue: IAsyncQueue;
+    protected uuidGenerator: IUUidGenerator;
     accessFilePromisify: (path: fs.PathLike, mode?: number) => Promise<void>;
     copyFilePromisify: (src: fs.PathLike, dst: fs.PathLike, flags?: number) => Promise<void>;
     mkdirPromisify: (path: fs.PathLike, options: fs.MakeDirectoryOptions & {
