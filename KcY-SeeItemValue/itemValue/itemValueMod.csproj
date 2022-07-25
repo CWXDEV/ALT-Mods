@@ -17,7 +17,7 @@
       <HintPath>..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\1. AKI\3.0.0\EscapeFromTarkov_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
       <HintPath>..\..\Shared\BepInEx\BepInEx.dll</HintPath>

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
-using ItemAttribute = GClass2100;
+using ItemAttribute = GClass2185;
 
 namespace itemValueMod
 {
@@ -114,21 +114,21 @@ namespace itemValueMod
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
             if (foodDrink != null && foodDrink.HpPercent != 0)
             {
-                GInterface202 ginterface202_0 = (GInterface202)foodDrink.GetType().GetField("ginterface202_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
+                GInterface208 ginterface208_0 = (GInterface208)foodDrink.GetType().GetField("ginterface208_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
-                editedPrice *= foodDrink.HpPercent / ginterface202_0.MaxResource;
+                editedPrice *= foodDrink.HpPercent / ginterface208_0.MaxResource;
                 Debug.LogError($" FoodDrinkComponent: {editedPrice}");
             }
 
             var keys = item.GetItemComponent<KeyComponent>();
             if (keys != null)
             {
-                GInterface206 ginterface206_0 = (GInterface206)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
+                GInterface212 ginterface212_0 = (GInterface212)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
 
                 if (keys.NumberOfUsages > 0)
                 {
-                    double totalMinusUsed = Convert.ToDouble(ginterface206_0.MaximumNumberOfUsage - keys.NumberOfUsages);
-                    double multi = totalMinusUsed / ginterface206_0.MaximumNumberOfUsage;
+                    double totalMinusUsed = Convert.ToDouble(ginterface212_0.MaximumNumberOfUsage - keys.NumberOfUsages);
+                    double multi = totalMinusUsed / ginterface212_0.MaximumNumberOfUsage;
 
                     editedPrice *= multi;
                     Debug.LogError($" KeyComponent: {editedPrice}");
