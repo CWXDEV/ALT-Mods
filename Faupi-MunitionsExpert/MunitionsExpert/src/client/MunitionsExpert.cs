@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using BepInEx;
 using Comfort.Common;
 
-using ItemAttribute = GClass2100;
+using ItemAttribute = GClass2185;
+using ServerSettings = GClass1150;
 using static MunitionsExpert.Attributes;
-using ServerSettings = GClass1087;
 
 
 namespace MunitionsExpert
@@ -51,8 +51,8 @@ namespace MunitionsExpert
             iconCache.Add(EItemAttributeId.LightBleedingDelta, Resources.Load<Sprite>("characteristics/icons/icon_info_bloodloss"));
             iconCache.Add(EItemAttributeId.HeavyBleedingDelta, Resources.Load<Sprite>("characteristics/icon_info_hydration"));
             iconCache.Add(ENewItemAttributeId.Penetration, Resources.Load<Sprite>("characteristics/icon_info_penetration"));
-            _ = LoadTexture(ENewItemAttributeId.ArmorDamage, Path.Combine(ModInfo.path, "res/armorDamage.png"));
-            _ = LoadTexture(ENewItemAttributeId.RicochetChance, Path.Combine(ModInfo.path, "res/ricochet.png"));
+            //_ = LoadTexture(ENewItemAttributeId.ArmorDamage, Path.Combine(ModInfo.path, "res/armorDamage.png"));
+            //_ = LoadTexture(ENewItemAttributeId.RicochetChance, Path.Combine(ModInfo.path, "res/ricochet.png"));
         }
 
         public static async Task LoadTexture(Enum id, string path)
@@ -117,7 +117,7 @@ namespace MunitionsExpert
                     int ratedClass = 0;
 
                     if (!Singleton<ServerSettings>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
-                    ServerSettings.GClass1134.GClass1135[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
+                    ServerSettings.GClass1197.GClass1198[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
                     for (int i = 0; i < classes.Length; i++)
                     {
                         if (classes[i].Resistance > template.PenetrationPower) continue;
