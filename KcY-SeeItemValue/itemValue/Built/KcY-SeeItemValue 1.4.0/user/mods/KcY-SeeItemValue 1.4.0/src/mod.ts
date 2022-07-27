@@ -1,7 +1,6 @@
 import type { DependencyContainer } from "tsyringe";
 import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
-import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
 import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
@@ -9,8 +8,10 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
+import { LogTextColor } from "@spt-aki/models/spt/logging/LogTextColor";
+import { LogBackgroundColor } from "@spt-aki/models/spt/logging/LogBackgroundColor";
 
-class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
+class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 {
     
     private pkg;
@@ -33,16 +34,17 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
     private tradersArr;
     private cfg;
 
-    preAkiLoad(container: DependencyContainer): void {
+    public preAkiLoad(container: DependencyContainer): void {
         this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
         this.logger.info(`loading: ${this.pkg.author}: ${this.pkg.name} ${this.pkg.version}`);
         this.cfg = require("./config.json");
+        
         this.addRoute()
     }
-    postAkiLoad(container: DependencyContainer): void {
+    public postAkiLoad(container: DependencyContainer): void {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();
         this.items = this.table.templates.items;
@@ -57,9 +59,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
         this.skier = this.table.traders["58330581ace78e27b8b10cee"].base;
         this.fence = this.table.traders["579dc571d53a0658a154fbec"].base;
         this.tradersArr = [this.therapist, this.ragman, this.jaeger, this.mechanic, this.prapor, this.skier, this.peacekeeper, this.fence];
-    }
-    postDBLoad(container: DependencyContainer): void {
-        return;
+        
     }
 
     private addRoute() : void
@@ -94,25 +94,25 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
         let parentId = "";
         let origiMax = 1;
 
+        let result = {
+            multiplier: 1,
+            price: 1,
+            originalMax: 1
+        };
+
         if (id === "5449016a4bdc2d6f028b456f")
         {
-            const result = {
-                multiplier: 1,
-                price: 1,
-                originalMax: 1
-            };
             this.debugMode("Item was Roubles - returning 1 as price", "yellow");
             return result;
         }
 
         if (this.cfg.TraderPrice === false)
         {
-            const result = {
-                multiplier: 1,
-                price: this.livePrice[id],
-                originalMax: 1
-            };
-            if (typeof result != "undefined")
+            result.multiplier = 1;
+            result.price = this.livePrice[id];
+            result.originalMax = 1;
+
+            if (this.livePrice[id])
             {
                 this.debugMode("Config setting false for traders - returning livePrice AVG", "yellow");
                 return result 
@@ -125,23 +125,27 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
             {
                 parentId = this.handbookTable.Items[i].ParentId;
                 this.debugMode(`ID was found in handbook - parentID = ${parentId}`, "yellow");
+
                 sMutli = this.getBestTraderMulti(parentId);
                 this.debugMode(`Multi returned from getBestTraderMulti method was = ${sMutli}`, "yellow");
+
                 sPrice = this.handbookTable.Items[i].Price;
                 this.debugMode(`Price taken from handbook.items =  ${sPrice}`, "yellow");
+
                 origiMax = this.getOrigiDura(id);
                 this.debugMode(`Original max is: ${origiMax}`, "yellow");
-                const result = {
-                    multiplier: sMutli,
-                    price: sPrice,
-                    originalMax: origiMax
-                }
+
+                result.multiplier = sMutli;
+                result.price = sPrice;
+                result.originalMax = origiMax;
+
                 this.debugMode(`Object built to return to client =  ${result.multiplier} and ${result.price}`, "yellow");
                 return result;
             } 
         }
+
         this.debugMode(`No item found in handbook, returning default ${sPrice}`, "yellow");
-        return sPrice;
+        return result;
     }
 
     private getBestTraderMulti(parentId: string): number
@@ -155,8 +159,10 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
             if (this.handbookTable.Categories[i].Id === parentId)
             {
                 this.debugMode("Found category from item parent ID", "yellow");
+
                 traderSellCat = this.handbookTable.Categories[i].Id;
                 this.debugMode(`Storing trader sell category = ${traderSellCat}`, "yellow");
+                
                 altTraderSellCat = this.handbookTable.Categories[i].ParentId;
                 this.debugMode(`Storing trader Alt sell category = ${altTraderSellCat}`, "yellow");
 
@@ -166,6 +172,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
                     {
                         altAltTraderSellCat = this.handbookTable.Categories[a].ParentId;
                         this.debugMode(`Alt sell category has parent, storing that = ${altAltTraderSellCat}`, "yellow");
+
                         break;
                     }
                 }
@@ -185,7 +192,6 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod, IPostDBLoadMod
             {
                 this.debugMode(`alt sell category found for trader number ${iter} - category is = ${altTraderSellCat}`, "yellow");
                 return this.getBestTraderInfo(iter);
-
             }
 
             if (this.tradersArr[iter].sell_category.includes(altAltTraderSellCat))
