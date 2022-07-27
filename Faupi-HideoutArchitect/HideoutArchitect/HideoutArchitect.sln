@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HideoutArchitect", "HideoutArchitect\HideoutArchitect.csproj", "{0B0DD419-9593-4107-95E0-E5FE74610110}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B0DD419-9593-4107-95E0-E5FE74610110}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0DD419-9593-4107-95E0-E5FE74610110}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0DD419-9593-4107-95E0-E5FE74610110}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0DD419-9593-4107-95E0-E5FE74610110}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {70AE1C98-8635-49DF-A16F-E75FD4F1CBC5}
+	EndGlobalSection
+EndGlobal
