@@ -8,8 +8,6 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
-import { LogTextColor } from "@spt-aki/models/spt/logging/LogTextColor";
-import { LogBackgroundColor } from "@spt-aki/models/spt/logging/LogBackgroundColor";
 
 class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 {
@@ -39,11 +37,11 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
-        this.logger.info(`loading: ${this.pkg.author}: ${this.pkg.name} ${this.pkg.version}`);
         this.cfg = require("./config.json");
         
         this.addRoute()
     }
+    
     public postAkiLoad(container: DependencyContainer): void {
         this.database = container.resolve<DatabaseServer>("DatabaseServer");
         this.table = this.database.getTables();

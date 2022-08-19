@@ -1,24 +1,20 @@
 import type { DependencyContainer } from "tsyringe";
 import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
-import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
 import { JsonUtil } from "@spt-aki/utils/JsonUtil"
-import { InitialModLoader } from "@spt-aki/loaders/InitialModLoader"
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 
 class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
 {
-    private logger: ILogger;
     private database: DatabaseServer;
     private router: DynamicRouterModService;
     private json: JsonUtil;
     private modLoader: PreAkiModLoader;
     private table: IDatabaseTables;
     private globalLocale: { [x: string]: { interface: { [x: string]: any; }; }; };
-    private mod: { name: string; version: any; author: any;};
     private translations: { [x: string]: any; };
     private items: { [x: string]: any; };
     private path: { resolve: (arg0: string) => any; };
@@ -27,11 +23,9 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
     public preAkiLoad(container: DependencyContainer)
     {
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
-        this.logger = container.resolve<ILogger>("WinstonLogger");
         this.json = container.resolve<JsonUtil>("JsonUtil");
         this.mod = require("../package.json");
         this.translations = require("../res/translations.json");
-        this.logger.info(`Loading: ${this.mod.author}: ${this.mod.name} ${this.mod.version}`);
         this.path = require("path");
         this.cfg = require("./config.json");
         this.hookRoutes();
@@ -76,25 +70,12 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
                     url: "/MunitionsExpert/GetInfo",
                     action: (url, info, sessionId, output) =>
                     {
-                        return this.getModInfo(url, info, sessionId, output)
+                        return this.json.serialize(this.path.resolve(this.modLoader.getModPath("Faupi-MunitionsExpert 1.6.0")));
                     }
                 }
             ],
             "MunitionsExpert"
         )
-    }
-
-    getModInfo(url: string, info: any, sessionID: string, output: string)
-    {
-        const modOutput = {
-            status: 1,
-            data: {}
-        };
-
-        modOutput.data = {...this.mod, ...{path: this.path.resolve(this.modLoader.getModPath(this.mod.name))}};
-        modOutput.status = 0;
-        
-        return this.json.serialize(modOutput);
     }
 
     changeBulletColour()
@@ -125,3 +106,4 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
 }
 
 module.exports = { mod: new MunitionsExpert() };
+

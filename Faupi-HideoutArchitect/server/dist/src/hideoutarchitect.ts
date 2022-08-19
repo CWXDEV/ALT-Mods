@@ -1,7 +1,6 @@
 import type { DependencyContainer } from "tsyringe";
 import { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
 import { IPostAkiLoadMod } from "@spt-aki/models/external/IPostAkiLoadMod";
-import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
 import { DynamicRouterModService } from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService"
 import { DatabaseServer } from "@spt-aki/servers/DatabaseServer"
 import { JsonUtil } from "@spt-aki/utils/JsonUtil"
@@ -10,7 +9,6 @@ import { PreAkiModLoader } from "@spt-aki/loaders/PreAkiModLoader";
 class HideoutArchitect implements IPreAkiLoadMod, IPostAkiLoadMod
 {
     private path;
-    private logger: ILogger;
     private database: DatabaseServer;
     private router: DynamicRouterModService;
     private json: JsonUtil;
@@ -22,13 +20,11 @@ class HideoutArchitect implements IPreAkiLoadMod, IPostAkiLoadMod
 
     public preAkiLoad(container: DependencyContainer)
     {
-        this.logger = container.resolve<ILogger>("WinstonLogger");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.path = require("path");
         this.json = container.resolve<JsonUtil>("JsonUtil");
         this.mod = require("../package.json");
         this.translations = require("../res/translations.json");
-        this.logger.info(`Loading: ${this.mod.author}: ${this.mod.name} - ${this.mod.version}`);
         this.hookRoutes();
 
     }
