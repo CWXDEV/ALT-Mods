@@ -7,8 +7,8 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using UnityEngine;
-using Hideout = GClass1659;
-using Requirement = GClass1683;
+using Hideout = GClass1671;
+using Requirement = GClass1695;
 
 namespace HideoutArchitect
 {

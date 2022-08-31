@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using Aki.Reflection.Patching;
+using System;
 
 namespace HideoutArchitect
 {
@@ -68,17 +69,20 @@ namespace HideoutArchitect
             private static void PatchPostfix(ref GridItemView __instance, Item item)
             {
                 if (hideoutPanels.ContainsKey(__instance)) return;
+
                 try
                 {
                     QuestItemViewPanel questIconPanel = typeof(ItemView).GetField("_questsItemViewPanel", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance) as QuestItemViewPanel;
+                    
                     HideoutItemViewPanel hideoutIconPanel = GameObject.Instantiate(Resources.GetEditOffsetWindowTemplate(questIconPanel), questIconPanel.transform.parent);
                     hideoutIconPanel.transform.SetAsFirstSibling();
                     hideoutPanels[__instance] = hideoutIconPanel;
 
                     hideoutIconPanel.gameObject.SetActive(true);
                 }
-                catch
+                catch (Exception message)
                 {
+                    Debug.LogError($"Hideout Panel issue: {message}");
                     // Item doesn't have a "quest item" icon panel, so it's probably static
                 }
             }

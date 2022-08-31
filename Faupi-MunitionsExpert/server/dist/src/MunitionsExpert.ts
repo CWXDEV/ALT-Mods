@@ -24,7 +24,6 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
     {
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.json = container.resolve<JsonUtil>("JsonUtil");
-        this.mod = require("../package.json");
         this.translations = require("../res/translations.json");
         this.path = require("path");
         this.cfg = require("./config.json");

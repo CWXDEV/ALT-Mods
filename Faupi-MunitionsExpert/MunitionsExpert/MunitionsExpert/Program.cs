@@ -10,14 +10,14 @@ using Comfort.Common;
 using Newtonsoft.Json;
 using Aki.Common.Utils;
 
-using ItemAttribute = GClass2185;
-using ServerSettings = GClass1150;
+using ItemAttribute = GClass2197;
+using ServerSettings = GClass1162;
 using static MunitionsExpert.Attributes;
 using Aki.Common.Http;
 
 namespace MunitionsExpert
 {
-    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.2.0")]
+    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.3")]
     public class Plugin : BaseUnityPlugin
     {
         public static Dictionary<Enum, Sprite> iconCache = new Dictionary<Enum, Sprite>();
@@ -111,7 +111,7 @@ namespace MunitionsExpert
                     int ratedClass = 0;
 
                     if (!Singleton<ServerSettings>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
-                    ServerSettings.GClass1197.GClass1198[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
+                    ServerSettings.GClass1209.GClass1210[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
                     for (int i = 0; i < classes.Length; i++)
                     {
                         if (classes[i].Resistance > template.PenetrationPower) continue;

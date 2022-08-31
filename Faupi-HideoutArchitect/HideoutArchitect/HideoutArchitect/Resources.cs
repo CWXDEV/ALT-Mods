@@ -18,6 +18,7 @@ namespace HideoutArchitect
 
         public static HideoutItemViewPanel GetEditOffsetWindowTemplate(QuestItemViewPanel original = null)
         {
+
             if (hideoutItemViewTemplate != null)
                 return hideoutItemViewTemplate;
 
@@ -51,7 +52,7 @@ namespace HideoutArchitect
             hideoutItem.iconImage = typeof(QuestItemViewPanel).GetField("_questIconImage", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(questItem) as Image;
             hideoutItem.tooltipLabel = typeof(QuestItemViewPanel).GetField("_questItemLabel", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(questItem) as TextMeshProUGUI;
             hideoutItem.tooltip = typeof(QuestItemViewPanel).GetField("simpleTooltip_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(questItem) as SimpleTooltip;
-            hideoutItem.tooltipString = typeof(QuestItemViewPanel).GetField("string_4", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(questItem) as string;
+            //hideoutItem.tooltipString = typeof(QuestItemViewPanel).GetField("string_4", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(questItem) as string;
         }
 
 
@@ -62,16 +63,18 @@ namespace HideoutArchitect
                 uwr.SendWebRequest();
 
                 while (!uwr.isDone)
+                {
                     await Task.Delay(100);
+                }
 
                 if (uwr.responseCode != 200)
                 {
-                    //Logger.Error($"[{HideoutArchitect.ModInfo.name}] Request error {uwr.responseCode}: {uwr.error}");
+                    //Debug.LogError($"[{HideoutArchitect.ModInfo.name}] Request error {uwr.responseCode}: {uwr.error}");
                 }
                 else
                 {
                     // Get downloaded asset bundle
-                    //Logger.Info($"[{HideoutArchitect.ModInfo.name}] Retrieved texture! {id.ToString()} from {path}");
+                    //Debug.LogError($"[{HideoutArchitect.ModInfo.name}] Retrieved texture! {id} from {path}");
                     Texture2D cachedTexture = DownloadHandlerTexture.GetContent(uwr);
                     iconCache.Add(id, Sprite.Create(cachedTexture, new Rect(0, 0, cachedTexture.width, cachedTexture.height), new Vector2(0, 0)));
                 }

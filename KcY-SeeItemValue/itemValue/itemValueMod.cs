@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
-using ItemAttribute = GClass2185;
+using ItemAttribute = GClass2197;
 
 namespace itemValueMod
 {

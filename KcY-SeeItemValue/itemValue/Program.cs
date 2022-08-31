@@ -1,9 +1,8 @@
 ﻿using BepInEx;
-using HarmonyLib;
 
 namespace itemValueMod
 {
-    [BepInPlugin("com.KcY.SeeItemValue", "KcY-SeeItemValue", "1.2.0")]
+    [BepInPlugin("com.KcY.SeeItemValue", "KcY-SeeItemValue", "1.4.2")]
     public class Plugin : BaseUnityPlugin
     {
         private void Awake()

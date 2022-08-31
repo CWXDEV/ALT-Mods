@@ -36,7 +36,7 @@ namespace HideoutArchitect
         public static ModConfiguration Load(ModInformation ModInfo)
         {
             string path = VFS.Combine(ModInfo.path, "config.jsonc");
-            Debug.LogError($"Loading config from '{path}'");
+            //Debug.LogError($"Loading config from '{path}'");
 
             ModConfiguration ModConfig;
 
