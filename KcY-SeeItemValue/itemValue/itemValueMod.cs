@@ -3,9 +3,11 @@ using Aki.Common.Utils;
 using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Reflection;
 using ItemAttribute = GClass2197;
+using System.Net;
+using System.Threading;
+using UnityEngine;
 
 namespace itemValueMod
 {
@@ -16,54 +18,116 @@ namespace itemValueMod
             var atts = new List<ItemAttribute>();
             atts.AddRange(__instance.Attributes);
             __instance.Attributes = atts;
-            ItemAttribute attr = new ItemAttribute(EItemAttributeId.MoneySum)
+
+            ItemAttribute attr1 = new ItemAttribute(EItemAttributeId.MoneySum)
             {
-                StringValue = new Func<string>(__instance.ValueStr),
-                Name = "RUB ₽",
+                StringValue = new Func<string>(__instance.TraderPrice),
+                FullStringValue = new Func<string>(__instance.TraderName),
+                Name = "TRADER",
                 DisplayType = new Func<EItemAttributeDisplayType>(() => EItemAttributeDisplayType.Compact)
             };
-            __instance.Attributes.Add(attr);
+
+            __instance.Attributes.Add(attr1);
         }
     }
 
     public static class ValueExtension
     {
-        static public Dictionary<string, JsonClass> dict = new Dictionary<string, JsonClass>();
+        static public Dictionary<string, JsonClass> itemDictionary = new Dictionary<string, JsonClass>();
         static object lockObject = new object();
 
-        public static double Value(this Item item)
+        public static JsonClass GetData(String itemId)
         {
-            var template = item.Template;
-            string itemId = template._id;
+            var json = RequestHandler.GetJson($"/cwx/seeitemvalue/{itemId}");
+            var jsonClass = Json.Deserialize<JsonClass>(json);
+
+            itemDictionary.Add(itemId, jsonClass);
+
+            return jsonClass;
+        }
+
+        public static string TraderPrice(this Item item)
+        {
+            string itemId = item.Template._id;
             JsonClass jsonClass;
-            double _price;
-            double editedPrice;
-            double editedMulti;
-            double originalMax;
+            bool lockWasTaken = false;
 
-            lock (lockObject)
+            try
             {
-                if (!dict.TryGetValue(template._id, out jsonClass))
-                {
-                    var json = RequestHandler.GetJson($"/cwx/seeitemvalue/{itemId}");
-                    jsonClass = Json.Deserialize<JsonClass>(json);
+                Monitor.Enter(lockObject, ref lockWasTaken);
 
-                    dict.Add(template._id, jsonClass);
+                if(!itemDictionary.TryGetValue(itemId, out jsonClass))
+                {
+                    jsonClass = GetData(item.Template._id);
+                }
+            }
+            catch (WebException)
+            {
+                return $"[SeeItemValue] Issue happened whilst getting Item from server";
+            }
+            finally
+            {
+                if (lockWasTaken)
+                {
+                    Monitor.Exit(lockObject);
                 }
             }
 
-            editedPrice = jsonClass.price;
-            editedMulti = jsonClass.multiplier;
-            originalMax = jsonClass.originalMax;
-            //Debug.LogError($" editedPrice: {editedPrice}");
-            //Debug.LogError($" editedMulti: {editedMulti}");
-            //Debug.LogError($" originalMax: {originalMax}");
+
+            double alteredPrice = DurabilityCheck(item, jsonClass);
+
+            Debug.LogError($"price: {alteredPrice}");
+
+            double _price = alteredPrice * jsonClass.multiplier;
+
+            Debug.LogError($"price: {jsonClass.multiplier}");
+            Debug.LogError($"price: {_price}");
+
+            return Math.Round(_price).ToString();
+        }
+
+        public static string TraderName(this Item item)
+        {
+            string itemId = item.Template._id;
+            JsonClass jsonClass;
+            bool lockWasTaken = false;
+
+            try
+            {
+                Monitor.Enter(lockObject, ref lockWasTaken);
+
+                if (!itemDictionary.TryGetValue(itemId, out jsonClass))
+                {
+                    jsonClass = GetData(item.Template._id);
+                }
+            }
+            catch (WebException)
+            {
+                return $"[SeeItemValue] Issue happened whilst getting Item from server";
+            }
+            finally
+            {
+                if (lockWasTaken)
+                {
+                    Monitor.Exit(lockObject);
+                }
+            }
+
+            return jsonClass.traderName;
+        }
+
+        public static double DurabilityCheck(this Item item, JsonClass jsonClass)
+        {
+            double editedPrice = jsonClass.price;
+            double originalMax = jsonClass.originalMax;
+
+            Debug.LogError($"price: {jsonClass.price}");
+
 
             var medKit = item.GetItemComponent<MedKitComponent>();
             if (medKit != null && medKit.HpResource != 0 && medKit.MaxHpResource != 0)
             {
                 editedPrice *= medKit.HpResource / medKit.MaxHpResource;
-                //Debug.LogError($" MedKitComponent: {editedPrice}");
             }
 
             var repair = item.GetItemComponent<RepairableComponent>();
@@ -72,7 +136,6 @@ namespace itemValueMod
                 if (repair.Durability > 0)
                 {
                     editedPrice *= repair.Durability / originalMax;
-                    //Debug.LogError($" RepairableComponent: {editedPrice}");
                 }
                 else
                 {
@@ -84,7 +147,6 @@ namespace itemValueMod
             if (dogtag != null && dogtag.Level != 0)
             {
                 editedPrice *= dogtag.Level;
-                //Debug.LogError($" DogtagComponent: {editedPrice}");
             }
 
             var repairKit = item.GetItemComponent<RepairKitComponent>();
@@ -93,7 +155,6 @@ namespace itemValueMod
                 if (repairKit.Resource > 0)
                 {
                     editedPrice *= repairKit.Resource / originalMax;
-                    //Debug.LogError($" RepairKitComponent: {editedPrice}");
                 }
                 else
                 {
@@ -104,11 +165,8 @@ namespace itemValueMod
             var resource = item.GetItemComponent<ResourceComponent>();
             if (resource != null && resource.Value != 0 && resource.MaxResource != 0)
             {
-                //Debug.LogError($" ResourceComponent.value: {resource.Value}");
-                //Debug.LogError($" ResourceComponent.MaxResource: {resource.MaxResource}");
 
                 editedPrice *= resource.Value / resource.MaxResource;
-                //Debug.LogError($" ResourceComponent: {editedPrice}");
             }
 
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
@@ -117,7 +175,6 @@ namespace itemValueMod
                 GInterface208 ginterface208_0 = (GInterface208)foodDrink.GetType().GetField("ginterface208_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
                 editedPrice *= foodDrink.HpPercent / ginterface208_0.MaxResource;
-                //Debug.LogError($" FoodDrinkComponent: {editedPrice}");
             }
 
             var keys = item.GetItemComponent<KeyComponent>();
@@ -131,7 +188,6 @@ namespace itemValueMod
                     double multi = totalMinusUsed / ginterface212_0.MaximumNumberOfUsage;
 
                     editedPrice *= multi;
-                    //Debug.LogError($" KeyComponent: {editedPrice}");
                 }
             }
 
@@ -139,20 +195,11 @@ namespace itemValueMod
             if (sideEffect != null && sideEffect.Value != 0)
             {
                 editedPrice *= sideEffect.Value / sideEffect.MaxResource;
-                //Debug.LogError($" SideEffectComponent: {editedPrice}");
             }
 
-            _price = editedPrice * editedMulti;
-            //Debug.LogError($"ENDING PRICE: {_price}");
+            Debug.LogError($"price: {jsonClass.price}");
 
-            return _price;
-        }
-        public static string ValueStr(this Item item)
-        {
-            var result = Math.Round(item.Value()).ToString();
-            //Debug.LogError($"price, rounded to string: {result}");
-
-            return result;
+            return editedPrice;
         }
     }
 }

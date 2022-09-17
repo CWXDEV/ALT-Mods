@@ -1,10 +1,10 @@
 {
     "name": "HideoutArchitect",
-    "version": "1.6.3",
+    "version": "1.6.5",
     "main": "./src/hideoutarchitect.js",
     "license": "NCSA Open Source",
     "author": "Faupi",
-    "akiVersion": "3.2.2",
+    "akiVersion": "3.2.3",
     "updated by": "CWX",
     "scripts": {
         "setup:environment": "npm i",

@@ -1,10 +1,10 @@
 {
     "name": "SeeItemValue",
     "author": "KcY",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "license": "NCSA Open Source",
     "main": "src/mod.js",
-    "akiVersion": "3.2.2",
+    "akiVersion": "3.2.3",
     "UpdatedBy": "CWX",
     "scripts": {
         "setup:environment": "npm i",

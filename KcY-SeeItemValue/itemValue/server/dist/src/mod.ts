@@ -8,32 +8,29 @@ import { HttpResponseUtil } from "@spt-aki/utils/HttpResponseUtil"
 import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
 import { ITemplateItem } from "@spt-aki/models/eft/common/tables/ITemplateItem";
 import { IHandbookBase } from "@spt-aki/models/eft/common/tables/IHandbookBase";
+import { ITraderBase } from "@spt-aki/models/eft/common/tables/ITrader";
 
 class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 {
-    
-    private pkg;
     private logger: ILogger;
-    private database: DatabaseServer;
     private router: DynamicRouterModService;
     private http: HttpResponseUtil;
     private items: Record<string, ITemplateItem>;
     private table: IDatabaseTables;
     private livePrice;
     private handbookTable: IHandbookBase;
-    private therapist;
-    private ragman;
-    private jaeger;
-    private mechanic;
-    private prapor;
-    private peacekeeper;
-    private skier; 
-    private fence;
-    private tradersArr;
+    private therapist: ITraderBase;
+    private ragman: ITraderBase;
+    private jaeger: ITraderBase;
+    private mechanic: ITraderBase;
+    private prapor: ITraderBase;
+    private peacekeeper: ITraderBase;
+    private skier: ITraderBase; 
+    private fence: ITraderBase;
+    private tradersArr: ITraderBase[];
     private cfg;
 
     public preAkiLoad(container: DependencyContainer): void {
-        this.pkg = require("../package.json");
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
@@ -43,8 +40,8 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
     }
     
     public postAkiLoad(container: DependencyContainer): void {
-        this.database = container.resolve<DatabaseServer>("DatabaseServer");
-        this.table = this.database.getTables();
+        this.table = container.resolve<DatabaseServer>("DatabaseServer").getTables();
+
         this.items = this.table.templates.items;
         this.livePrice = this.table.templates.prices;
         this.handbookTable = this.table.templates.handbook;
@@ -87,134 +84,123 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 
     private getIdPrice(id: string): any
     {
-        let sPrice = 1;
-        let sMutli = 1;
-        let parentId = "";
-        let origiMax = 1;
-
         let result = {
             multiplier: 1,
             price: 1,
-            originalMax: 1
+            originalMax: 1,
+            traderName: "Default"
         };
 
+        // if ID is roubles - return 1
         if (id === "5449016a4bdc2d6f028b456f")
         {
-            this.debugMode("Item was Roubles - returning 1 as price", "yellow");
+            this.debugMode("Item was Roubles - returning 1 as price");
             return result;
         }
 
-        if (this.cfg.TraderPrice === false)
+        // if config is set to false (live price)
+        if (!this.cfg.TraderPrice)
         {
-            result.multiplier = 1;
-            result.price = this.livePrice[id];
-            result.originalMax = 1;
+            result.traderName = "Flea";
 
+            // return price if it exists else return 1
             if (this.livePrice[id])
             {
-                this.debugMode("Config setting false for traders - returning livePrice AVG", "yellow");
-                return result 
-            }
-        }
+                result.price = this.livePrice[id];
 
-        for (const i in this.handbookTable.Items)
-        {
-            if (this.handbookTable.Items[i].Id === id)
-            {
-                parentId = this.handbookTable.Items[i].ParentId;
-                this.debugMode(`ID was found in handbook - parentID = ${parentId}`, "yellow");
-
-                sMutli = this.getBestTraderMulti(parentId);
-                this.debugMode(`Multi returned from getBestTraderMulti method was = ${sMutli}`, "yellow");
-
-                sPrice = this.handbookTable.Items[i].Price;
-                this.debugMode(`Price taken from handbook.items =  ${sPrice}`, "yellow");
-
-                origiMax = this.getOrigiDura(id);
-                this.debugMode(`Original max is: ${origiMax}`, "yellow");
-
-                result.multiplier = sMutli;
-                result.price = sPrice;
-                result.originalMax = origiMax;
-
-                this.debugMode(`Object built to return to client =  ${result.multiplier} and ${result.price}`, "yellow");
+                this.debugMode(`Config setting false for traders - returning livePrice AVG found`);
                 return result;
-            } 
+            }
+            else
+            {
+                this.debugMode(`Config setting false for traders - unable to find livePrice - returning 1`);
+                return result;
+            }
         }
 
-        this.debugMode(`No item found in handbook, returning default ${sPrice}`, "yellow");
-        return result;
-    }
-
-    private getBestTraderMulti(parentId: string): number
-    {
-        let traderSellCat = "";
-        let altTraderSellCat = "";
-        let altAltTraderSellCat = "";
-        
-        for (const i in this.handbookTable.Categories)
+        // if config is set to true (trader prices)
+        if (this.cfg.TraderPrice)
         {
-            if (this.handbookTable.Categories[i].Id === parentId)
+            // search through all items in handbook
+            let item = this.handbookTable.Items.find(x => x.Id === id);
+
+            // if ID is found in handbook else returns default result object
+            if (item)
             {
-                this.debugMode("Found category from item parent ID", "yellow");
-
-                traderSellCat = this.handbookTable.Categories[i].Id;
-                this.debugMode(`Storing trader sell category = ${traderSellCat}`, "yellow");
-                
-                altTraderSellCat = this.handbookTable.Categories[i].ParentId;
-                this.debugMode(`Storing trader Alt sell category = ${altTraderSellCat}`, "yellow");
-
-                for (const a in this.handbookTable.Categories)
+                // gets price of item from handbook else return 1
+                if (item.Price)
                 {
-                    if (this.handbookTable.Categories[a].Id === altTraderSellCat)
-                    {
-                        altAltTraderSellCat = this.handbookTable.Categories[a].ParentId;
-                        this.debugMode(`Alt sell category has parent, storing that = ${altAltTraderSellCat}`, "yellow");
-
-                        break;
-                    }
+                    result.price = item.Price;
+                    this.debugMode(`Price found in handbook - ${result.price}`);
                 }
-                break;
+                else
+                {
+                    result.price = 1;
+                    this.debugMode(`unable to find price in handbook for ID - ${id}`);
+                }
+
+                // gets parent of ID from handbook and trader multiplier else returns "" and 1
+                if (item.ParentId)
+                {
+                    this.debugMode(`ParentID found in handbook - ${item.ParentId}`);
+
+                    const { k1, k2 } = this.getBestTraderMulti(item.ParentId);
+
+                    result.multiplier = k1;
+                    result.traderName = k2;
+
+                    this.debugMode(`Best multiplier is ${result.multiplier}`);
+                    this.debugMode(`Best Trader name is ${result.traderName}`);
+                }
+                else
+                {
+                    result.multiplier = 1;
+                    this.debugMode(`Unable to find ParentID in handbook for ID - ${id}`);
+                    this.debugMode(`Returning 1 for multiplier`);
+                }
+
+                // gets original max durability of resource type for item
+                result.originalMax = this.getOrigiDura(id);
+                this.debugMode(`Original max is ${result.originalMax}`);
+
+                return result;
+            }
+            else
+            {
+                this.debugMode(`No item found in handbook, returning default result`);
+                return result;
             }
         }
-
-        for (let iter = 0; iter < this.tradersArr.length; iter++)
-        {
-            if (this.tradersArr[iter].sell_category.includes(traderSellCat))
-            {
-                this.debugMode(`base sell category found for trader number ${iter} - category is = ${traderSellCat}`, "yellow");
-                return this.getBestTraderInfo(iter);
-            }
-
-            if (this.tradersArr[iter].sell_category.includes(altTraderSellCat))
-            {
-                this.debugMode(`alt sell category found for trader number ${iter} - category is = ${altTraderSellCat}`, "yellow");
-                return this.getBestTraderInfo(iter);
-            }
-
-            if (this.tradersArr[iter].sell_category.includes(altAltTraderSellCat))
-            {
-                this.debugMode(`alt alt sell category found for trader number ${iter} - category is = ${altAltTraderSellCat}`, "yellow");
-                return this.getBestTraderInfo(iter);
-            }
-        }
-        return 1;
     }
 
-    private getBestTraderInfo(trader: number): number
+    private getBestTraderMulti(parentId: string): any
     {
-        let traderMulti = 0.54;
-        let traderName = "";
+        let firstCat = this.handbookTable.Categories.find(x => x.Id === parentId);
+        let secondCat = firstCat.ParentId
+        let thirdCat = this.handbookTable.Categories.find(x => x.Id === secondCat).ParentId;
 
-        traderMulti = (100 - this.tradersArr[trader].loyaltyLevels[0].buy_price_coef) / 100;
-        this.debugMode(`Trader mutli for above is = ${traderMulti}`, "yellow");
-        traderName = this.tradersArr[trader].nickname;
-        this.debugMode(`Trader name is =  ${traderName}`, "yellow");
+        if (firstCat.Id || secondCat || thirdCat)
+        {
+            for (let i in this.tradersArr)
+            {
+                if (this.tradersArr[i].sell_category.includes(firstCat.Id) || 
+                    this.tradersArr[i].sell_category.includes(secondCat) || 
+                    this.tradersArr[i].sell_category.includes(thirdCat))
+                {
+                    let multi = (100 - this.tradersArr[i].loyaltyLevels[0].buy_price_coef) / 100;
+                    let name = this.tradersArr[i].nickname;
 
-        return traderMulti;
+                    return {k1: multi, k2: name};
+                }
+            }
+        }
+        else
+        {
+            return 1;
+        }
     }
 
-    private debugMode(text: string, color: string): void
+    private debugMode(text: string, color: string = `yellow`): void
     {
         if (this.cfg.DebugMode)
         {
@@ -248,6 +234,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
         {
             return this.items[item]._props.MaxRepairResource;
         }
+
         return 1;
     }
 }

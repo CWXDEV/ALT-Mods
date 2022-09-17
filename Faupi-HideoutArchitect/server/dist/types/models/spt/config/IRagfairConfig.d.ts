@@ -12,6 +12,7 @@ export interface Sell {
     chance: Chance;
     time: Time;
     reputation: Reputation;
+    simulatedSellHours: number;
 }
 export interface Chance {
     base: number;
@@ -27,11 +28,18 @@ export interface Reputation {
     gain: number;
     loss: number;
 }
+export declare class OfferAdjustment {
+    maxPriceDifferenceBelowHandbookPercent: number;
+    handbookPriceMultipier: number;
+    priceThreshholdRub: number;
+}
 export interface Dynamic {
+    offerAdjustment: OfferAdjustment;
     expiredOfferThreshold: number;
     offerItemCount: MinMax;
     price: MinMax;
     presetPrice: MinMax;
+    showDefaultPresetsOnly: boolean;
     endTimeSeconds: MinMax;
     condition: Condition;
     stackablePercent: MinMax;

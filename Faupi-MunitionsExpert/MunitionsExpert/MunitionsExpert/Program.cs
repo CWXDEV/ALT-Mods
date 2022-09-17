@@ -17,7 +17,7 @@ using Aki.Common.Http;
 
 namespace MunitionsExpert
 {
-    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.3")]
+    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.4")]
     public class Plugin : BaseUnityPlugin
     {
         public static Dictionary<Enum, Sprite> iconCache = new Dictionary<Enum, Sprite>();

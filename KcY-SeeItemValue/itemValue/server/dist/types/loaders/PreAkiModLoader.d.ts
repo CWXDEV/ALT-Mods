@@ -44,9 +44,9 @@ export declare class PreAkiModLoader implements IModLoader {
      */
     protected getDuplicates(stringArray: string[]): string[];
     /**
-     *
-     * @param mods Get an array of broken/invalid mods by name
-     * @returns Mod names array
+     * Get an array of mods with errors that prevent them from working with SPT
+     * @param mods mods to validate
+     * @returns Mod names as array
      */
     protected getBrokenMods(mods: string[]): string[];
     /**
@@ -68,7 +68,12 @@ export declare class PreAkiModLoader implements IModLoader {
     protected addMod(mod: string): Promise<void>;
     protected areModDependenciesFulfilled(pkg: IPackageJsonData, loadedMods: Record<string, IPackageJsonData>): boolean;
     protected isModCompatible(mod: IPackageJsonData, loadedMods: Record<string, IPackageJsonData>): boolean;
-    protected validMod(mod: string): boolean;
+    /**
+     * Validate a mod passes a number of checks
+     * @param modName name of mod in /mods/ to validate
+     * @returns true if valid
+     */
+    protected validMod(modName: string): boolean;
     protected getLoadOrderRecursive(mod: string, result: Record<string, string>, visited: Record<string, string>): void;
     protected getLoadOrder(mods: Record<string, ModLoader.IMod>): Record<string, string>;
     getContainer(): DependencyContainer;
