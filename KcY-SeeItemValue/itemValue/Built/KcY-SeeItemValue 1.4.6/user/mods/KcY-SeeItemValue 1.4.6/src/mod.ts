@@ -103,6 +103,9 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
         {
             result.traderName = "Flea";
 
+            result.originalMax = this.getOrigiDura(id);
+            this.debugMode(`Original max is ${result.originalMax}`);
+
             // return price if it exists else return 1
             if (this.livePrice[id])
             {
@@ -175,28 +178,35 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 
     private getBestTraderMulti(parentId: string): any
     {
-        let firstCat = this.handbookTable.Categories.find(x => x.Id === parentId);
-        let secondCat = firstCat.ParentId
-        let thirdCat = this.handbookTable.Categories.find(x => x.Id === secondCat).ParentId;
+        let firstCat = this.handbookTable?.Categories?.find(x => x.Id === parentId);
+        let secondCat = firstCat?.ParentId
+        let thirdCat = this.handbookTable?.Categories?.find(x => x.Id === secondCat)?.ParentId;
+
+        let result = {k1: 1, k2: "Unknown"};
 
         if (firstCat.Id || secondCat || thirdCat)
         {
             for (let i in this.tradersArr)
             {
-                if (this.tradersArr[i].sell_category.includes(firstCat.Id) || 
-                    this.tradersArr[i].sell_category.includes(secondCat) || 
-                    this.tradersArr[i].sell_category.includes(thirdCat))
+                if (this.tradersArr[i]?.sell_category?.includes(firstCat.Id) || 
+                    this.tradersArr[i]?.sell_category?.includes(secondCat) || 
+                    this.tradersArr[i]?.sell_category?.includes(thirdCat))
                 {
-                    let multi = (100 - this.tradersArr[i].loyaltyLevels[0].buy_price_coef) / 100;
-                    let name = this.tradersArr[i].nickname;
+                    let multi = (100 - this.tradersArr[i]?.loyaltyLevels[0]?.buy_price_coef) / 100;
+                    let name = this.tradersArr[i]?.nickname;
 
-                    return {k1: multi, k2: name};
+                    result.k1 = multi;
+                    result.k2 = name;
+
+                    return result;
                 }
             }
+
+            return result;
         }
         else
         {
-            return 1;
+            return result;
         }
     }
 

@@ -1,7 +1,7 @@
 {
     "name": "SeeItemValue",
     "author": "KcY",
-    "version": "1.4.4",
+    "version": "1.4.6",
     "license": "NCSA Open Source",
     "main": "src/mod.js",
     "akiVersion": "3.2.3",
