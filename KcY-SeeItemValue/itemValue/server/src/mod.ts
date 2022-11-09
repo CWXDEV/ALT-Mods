@@ -28,20 +28,20 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
     private skier: ITraderBase; 
     private fence: ITraderBase;
     private tradersArr: ITraderBase[];
-    private cfg;
+    private cfg: { TraderPrice: any; DebugMode: any; };
 
-    public preAkiLoad(container: DependencyContainer): void {
+    public preAkiLoad(container: DependencyContainer): void 
+    {
         this.router = container.resolve<DynamicRouterModService>("DynamicRouterModService");
         this.logger = container.resolve<ILogger>("WinstonLogger");
         this.http = container.resolve<HttpResponseUtil>("HttpResponseUtil");
         this.cfg = require("./config.json");
-        
         this.addRoute()
     }
     
-    public postAkiLoad(container: DependencyContainer): void {
+    public postAkiLoad(container: DependencyContainer): void 
+    {
         this.table = container.resolve<DatabaseServer>("DatabaseServer").getTables();
-
         this.items = this.table.templates.items;
         this.livePrice = this.table.templates.prices;
         this.handbookTable = this.table.templates.handbook;
@@ -84,7 +84,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 
     private getIdPrice(id: string): any
     {
-        let result = {
+        const result = {
             multiplier: 1,
             price: 1,
             originalMax: 1,
@@ -111,12 +111,12 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
             {
                 result.price = this.livePrice[id];
 
-                this.debugMode(`Config setting false for traders - returning livePrice AVG found`);
+                this.debugMode("Config setting false for traders - returning livePrice AVG found");
                 return result;
             }
             else
             {
-                this.debugMode(`Config setting false for traders - unable to find livePrice - returning 1`);
+                this.debugMode("Config setting false for traders - unable to find livePrice - returning 1");
                 return result;
             }
         }
@@ -125,7 +125,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
         if (this.cfg.TraderPrice)
         {
             // search through all items in handbook
-            let item = this.handbookTable.Items.find(x => x.Id === id);
+            const item = this.handbookTable.Items.find(x => x.Id === id);
 
             // if ID is found in handbook else returns default result object
             if (item)
@@ -159,7 +159,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
                 {
                     result.multiplier = 1;
                     this.debugMode(`Unable to find ParentID in handbook for ID - ${id}`);
-                    this.debugMode(`Returning 1 for multiplier`);
+                    this.debugMode("Returning 1 for multiplier");
                 }
 
                 // gets original max durability of resource type for item
@@ -170,7 +170,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
             }
             else
             {
-                this.debugMode(`No item found in handbook, returning default result`);
+                this.debugMode("No item found in handbook, returning default result");
                 return result;
             }
         }
@@ -178,22 +178,22 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
 
     private getBestTraderMulti(parentId: string): any
     {
-        let firstCat = this.handbookTable?.Categories?.find(x => x.Id === parentId);
-        let secondCat = firstCat?.ParentId
-        let thirdCat = this.handbookTable?.Categories?.find(x => x.Id === secondCat)?.ParentId;
+        const firstCat = this.handbookTable?.Categories?.find(x => x.Id === parentId);
+        const secondCat = firstCat?.ParentId
+        const thirdCat = this.handbookTable?.Categories?.find(x => x.Id === secondCat)?.ParentId;
 
-        let result = {k1: 1, k2: "Unknown"};
+        const result = {k1: 1, k2: "Unknown"};
 
         if (firstCat.Id || secondCat || thirdCat)
         {
-            for (let i in this.tradersArr)
+            for (const i in this.tradersArr)
             {
                 if (this.tradersArr[i]?.sell_category?.includes(firstCat.Id) || 
                     this.tradersArr[i]?.sell_category?.includes(secondCat) || 
                     this.tradersArr[i]?.sell_category?.includes(thirdCat))
                 {
-                    let multi = (100 - this.tradersArr[i]?.loyaltyLevels[0]?.buy_price_coef) / 100;
-                    let name = this.tradersArr[i]?.nickname;
+                    const multi = (100 - this.tradersArr[i]?.loyaltyLevels[0]?.buy_price_coef) / 100;
+                    const name = this.tradersArr[i]?.nickname;
 
                     result.k1 = multi;
                     result.k2 = name;
@@ -210,7 +210,7 @@ class SeeItemValue implements IPreAkiLoadMod, IPostAkiLoadMod
         }
     }
 
-    private debugMode(text: string, color: string = `yellow`): void
+    private debugMode(text: string, color = "yellow"): void
     {
         if (this.cfg.DebugMode)
         {
