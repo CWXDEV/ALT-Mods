@@ -4,7 +4,7 @@ using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ItemAttribute = GClass2197;
+using ItemAttribute = GClass2203;
 using System.Net;
 using System.Threading;
 using UnityEngine;
