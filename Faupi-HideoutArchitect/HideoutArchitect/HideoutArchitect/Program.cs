@@ -7,12 +7,12 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using UnityEngine;
-using Hideout = GClass1671;
-using Requirement = GClass1695;
+using Hideout = GClass1677;
+using Requirement = GClass1701;
 
 namespace HideoutArchitect
 {
-    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "2.0.0")]
+    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.6.7")]
     public class HideoutArchitect : BaseUnityPlugin
     {
         private void Awake()
