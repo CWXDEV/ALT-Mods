@@ -3,7 +3,7 @@ using EFT.InventoryLogic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ItemAttributes = GClass2203;
+using ItemAttributes = GClass2210;
 
 namespace MunitionsExpert
 {

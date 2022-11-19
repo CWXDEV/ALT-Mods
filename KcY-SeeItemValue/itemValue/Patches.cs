@@ -3,10 +3,10 @@ using System.Reflection;
 using Aki.Reflection.Patching;
 using EFT.InventoryLogic;
 using Ammo = BulletClass;
-using Grenade = GClass2192;
-using GrenadeTemplate = GClass2085;
-using SecureContainer = GClass2138;
-using SecureContainerTemplate = GClass2046;
+using Grenade = GClass2199;
+using GrenadeTemplate = GClass2091;
+using SecureContainer = GClass2144;
+using SecureContainerTemplate = GClass2051;
 
 namespace itemValueMod
 {

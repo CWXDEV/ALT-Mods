@@ -27,6 +27,8 @@ export interface IBotConfig extends IBaseConfig {
     maxBotCap: Record<string, number>;
     /** How many stacks of secret ammo should a bot have in its bot secure container */
     secureContainerAmmoStackCount: number;
+    /** Batch generation size when type not available in cache */
+    botGenerationBatchSizePerType: number;
 }
 export interface PresetBatch {
     assault: number;
@@ -64,10 +66,13 @@ export interface LootNvalue {
 }
 export interface EquipmentFilters {
     weaponModLimits: ModLimits;
-    randomisedWeaponModSlots?: string[];
-    randomisedArmorSlots?: string[];
+    faceShieldIsActiveChancePercent?: number;
+    lightLaserIsActiveChancePercent?: number;
+    randomisation: RandomisationDetails[];
     blacklist: EquipmentFilterDetails[];
     whitelist: EquipmentFilterDetails[];
+    clothing: WeightingAdjustmentDetails[];
+    weightingAdjustments: WeightingAdjustmentDetails[];
 }
 export interface ModLimits {
     /** How many scopes are allowed on a weapon - hard coded to work with OPTIC_SCOPE, ASSAULT_SCOPE, COLLIMATOR, COMPACT_COLLIMATOR */
@@ -75,8 +80,27 @@ export interface ModLimits {
     /** How many lasers or lights are allowed on a weapon - hard coded to work with TACTICAL_COMBO, and FLASHLIGHT */
     lightLaserLimit?: number;
 }
+export interface RandomisationDetails {
+    levelRange: MinMax;
+    randomisedWeaponModSlots?: string[];
+    randomisedArmorSlots?: string[];
+    /** Equipment chances */
+    equipment?: Record<string, number>;
+    /** Modc chances */
+    mods?: Record<string, number>;
+}
 export interface EquipmentFilterDetails {
     levelRange: MinMax;
     equipment: Record<string, string[]>;
     cartridge: Record<string, string[]>;
+}
+export interface WeightingAdjustmentDetails {
+    levelRange: MinMax;
+    ammo?: AdjustmentDetails;
+    equipment?: AdjustmentDetails;
+    clothing?: AdjustmentDetails;
+}
+export interface AdjustmentDetails {
+    add: Record<string, Record<string, number>>;
+    edit: Record<string, Record<string, number>>;
 }

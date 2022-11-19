@@ -69,7 +69,7 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
                     url: "/MunitionsExpert/GetInfo",
                     action: (url, info, sessionId, output) =>
                     {
-                        return this.json.serialize(this.path.resolve(this.modLoader.getModPath("Faupi-MunitionsExpert 1.6.4")));
+                        return this.json.serialize(this.path.resolve(this.modLoader.getModPath("Faupi-MunitionsExpert 1.6.7")));
                     }
                 }
             ],

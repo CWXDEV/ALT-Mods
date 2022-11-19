@@ -1,21 +1,29 @@
-import { IBotType } from "../models/eft/common/tables/IBotType";
-import { EquipmentFilters, EquipmentFilterDetails, IBotConfig } from "../models/spt/config/IBotConfig";
+import { BotHelper } from "../helpers/BotHelper";
+import { EquipmentChances, IBotType, ModsChances } from "../models/eft/common/tables/IBotType";
+import { BotGenerationDetails } from "../models/spt/bots/BotGenerationDetails";
+import { AdjustmentDetails, EquipmentFilterDetails, EquipmentFilters, IBotConfig, WeightingAdjustmentDetails } from "../models/spt/config/IBotConfig";
 import { ILogger } from "../models/spt/utils/ILogger";
 import { ConfigServer } from "../servers/ConfigServer";
 export declare class BotEquipmentFilterService {
     protected logger: ILogger;
+    protected botHelper: BotHelper;
     protected configServer: ConfigServer;
     protected botConfig: IBotConfig;
-    protected botEquipmentFilterlists: Record<string, EquipmentFilters>;
-    constructor(logger: ILogger, configServer: ConfigServer);
+    protected botEquipmentConfig: Record<string, EquipmentFilters>;
+    constructor(logger: ILogger, botHelper: BotHelper, configServer: ConfigServer);
     /**
      * Filter a bots data to exclude equipment and cartridges defines in the botConfig
      * @param baseBotNode bots json data to filter
-     * @param playerLevel Level of the currently playing player
-     * @param isPmc Is the bot we're filtering a PMC
-     * @param role Role of the bot we're filtering
+     * @param botLevel Level of the bot
+     * @param botGenerationDetails details on how to generate a bot
      */
-    filterBotEquipment(baseBotNode: IBotType, playerLevel: number, isPmc: boolean, role: string): void;
+    filterBotEquipment(baseBotNode: IBotType, botLevel: number, botGenerationDetails: BotGenerationDetails): void;
+    /**
+     * Iterate over the changes passed in and alter data in baseValues
+     * @param equipmentChanges Changes to apply
+     * @param baseValues Values to update
+     */
+    protected adjustChances(equipmentChanges: Record<string, number>, baseValues: EquipmentChances | ModsChances): void;
     /**
      * Get an object that contains equipment and cartridge blacklists for a specified bot type
      * @param botRole Role of the bot we want the blacklist for
@@ -30,6 +38,20 @@ export declare class BotEquipmentFilterService {
      * @returns EquipmentFilterDetails object
      */
     protected getBotEquipmentWhitelist(botRole: string, playerLevel: number): EquipmentFilterDetails;
+    /**
+     * Retreive clothing weighting adjustments from bot.json config
+     * @param botRole Bot type to get adjustments for
+     * @param playerLevel level of player
+     * @returns Weighting adjustments for bots clothing
+     */
+    protected getBotClothingAdjustments(botRole: string, playerLevel: number): WeightingAdjustmentDetails;
+    /**
+     * Retreive item weighting adjustments from bot.json config
+     * @param botRole Bot type to get adjustments for
+     * @param playerLevel level of player
+     * @returns Weighting adjustments for bot items
+     */
+    protected getBotWeightingAdjustments(botRole: string, playerLevel: number): WeightingAdjustmentDetails;
     /**
      * Filter bot equipment based on blacklist and whitelist from config/bot.json
      * Prioritises whitelist first, if one is found blacklist is ignored
@@ -47,4 +69,10 @@ export declare class BotEquipmentFilterService {
      * @returns Filtered bot file
      */
     protected filterCartridges(baseBotNode: IBotType, blacklist: EquipmentFilterDetails, whitelist: EquipmentFilterDetails): void;
+    /**
+     * Add/Edit weighting changes to bot items using values from config/bot.json/equipment
+     * @param weightingAdjustments Weighting change to apply to bot
+     * @param botItemPool Bot item dictionary to adjust
+     */
+    protected adjustWeighting(weightingAdjustments: AdjustmentDetails, botItemPool: Record<string, any>, showEditWarnings?: boolean): void;
 }
