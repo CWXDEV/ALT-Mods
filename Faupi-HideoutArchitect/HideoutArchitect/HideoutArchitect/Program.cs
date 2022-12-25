@@ -7,12 +7,10 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using UnityEngine;
-using Hideout = GClass1682;
-using Requirement = GClass1706;
 
 namespace HideoutArchitect
 {
-    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.6.8")]
+    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.6.9")]
     public class HideoutArchitect : BaseUnityPlugin
     {
         private void Awake()
@@ -71,16 +69,16 @@ namespace HideoutArchitect
 
         public static List<AreaData> GetApplicableUpgrades(Item item)
         {
-            List<AreaData> areas = Singleton<Hideout>.Instance.AreaDatas.Where(area =>
+            List<AreaData> areas = Singleton<HideoutClass>.Instance.AreaDatas.Where(area =>
             {
                 bool areaActive = area.Status != EAreaStatus.NotSet && area.Template.Enabled == true;
 
-                List<Requirement> targetedRequirements;
+                List<ProductionRequirementsClass> targetedRequirements;
                 switch (ModConfig.NeededForHideoutDefinition)
                 {
                     case ENeededDefinition.NextLevel:
                     case ENeededDefinition.NextLevelReady:
-                        targetedRequirements = area.NextStage.Requirements.Value as List<Requirement>;
+                        targetedRequirements = area.NextStage.Requirements.Value as List<ProductionRequirementsClass>;
                         break;
                     default:
                         throw new NotImplementedException(Enum.GetName(typeof(ENeededDefinition), ModConfig.NeededForHideoutDefinition));

@@ -9,19 +9,16 @@ using BepInEx;
 using Comfort.Common;
 using Newtonsoft.Json;
 using Aki.Common.Utils;
-
-using ItemAttribute = GClass2210;
-using ServerSettings = GClass1173;
 using static MunitionsExpert.Attributes;
 using Aki.Common.Http;
 
 namespace MunitionsExpert
 {
-    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.7")]
+    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.8")]
     public class Plugin : BaseUnityPlugin
     {
         public static Dictionary<Enum, Sprite> iconCache = new Dictionary<Enum, Sprite>();
-        public static List<ItemAttribute> penAttributes = new List<ItemAttribute>();
+        public static List<ItemAttributeClass> penAttributes = new List<ItemAttributeClass>();
         public static string modPath;
 
         private void Awake()
@@ -72,7 +69,7 @@ namespace MunitionsExpert
             }
         }
 
-        public static void AddNewAttributes(ref List<ItemAttribute> attributes, AmmoTemplate template)
+        public static void AddNewAttributes(ref List<ItemAttributeClass> attributes, AmmoTemplate template)
         {
             int projCount = template.ProjectileCount;
             int totalDamage = template.Damage * template.ProjectileCount;
@@ -83,7 +80,7 @@ namespace MunitionsExpert
                 damageStr += $" ({template.Damage} x {template.ProjectileCount})";  // Add the "damage calculation" after total damage (damage per pellet * pellet count)
             }
 
-            ItemAttribute at_damage = new ItemAttribute(ENewItemAttributeId.Damage)
+            ItemAttributeClass at_damage = new ItemAttributeClass(ENewItemAttributeId.Damage)
             {
                 Name = ENewItemAttributeId.Damage.GetName(),
                 Base = () => totalDamage,
@@ -94,7 +91,7 @@ namespace MunitionsExpert
 
             if (template.ArmorDamage > 0)
             {
-                ItemAttribute at_armordmg = new ItemAttribute(ENewItemAttributeId.ArmorDamage)
+                ItemAttributeClass at_armordmg = new ItemAttributeClass(ENewItemAttributeId.ArmorDamage)
                 {
                     Name = ENewItemAttributeId.ArmorDamage.GetName(),
                     Base = () => template.ArmorDamage,
@@ -110,8 +107,8 @@ namespace MunitionsExpert
                 {
                     int ratedClass = 0;
 
-                    if (!Singleton<ServerSettings>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
-                    ServerSettings.GClass1220.GClass1221[] classes = Singleton<ServerSettings>.Instance.Armor.ArmorClass;
+                    if (!Singleton<BackendConfigSettingsClass>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
+                    BackendConfigSettingsClass.GClass1226.GClass1227[] classes = Singleton<BackendConfigSettingsClass>.Instance.Armor.ArmorClass;
                     for (int i = 0; i < classes.Length; i++)
                     {
                         if (classes[i].Resistance > template.PenetrationPower) continue;
@@ -121,7 +118,7 @@ namespace MunitionsExpert
                     return $"{(ratedClass > 0 ? $"{"ME_class".Localized()} {ratedClass}" : "ME_noarmor".Localized())} ({template.PenetrationPower.ToString()})";
                 }
 
-                ItemAttribute at_pen = new ItemAttribute(ENewItemAttributeId.Penetration)
+                ItemAttributeClass at_pen = new ItemAttributeClass(ENewItemAttributeId.Penetration)
                 {
                     Name = ENewItemAttributeId.Penetration.GetName(),
                     Base = () => template.PenetrationPower,
@@ -133,7 +130,7 @@ namespace MunitionsExpert
 
             if (template.FragmentationChance > 0)
             {
-                ItemAttribute at_frag = new ItemAttribute(ENewItemAttributeId.FragmentationChance)
+                ItemAttributeClass at_frag = new ItemAttributeClass(ENewItemAttributeId.FragmentationChance)
                 {
                     Name = ENewItemAttributeId.FragmentationChance.GetName(),
                     Base = () => template.FragmentationChance,
@@ -145,7 +142,7 @@ namespace MunitionsExpert
 
             if (template.RicochetChance > 0)
             {
-                ItemAttribute at_ricochet = new ItemAttribute(ENewItemAttributeId.RicochetChance)
+                ItemAttributeClass at_ricochet = new ItemAttributeClass(ENewItemAttributeId.RicochetChance)
                 {
                     Name = ENewItemAttributeId.RicochetChance.GetName(),
                     Base = () => template.RicochetChance,

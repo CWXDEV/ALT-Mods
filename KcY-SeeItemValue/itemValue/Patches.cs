@@ -2,11 +2,6 @@
 using System.Reflection;
 using Aki.Reflection.Patching;
 using EFT.InventoryLogic;
-using Ammo = BulletClass;
-using Grenade = GClass2199;
-using GrenadeTemplate = GClass2091;
-using SecureContainer = GClass2144;
-using SecureContainerTemplate = GClass2051;
 
 namespace itemValueMod
 {
@@ -28,11 +23,11 @@ namespace itemValueMod
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(Ammo).GetConstructor(new Type[] { typeof(string), typeof(AmmoTemplate) });
+            return typeof(BulletClass).GetConstructor(new Type[] { typeof(string), typeof(AmmoTemplate) });
         }
 
         [PatchPostfix]
-        private static void PatchPostFix(ref Ammo __instance, string id, AmmoTemplate template)
+        private static void PatchPostFix(ref BulletClass __instance, string id, AmmoTemplate template)
         {
             ItemValue.AddItemValue(ref __instance, id, template);
         }
@@ -42,11 +37,11 @@ namespace itemValueMod
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(Grenade).GetConstructor(new Type[] { typeof(string), typeof(GrenadeTemplate) });
+            return typeof(GrenadeClass).GetConstructor(new Type[] { typeof(string), typeof(ThrowableWeaponClass) });
         }
 
         [PatchPostfix]
-        private static void PatchPostFix(ref Grenade __instance, string id, GrenadeTemplate template)
+        private static void PatchPostFix(ref GrenadeClass __instance, string id, ThrowableWeaponClass template)
         {
             ItemValue.AddItemValue(ref __instance, id, template);
         }
@@ -56,11 +51,11 @@ namespace itemValueMod
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(SecureContainer).GetConstructor(new Type[] { typeof(string), typeof(SecureContainerTemplate) });
+            return typeof(ItemContainerClass).GetConstructor(new Type[] { typeof(string), typeof(SecureContainerTemplateClass) });
         }
 
         [PatchPostfix]
-        private static void PatchPostFix(ref SecureContainer __instance, string id, SecureContainerTemplate template)
+        private static void PatchPostFix(ref ItemContainerClass __instance, string id, SecureContainerTemplateClass template)
         {
             ItemValue.AddItemValue(ref __instance, id, template);
         }

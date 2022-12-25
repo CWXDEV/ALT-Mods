@@ -4,7 +4,6 @@ using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ItemAttribute = GClass2210;
 using System.Net;
 using System.Threading;
 using UnityEngine;
@@ -16,11 +15,11 @@ namespace itemValueMod
     {
         public static void AddItemValue<T>(ref T __instance, string id, ItemTemplate template) where T : Item
         {
-            var atts = new List<ItemAttribute>();
+            var atts = new List<ItemAttributeClass>();
             atts.AddRange(__instance.Attributes);
             __instance.Attributes = atts;
 
-            ItemAttribute attr1 = new ItemAttribute(EItemAttributeId.MoneySum)
+            ItemAttributeClass attr1 = new ItemAttributeClass(EItemAttributeId.MoneySum)
             {
                 StringValue = new Func<string>(__instance.TraderPrice),
                 FullStringValue = new Func<string>(__instance.TraderName),
@@ -197,12 +196,12 @@ namespace itemValueMod
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
             if (foodDrink != null && foodDrink.HpPercent != 0)
             {
-                GInterface209 ginterface209_0 = (GInterface209)foodDrink.GetType().GetField("ginterface209_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
+                GInterface211 ginterface211_0 = (GInterface211)foodDrink.GetType().GetField("ginterface211_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
                 DebugMode($" foodDrink Check - HpPercent is: {foodDrink.HpPercent}");
-                DebugMode($" foodDrink Check - MaxResource is: {ginterface209_0.MaxResource}");
+                DebugMode($" foodDrink Check - MaxResource is: {ginterface211_0.MaxResource}");
 
-                editedPrice *= foodDrink.HpPercent / ginterface209_0.MaxResource;
+                editedPrice *= foodDrink.HpPercent / ginterface211_0.MaxResource;
             }
 
             DebugMode($" After foodDrink Check - price is: {editedPrice}");
@@ -210,12 +209,12 @@ namespace itemValueMod
             var keys = item.GetItemComponent<KeyComponent>();
             if (keys != null)
             {
-                GInterface213 gInterface213_0 = (GInterface213)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
+                GInterface215 gInterface215_0 = (GInterface215)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
 
                 if (keys.NumberOfUsages > 0)
                 {
-                    double totalMinusUsed = Convert.ToDouble(gInterface213_0.MaximumNumberOfUsage - keys.NumberOfUsages);
-                    double multi = totalMinusUsed / gInterface213_0.MaximumNumberOfUsage;
+                    double totalMinusUsed = Convert.ToDouble(gInterface215_0.MaximumNumberOfUsage - keys.NumberOfUsages);
+                    double multi = totalMinusUsed / gInterface215_0.MaximumNumberOfUsage;
 
                     DebugMode($" foodDrink Check - totalMinusUsed is: {totalMinusUsed}");
                     DebugMode($" foodDrink Check - multi is: {multi}");

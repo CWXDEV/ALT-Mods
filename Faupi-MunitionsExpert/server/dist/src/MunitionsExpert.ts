@@ -55,7 +55,7 @@ class MunitionsExpert implements IPreAkiLoadMod, IPostAkiLoadMod
             {
                 const attrValue = attrKvPair[attrKey];
 
-                this.globalLocale[language].interface[attrKey] = attrValue;
+                this.globalLocale[language][attrKey] = attrValue;
             }
         }
     }

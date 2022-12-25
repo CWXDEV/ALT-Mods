@@ -3,7 +3,6 @@ using EFT.InventoryLogic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ItemAttributes = GClass2210;
 
 namespace MunitionsExpert
 {
@@ -15,9 +14,9 @@ namespace MunitionsExpert
 		}
 
 		[PatchPostfix]
-		private static void PatchPostfix(ref AmmoTemplate __instance, ref List<ItemAttributes> __result)
+		private static void PatchPostfix(ref AmmoTemplate __instance, ref List<ItemAttributeClass> __result)
 		{
-			if (!__result.Any((ItemAttributes a) => (Attributes.ENewItemAttributeId)a.Id == Attributes.ENewItemAttributeId.Damage))
+			if (!__result.Any((ItemAttributeClass a) => (Attributes.ENewItemAttributeId)a.Id == Attributes.ENewItemAttributeId.Damage))
 			{
 				//MunitionsExpert.FormatExistingAttributes(ref __result, __instance);
 				Plugin.AddNewAttributes(ref __result, __instance);

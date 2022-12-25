@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <Version>1.4.9</Version>
+    <Version>1.5.1</Version>
     <AssemblyName>KcY-SeeItemValue</AssemblyName>
   </PropertyGroup>
 
