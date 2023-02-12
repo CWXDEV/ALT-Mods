@@ -1,20 +1,19 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using UnityEngine;
-using EFT.InventoryLogic;
-using UnityEngine.Networking;
-using System.Threading.Tasks;
+﻿using Aki.Common.Http;
+using Aki.Common.Utils;
 using BepInEx;
 using Comfort.Common;
-using Newtonsoft.Json;
-using Aki.Common.Utils;
+using EFT.InventoryLogic;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.Networking;
 using static MunitionsExpert.Attributes;
-using Aki.Common.Http;
 
 namespace MunitionsExpert
 {
-    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.8")]
+    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.6.9")]
     public class Plugin : BaseUnityPlugin
     {
         public static Dictionary<Enum, Sprite> iconCache = new Dictionary<Enum, Sprite>();
@@ -108,7 +107,7 @@ namespace MunitionsExpert
                     int ratedClass = 0;
 
                     if (!Singleton<BackendConfigSettingsClass>.Instantiated) { return $"CLASS_DATA_MISSING {template.PenetrationPower.ToString()}"; }
-                    BackendConfigSettingsClass.GClass1226.GClass1227[] classes = Singleton<BackendConfigSettingsClass>.Instance.Armor.ArmorClass;
+                    var classes = Singleton<BackendConfigSettingsClass>.Instance.Armor.ArmorClass;
                     for (int i = 0; i < classes.Length; i++)
                     {
                         if (classes[i].Resistance > template.PenetrationPower) continue;

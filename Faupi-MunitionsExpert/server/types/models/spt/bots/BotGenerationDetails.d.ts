@@ -3,6 +3,8 @@ export interface BotGenerationDetails {
     isPmc: boolean;
     /** assault/pmcBot etc */
     role: string;
+    /** Side of bot */
+    side: string;
     /** Active players current level */
     playerLevel: number;
     /** Delta of highest level of bot */

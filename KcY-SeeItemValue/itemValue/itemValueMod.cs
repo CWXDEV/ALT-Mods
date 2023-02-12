@@ -196,12 +196,12 @@ namespace itemValueMod
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
             if (foodDrink != null && foodDrink.HpPercent != 0)
             {
-                GInterface211 ginterface211_0 = (GInterface211)foodDrink.GetType().GetField("ginterface211_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
+                GInterface233 ginterface233_0 = (GInterface233)foodDrink.GetType().GetField("ginterface233_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
                 DebugMode($" foodDrink Check - HpPercent is: {foodDrink.HpPercent}");
-                DebugMode($" foodDrink Check - MaxResource is: {ginterface211_0.MaxResource}");
+                DebugMode($" foodDrink Check - MaxResource is: {ginterface233_0.MaxResource}");
 
-                editedPrice *= foodDrink.HpPercent / ginterface211_0.MaxResource;
+                editedPrice *= foodDrink.HpPercent / ginterface233_0.MaxResource;
             }
 
             DebugMode($" After foodDrink Check - price is: {editedPrice}");
@@ -209,12 +209,12 @@ namespace itemValueMod
             var keys = item.GetItemComponent<KeyComponent>();
             if (keys != null)
             {
-                GInterface215 gInterface215_0 = (GInterface215)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
+                GInterface237 template = (GInterface237)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
 
                 if (keys.NumberOfUsages > 0)
                 {
-                    double totalMinusUsed = Convert.ToDouble(gInterface215_0.MaximumNumberOfUsage - keys.NumberOfUsages);
-                    double multi = totalMinusUsed / gInterface215_0.MaximumNumberOfUsage;
+                    double totalMinusUsed = Convert.ToDouble(template.MaximumNumberOfUsage - keys.NumberOfUsages);
+                    double multi = totalMinusUsed / template.MaximumNumberOfUsage;
 
                     DebugMode($" foodDrink Check - totalMinusUsed is: {totalMinusUsed}");
                     DebugMode($" foodDrink Check - multi is: {multi}");

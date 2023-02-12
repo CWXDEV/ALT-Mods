@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace HideoutArchitect
 {
-    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.6.9")]
+    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.7.0")]
     public class HideoutArchitect : BaseUnityPlugin
     {
         private void Awake()
@@ -73,12 +73,12 @@ namespace HideoutArchitect
             {
                 bool areaActive = area.Status != EAreaStatus.NotSet && area.Template.Enabled == true;
 
-                List<ProductionRequirementsClass> targetedRequirements;
+                List<Requirement> targetedRequirements;
                 switch (ModConfig.NeededForHideoutDefinition)
                 {
                     case ENeededDefinition.NextLevel:
                     case ENeededDefinition.NextLevelReady:
-                        targetedRequirements = area.NextStage.Requirements.Value as List<ProductionRequirementsClass>;
+                        targetedRequirements = area.NextStage.Requirements.Value as List<Requirement>;
                         break;
                     default:
                         throw new NotImplementedException(Enum.GetName(typeof(ENeededDefinition), ModConfig.NeededForHideoutDefinition));
