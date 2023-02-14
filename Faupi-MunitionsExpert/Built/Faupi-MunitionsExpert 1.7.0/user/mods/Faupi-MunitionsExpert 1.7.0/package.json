@@ -1,11 +1,11 @@
 {
     "name": "MunitionsExpert",
     "author": "Faupi",
-    "version": "1.6.9",
+    "updatedBy": "CWX",
+    "version": "1.7.0",
     "license": "NCSA Open Source",
     "main": "./src/MunitionsExpert.js",
     "akiVersion": "3.5.0",
-    "updatedBy": "CWX",
     "scripts": {
         "setup": "npm i",
         "build": "node ./packageBuild.ts"
