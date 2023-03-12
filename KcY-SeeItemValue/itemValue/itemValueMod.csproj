@@ -8,35 +8,35 @@
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\Shared\BepInEx\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\Shared\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Aki.Common">
-      <HintPath>..\..\Shared\AKI\Aki.Common.dll</HintPath>
+      <HintPath>..\..\..\Shared\Aki.Common.dll</HintPath>
     </Reference>
     <Reference Include="Aki.Reflection">
-      <HintPath>..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
+      <HintPath>..\..\..\Shared\Aki.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\Shared\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\Shared\BepInEx\BepInEx.dll</HintPath>
+      <HintPath>..\..\..\Shared\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Comfort">
-      <HintPath>..\..\Shared\EFT\Comfort.dll</HintPath>
+      <HintPath>..\..\..\Shared\Comfort.dll</HintPath>
     </Reference>
     <Reference Include="ItemComponent.Types">
-      <HintPath>..\..\Shared\EFT\ItemComponent.Types.dll</HintPath>
+      <HintPath>..\..\..\Shared\ItemComponent.Types.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Shared\EFT\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\Shared\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\Shared\EFT\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\Shared\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\Shared\EFT\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\Shared\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 namespace MunitionsExpert
 {
-    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.7.0")]
+    [BepInPlugin("com.Faupi.MunitionsExpert", "Faupi-MunitionsExpert", "1.7.1")]
     public class MunitionsExpertPlugin : BaseUnityPlugin
     {
         public static Dictionary<Enum, Sprite> iconCache = new Dictionary<Enum, Sprite>();

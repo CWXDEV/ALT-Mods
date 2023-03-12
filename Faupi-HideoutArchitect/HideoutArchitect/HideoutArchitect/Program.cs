@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace HideoutArchitect
 {
-    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.7.0")]
+    [BepInPlugin("com.FAUPI.HideoutArchitect", "FAUPI-HideoutArchitect", "1.7.1")]
     public class HideoutArchitect : BaseUnityPlugin
     {
         private void Awake()

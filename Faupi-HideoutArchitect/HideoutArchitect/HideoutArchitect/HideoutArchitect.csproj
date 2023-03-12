@@ -7,46 +7,46 @@
 
   <ItemGroup>
     <Reference Include="Aki.Common">
-      <HintPath>..\..\..\Shared\AKI\Aki.Common.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Aki.Common.dll</HintPath>
     </Reference>
     <Reference Include="Aki.Reflection">
-      <HintPath>..\..\..\Shared\AKI\Aki.Reflection.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Aki.Reflection.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\Shared\EFT\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\Shared\BepInEx\BepInEx.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="Comfort">
-      <HintPath>..\..\..\Shared\EFT\Comfort.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Comfort.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\Shared\EFT\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Sirenix.Serialization">
-      <HintPath>..\..\..\Shared\EFT\Sirenix.Serialization.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Sirenix.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\Shared\EFT\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestModule">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.UnityWebRequestModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestTextureModule">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-      <HintPath>..\..\..\Shared\EFT\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <HintPath>..\..\..\..\Shared\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
     </Reference>
   </ItemGroup>
 

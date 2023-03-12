@@ -2,7 +2,7 @@
 
 namespace itemValueMod
 {
-    [BepInPlugin("com.KcY.SeeItemValue", "KcY-SeeItemValue", "1.5.2")]
+    [BepInPlugin("com.KcY.SeeItemValue", "KcY-SeeItemValue", "1.5.3")]
     public class Plugin : BaseUnityPlugin
     {
         private void Awake()

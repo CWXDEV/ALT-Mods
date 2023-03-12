@@ -196,12 +196,12 @@ namespace itemValueMod
             var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
             if (foodDrink != null && foodDrink.HpPercent != 0)
             {
-                GInterface233 ginterface233_0 = (GInterface233)foodDrink.GetType().GetField("ginterface233_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
+                GInterface234 ginterface234_0 = (GInterface234)foodDrink.GetType().GetField("ginterface234_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
                 DebugMode($" foodDrink Check - HpPercent is: {foodDrink.HpPercent}");
-                DebugMode($" foodDrink Check - MaxResource is: {ginterface233_0.MaxResource}");
+                DebugMode($" foodDrink Check - MaxResource is: {ginterface234_0.MaxResource}");
 
-                editedPrice *= foodDrink.HpPercent / ginterface233_0.MaxResource;
+                editedPrice *= foodDrink.HpPercent / ginterface234_0.MaxResource;
             }
 
             DebugMode($" After foodDrink Check - price is: {editedPrice}");
@@ -209,7 +209,7 @@ namespace itemValueMod
             var keys = item.GetItemComponent<KeyComponent>();
             if (keys != null)
             {
-                GInterface237 template = (GInterface237)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
+                GInterface238 template = (GInterface238)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
 
                 if (keys.NumberOfUsages > 0)
                 {
