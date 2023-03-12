@@ -1,5 +1,5 @@
 # All in One Mods I Maintain
-## currently for EFT - SPT-AKI. - 3.0.0
+## Currently for EFT - SPT-AKI. - 3.5.2
 
 ### Mods
 - Faupi-HideoutArchitect
