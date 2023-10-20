@@ -4,261 +4,220 @@ using EFT.InventoryLogic;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Net;
-using System.Threading;
 using UnityEngine;
 using System.IO;
+using System.Linq;
+using Comfort.Common;
 
 namespace itemValueMod
 {
     public class ItemValue
     {
-        public static void AddItemValue<T>(ref T __instance, string id, ItemTemplate template) where T : Item
+        public static void AddItemValue<T>(ref T __instance, ItemTemplate template) where T : Item
         {
-            var atts = new List<ItemAttributeClass>();
-            atts.AddRange(__instance.Attributes);
-            __instance.Attributes = atts;
 
-            ItemAttributeClass attr1 = new ItemAttributeClass(EItemAttributeId.MoneySum)
-            {
-                StringValue = new Func<string>(__instance.TraderPrice),
-                FullStringValue = new Func<string>(__instance.TraderName),
-                Name = "TRADER",
-                DisplayType = new Func<EItemAttributeDisplayType>(() => EItemAttributeDisplayType.Compact)
-            };
+            __instance.SetupShit();
+            //var atts = new List<ItemAttributeClass>();
+            //atts.AddRange(__instance.Attributes);
+            //__instance.Attributes = atts;
 
-            __instance.Attributes.Add(attr1);
+            //var attr1 = new ItemAttributeClass(EItemAttributeId.MoneySum)
+            //{
+            //    StringValue = __instance.TraderPrice(template),
+            //    FullStringValue = __instance.TraderName,
+            //    Name = "TRADER",
+            //    DisplayType = () => EItemAttributeDisplayType.Compact
+            //};
+
+            //__instance.Attributes.Add(attr1);
         }
     }
 
     public static class ValueExtension
     {
-        static public Dictionary<string, JsonClass> itemDictionary = new Dictionary<string, JsonClass>();
-        static object lockObject = new object();
+        public static ItemFactory ItemFactoryInstance;
 
-        public static JsonClass GetData(String itemId)
+        public static void SetupShit(this Item item)
         {
-            var json = RequestHandler.GetJson($"/cwx/seeitemvalue/{itemId}");
-            var jsonClass = Json.Deserialize<JsonClass>(json);
+            ItemFactoryInstance = Singleton<ItemFactory>.Instance;
+            var itemTemplate = ItemFactoryInstance.ItemTemplates.Values.First(x => x._id == item.TemplateId).Name;
 
-            itemDictionary.Add(itemId, jsonClass);
+            
 
-            return jsonClass;
+
+            Debug.LogError($"[itemTemplate] {itemTemplate}");
+
         }
 
-        public static string TraderPrice(this Item item)
-        {
-            string itemId = item.Template._id;
-            JsonClass jsonClass;
-            bool lockWasTaken = false;
-            double alteredPrice = 1;
+        //public static Func<string> TraderPrice(this Item item, ItemTemplate template)
+        //{
+        //    string itemId = item.Template._id;
+        //    JsonClass jsonClass;
+        //    double alteredPrice = 1;
 
-            try
-            {
-                Monitor.Enter(lockObject, ref lockWasTaken);
+        //    if (jsonClass.price != 1)
+        //    {
+        //        alteredPrice = DurabilityCheck(item, jsonClass);
+        //    }
 
-                if(!itemDictionary.TryGetValue(itemId, out jsonClass))
-                {
-                    jsonClass = GetData(item.Template._id);
-                }
-            }
-            catch (WebException)
-            {
-                return $"[SeeItemValue] Issue happened whilst getting Item from server";
-            }
-            finally
-            {
-                if (lockWasTaken)
-                {
-                    Monitor.Exit(lockObject);
-                }
-            }
+        //    double _price = alteredPrice * jsonClass.multiplier;
 
-            if (jsonClass.price != 1)
-            {
-                alteredPrice = DurabilityCheck(item, jsonClass);
-            }
+        //    return Math.Round(_price).ToString();
+        //}
 
-            double _price = alteredPrice * jsonClass.multiplier;
+        //public static string TraderName(this Item item)
+        //{
+        //    string itemId = item.Template._id;
+        //    JsonClass jsonClass;
 
-            return Math.Round(_price).ToString();
-        }
+        //    return jsonClass.traderName;
+        //}
 
-        public static string TraderName(this Item item)
-        {
-            string itemId = item.Template._id;
-            JsonClass jsonClass;
-            bool lockWasTaken = false;
+        //public static double DurabilityCheck(this Item item, JsonClass jsonClass)
+        //{
+        //    double editedPrice = jsonClass.price;
+        //    double originalMax = jsonClass.originalMax;
 
-            try
-            {
-                Monitor.Enter(lockObject, ref lockWasTaken);
+        //    DebugMode($" Entered DurabilityCheck() - starting price is: {editedPrice}");
 
-                if (!itemDictionary.TryGetValue(itemId, out jsonClass))
-                {
-                    jsonClass = GetData(item.Template._id);
-                }
-            }
-            catch (WebException)
-            {
-                return $"[SeeItemValue] Issue happened whilst getting Item from server";
-            }
-            finally
-            {
-                if (lockWasTaken)
-                {
-                    Monitor.Exit(lockObject);
-                }
-            }
+        //    var medKit = item.GetItemComponent<MedKitComponent>();
+        //    if (medKit != null && medKit.HpResource != 0 && medKit.MaxHpResource != 0)
+        //    {
+        //        DebugMode($" Medkit Check - HpResource is: {medKit.HpResource}");
+        //        DebugMode($" Medkit Check - MaxHpResource is: {medKit.MaxHpResource}");
 
-            return jsonClass.traderName;
-        }
+        //        editedPrice *= medKit.HpResource / medKit.MaxHpResource;
+        //    }
 
-        public static double DurabilityCheck(this Item item, JsonClass jsonClass)
-        {
-            double editedPrice = jsonClass.price;
-            double originalMax = jsonClass.originalMax;
+        //    DebugMode($" After Medkit Check - price is: {editedPrice}");
 
-            DebugMode($" Entered DurabilityCheck() - starting price is: {editedPrice}");
+        //    var repair = item.GetItemComponent<RepairableComponent>();
+        //    if (repair != null)
+        //    {
+        //        if (repair.Durability > 0)
+        //        {
+        //            DebugMode($" repairable Check - Durability is: {repair.Durability}");
+        //            DebugMode($" Medkit Check - originalMax is: {originalMax}");
 
-            var medKit = item.GetItemComponent<MedKitComponent>();
-            if (medKit != null && medKit.HpResource != 0 && medKit.MaxHpResource != 0)
-            {
-                DebugMode($" Medkit Check - HpResource is: {medKit.HpResource}");
-                DebugMode($" Medkit Check - MaxHpResource is: {medKit.MaxHpResource}");
+        //            editedPrice *= repair.Durability / originalMax;
+        //        }
+        //        else
+        //        {
+        //            DebugMode($" repairable Check - Durability is 0");
 
-                editedPrice *= medKit.HpResource / medKit.MaxHpResource;
-            }
+        //            editedPrice = 1;
+        //        }
+        //    }
 
-            DebugMode($" After Medkit Check - price is: {editedPrice}");
+        //    DebugMode($" After repairable Check - price is: {editedPrice}");
 
-            var repair = item.GetItemComponent<RepairableComponent>();
-            if (repair != null)
-            {
-                if (repair.Durability > 0)
-                {
-                    DebugMode($" repairable Check - Durability is: {repair.Durability}");
-                    DebugMode($" Medkit Check - originalMax is: {originalMax}");
+        //    var dogtag = item.GetItemComponent<DogtagComponent>();
+        //    if (dogtag != null && dogtag.Level != 0)
+        //    {
+        //        DebugMode($" dogtag Check - level is: {dogtag.Level}");
 
-                    editedPrice *= repair.Durability / originalMax;
-                }
-                else
-                {
-                    DebugMode($" repairable Check - Durability is 0");
+        //        editedPrice *= dogtag.Level;
+        //    }
 
-                    editedPrice = 1;
-                }
-            }
+        //    DebugMode($" After dogtag Check - price is: {editedPrice}");
 
-            DebugMode($" After repairable Check - price is: {editedPrice}");
+        //    var repairKit = item.GetItemComponent<RepairKitComponent>();
+        //    if (repairKit != null)
+        //    {
+        //        if (repairKit.Resource > 0)
+        //        {
+        //            DebugMode($" repairkit Check - Resource is: {repairKit.Resource}");
+        //            DebugMode($" repairkit Check - originalMax is: {originalMax}");
 
-            var dogtag = item.GetItemComponent<DogtagComponent>();
-            if (dogtag != null && dogtag.Level != 0)
-            {
-                DebugMode($" dogtag Check - level is: {dogtag.Level}");
+        //            editedPrice *= repairKit.Resource / originalMax;
+        //        }
+        //        else
+        //        {
+        //            DebugMode($" repairkit Check - Resource is 0");
 
-                editedPrice *= dogtag.Level;
-            }
+        //            editedPrice = 1;
+        //        }
+        //    }
 
-            DebugMode($" After dogtag Check - price is: {editedPrice}");
+        //    DebugMode($" After repairkit Check - price is: {editedPrice}");
 
-            var repairKit = item.GetItemComponent<RepairKitComponent>();
-            if (repairKit != null)
-            {
-                if (repairKit.Resource > 0)
-                {
-                    DebugMode($" repairkit Check - Resource is: {repairKit.Resource}");
-                    DebugMode($" repairkit Check - originalMax is: {originalMax}");
+        //    var resource = item.GetItemComponent<ResourceComponent>();
+        //    if (resource != null && resource.Value != 0 && resource.MaxResource != 0)
+        //    {
+        //        DebugMode($" resource Check - Resource is: {resource.Value}");
+        //        DebugMode($" resource Check - MaxResource is: {resource.MaxResource}");
 
-                    editedPrice *= repairKit.Resource / originalMax;
-                }
-                else
-                {
-                    DebugMode($" repairkit Check - Resource is 0");
+        //        editedPrice *= resource.Value / resource.MaxResource;
+        //    }
 
-                    editedPrice = 1;
-                }
-            }
+        //    DebugMode($" After resource Check - price is: {editedPrice}");
 
-            DebugMode($" After repairkit Check - price is: {editedPrice}");
+        //    var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
+        //    if (foodDrink != null && foodDrink.HpPercent != 0)
+        //    {
+        //        GInterface234 ginterface234_0 = (GInterface234)foodDrink.GetType().GetField("ginterface234_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
 
-            var resource = item.GetItemComponent<ResourceComponent>();
-            if (resource != null && resource.Value != 0 && resource.MaxResource != 0)
-            {
-                DebugMode($" resource Check - Resource is: {resource.Value}");
-                DebugMode($" resource Check - MaxResource is: {resource.MaxResource}");
+        //        DebugMode($" foodDrink Check - HpPercent is: {foodDrink.HpPercent}");
+        //        DebugMode($" foodDrink Check - MaxResource is: {ginterface234_0.MaxResource}");
 
-                editedPrice *= resource.Value / resource.MaxResource;
-            }
+        //        editedPrice *= foodDrink.HpPercent / ginterface234_0.MaxResource;
+        //    }
 
-            DebugMode($" After resource Check - price is: {editedPrice}");
+        //    DebugMode($" After foodDrink Check - price is: {editedPrice}");
 
-            var foodDrink = item.GetItemComponent<FoodDrinkComponent>();
-            if (foodDrink != null && foodDrink.HpPercent != 0)
-            {
-                GInterface234 ginterface234_0 = (GInterface234)foodDrink.GetType().GetField("ginterface234_0", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(foodDrink);
+        //    var keys = item.GetItemComponent<KeyComponent>();
+        //    if (keys != null)
+        //    {
+        //        GInterface238 template = (GInterface238)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
 
-                DebugMode($" foodDrink Check - HpPercent is: {foodDrink.HpPercent}");
-                DebugMode($" foodDrink Check - MaxResource is: {ginterface234_0.MaxResource}");
+        //        if (keys.NumberOfUsages > 0)
+        //        {
+        //            double totalMinusUsed = Convert.ToDouble(template.MaximumNumberOfUsage - keys.NumberOfUsages);
+        //            double multi = totalMinusUsed / template.MaximumNumberOfUsage;
 
-                editedPrice *= foodDrink.HpPercent / ginterface234_0.MaxResource;
-            }
+        //            DebugMode($" foodDrink Check - totalMinusUsed is: {totalMinusUsed}");
+        //            DebugMode($" foodDrink Check - multi is: {multi}");
 
-            DebugMode($" After foodDrink Check - price is: {editedPrice}");
+        //            editedPrice *= multi;
+        //        }
+        //    }
 
-            var keys = item.GetItemComponent<KeyComponent>();
-            if (keys != null)
-            {
-                GInterface238 template = (GInterface238)keys.GetType().GetField("Template", BindingFlags.Public | BindingFlags.Instance).GetValue(keys);
+        //    DebugMode($" After keys Check - price is: {editedPrice}");
 
-                if (keys.NumberOfUsages > 0)
-                {
-                    double totalMinusUsed = Convert.ToDouble(template.MaximumNumberOfUsage - keys.NumberOfUsages);
-                    double multi = totalMinusUsed / template.MaximumNumberOfUsage;
+        //    var sideEffect = item.GetItemComponent<SideEffectComponent>();
+        //    if (sideEffect != null && sideEffect.Value != 0)
+        //    {
+        //        DebugMode($" sideEffect Check - resource is: {sideEffect.Value}");
+        //        DebugMode($" sideEffect Check - MaxResource is: {sideEffect.MaxResource}");
 
-                    DebugMode($" foodDrink Check - totalMinusUsed is: {totalMinusUsed}");
-                    DebugMode($" foodDrink Check - multi is: {multi}");
+        //        editedPrice *= sideEffect.Value / sideEffect.MaxResource;
+        //    }
 
-                    editedPrice *= multi;
-                }
-            }
+        //    DebugMode($" After sideEffect Check - price is: {editedPrice}");
 
-            DebugMode($" After keys Check - price is: {editedPrice}");
+        //    DebugMode($"Ending price: {editedPrice}");
 
-            var sideEffect = item.GetItemComponent<SideEffectComponent>();
-            if (sideEffect != null && sideEffect.Value != 0)
-            {
-                DebugMode($" sideEffect Check - resource is: {sideEffect.Value}");
-                DebugMode($" sideEffect Check - MaxResource is: {sideEffect.MaxResource}");
+        //    return editedPrice;
+        //}
 
-                editedPrice *= sideEffect.Value / sideEffect.MaxResource;
-            }
+        //public static void DebugMode(String str)
+        //{
+        //    var directory = Directory.GetCurrentDirectory();
 
-            DebugMode($" After sideEffect Check - price is: {editedPrice}");
+        //    var modDirectory = new DirectoryInfo(directory + "/user/mods/");
+        //    DirectoryInfo[] dirsInDir = modDirectory.GetDirectories("*" + "SeeItemValue" + "*.*");
 
-            DebugMode($"Ending price: {editedPrice}");
+        //    if (dirsInDir.Length == 1)
+        //    {
+        //        var json = File.ReadAllText(dirsInDir[0].ToString() + "/src/config.json");
 
-            return editedPrice;
-        }
+        //        var configJson = Json.Deserialize<ConfigClass>(json);
 
-        public static void DebugMode(String str)
-        {
-            var directory = Directory.GetCurrentDirectory();
-
-            var modDirectory = new DirectoryInfo(directory + "/user/mods/");
-            DirectoryInfo[] dirsInDir = modDirectory.GetDirectories("*" + "SeeItemValue" + "*.*");
-
-            if (dirsInDir.Length == 1)
-            {
-                var json = File.ReadAllText(dirsInDir[0].ToString() + "/src/config.json");
-
-                var configJson = Json.Deserialize<ConfigClass>(json);
-
-                if (configJson != null && configJson.DebugMode)
-                {
-                    Debug.LogError(str);
-                }
-            }
-        }
+        //        if (configJson != null && configJson.DebugMode)
+        //        {
+        //            Debug.LogError(str);
+        //        }
+        //    }
+        //}
     }
 }

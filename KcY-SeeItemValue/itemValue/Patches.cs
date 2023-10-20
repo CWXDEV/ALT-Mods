@@ -15,7 +15,7 @@ namespace itemValueMod
         [PatchPostfix]
         private static void PatchPostFix(ref Item __instance, string id, ItemTemplate template)
         {
-            ItemValue.AddItemValue(ref __instance, id, template);
+            ItemValue.AddItemValue(ref __instance, template);
         }
     }
 
@@ -29,7 +29,7 @@ namespace itemValueMod
         [PatchPostfix]
         private static void PatchPostFix(ref BulletClass __instance, string id, AmmoTemplate template)
         {
-            ItemValue.AddItemValue(ref __instance, id, template);
+            ItemValue.AddItemValue(ref __instance, template);
         }
     }
 
@@ -43,7 +43,7 @@ namespace itemValueMod
         [PatchPostfix]
         private static void PatchPostFix(ref GrenadeClass __instance, string id, ThrowableWeaponClass template)
         {
-            ItemValue.AddItemValue(ref __instance, id, template);
+            ItemValue.AddItemValue(ref __instance, template);
         }
     }
 
@@ -57,7 +57,7 @@ namespace itemValueMod
         [PatchPostfix]
         private static void PatchPostFix(ref ItemContainerClass __instance, string id, SecureContainerTemplateClass template)
         {
-            ItemValue.AddItemValue(ref __instance, id, template);
+            ItemValue.AddItemValue(ref __instance, template);
         }
     }
 }
